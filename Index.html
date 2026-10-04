@@ -1,4 +1,98 @@
-<!DOCTYPE html>
+<!DOCTYPE html><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RÁDIOHOST - Rádio Web Clãns</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}body{background:#050510;color:#fff;font-family:Arial}
+.header{background:#000;border-bottom:3px solid #0ff;padding:14px;text-align:center;position:sticky;top:0;z-index:10}
+.logo{font-size:32px;font-weight:900;color:#0ff}.logo span{color:#f0f}
+.box{max-width:560px;margin:auto;padding:10px}
+.card{background:#151540;border:2px solid #0ff;border-radius:14px;padding:12px;margin:8px 0;text-align:center}
+.plan{border:2px solid #0ff;border-radius:12px;padding:12px;margin:8px 0;background:#000033;cursor:pointer;text-align:center}
+.plan.active{border-color:#f0f;background:#220044;box-shadow:0 0 12px #f0f}
+.btn{width:100%;padding:14px;border-radius:12px;font-weight:900;border:none;margin:6px 0;cursor:pointer}
+.btnC{background:#0ff;color:#000}.btnY{background:yellow;color:#000}.btnP{background:linear-gradient(90deg,#0ff,#f0f);color:#fff}
+.btnW{background:#25D366;color:#fff}
+.pix{background:#000;border:2px dashed #0f0;padding:12px;border-radius:10px}
+input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #0ff;background:#000;color:#fff}
+.badge{background:#f0f;color:#fff;padding:2px 8px;border-radius:10px;font-size:10px}
+.dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+audio{width:100%;margin-top:8px}
+</style>
+</head>
+<body>
+<div class="header"><div class="logo">RÁDIO<span>HOST</span></div><div style="font-size:10px;color:#0f0">PIX: visitanteonline527@gmail.com | Whats: (17) 98113-5119</div></div>
+<div class="box">
+
+<!-- PLAYER 1 - WEB CLANS -->
+<div class="card" style="border-color:#f0f">
+<h3><span class="dot"></span> RÁDIO WEB CLÃNS - AO VIVO</h3>
+<p style="font-size:10px;color:#0ff">kmbjkezl7uetv - Zeno FM</p>
+<audio id="radioClans" controls style="background:#000;border-radius:10px"></audio>
+<button id="btnPlay" class="btn btnC" onclick="tocarClans()">▶️ TOCAR WEB CLÃNS</button>
+<button id="btnStop" class="btn" style="background:#333;color:#fff;display:none" onclick="pararClans()">⏹️ PARAR</button>
+<div id="status" style="font-size:11px;color:yellow">Clique em TOCAR</div>
+</div>
+
+<!-- PLAYER 2 - SUA RADIOHOST ESCONDIDA -->
+<div class="card">
+<div style="font-size:12px;color:#0ff"><span class="dot"></span> RÁDIOHOST DEMO AO VIVO</div>
+<audio controls autoplay><source src="http://uk2freenew.listen2myradio.com:8181/stream" type="audio/mpeg"></audio>
+<div style="font-size:10px;color:#aaa">Player oficial RadioHost sem anúncios</div>
+</div>
+
+<!-- PLANOS -->
+<div class="card">
+<h2 style="color:#0ff">CRIE SUA RÁDIO NA RÁDIOHOST</h2>
+<div class="plan" onclick="selPlano(15,20,'15 DIAS')" id="p15"><div style="font-size:26px;font-weight:900;color:#0ff">R$20</div><div>15 DIAS</div></div>
+<div class="plan active" onclick="selPlano(30,30,'30 DIAS')" id="p30"><div><span class="badge">MAIS VENDIDO</span></div><div style="font-size:26px;font-weight:900;color:#0ff">R$30</div><div>30 DIAS</div></div>
+<div class="plan" onclick="selPlano(365,600,'12 MESES')" id="p365" style="border-color:yellow"><div style="font-size:26px;font-weight:900;color:yellow">R$600</div><div style="color:yellow">12 MESES - INFINITO</div></div>
+</div>
+
+<!-- CADASTRO SIMPLES QUE VOCE QUERIA -->
+<div class="card">
+<h3 style="color:#0ff">1. DIGITE O NOME DA SUA RÁDIO</h3>
+<input id="nomeradio" placeholder="Ex: Gospel FM 24h">
+<input id="nomecli" placeholder="Seu nome">
+<div id="resumoPix" style="background:#000;padding:8px;border-radius:8px;margin:6px 0;font-size:12px;border:1px dashed #0f0">Plano: <b style="color:#0ff">30 DIAS - R$30,00</b><br>PIX: <b style="color:yellow">visitanteonline527@gmail.com</b></div>
+<button class="btn btnW" onclick="irWhats()">CRIAR VIA WHATSAPP (17) 98113-5119</button>
+<button class="btn" style="background:#fff;color:#000" onclick="irEmail()">CRIAR VIA E-MAIL</button>
+<button class="btn btnY" onclick="navigator.clipboard.writeText('visitanteonline527@gmail.com');alert('PIX COPIADO!')">📋 COPIAR CHAVE PIX</button>
+</div>
+
+</div>
+
+<script>
+const STREAM_CLANS="https://stream.zeno.fm/kmbjkezl7uetv";
+let planoSel={dias:30,valor:30,nome:"30 DIAS"};
+function tocarClans(){let a=document.getElementById('radioClans');a.src=STREAM_CLANS;a.play().then(()=>{document.getElementById('status').innerHTML='✅ TOCANDO WEB CLÃNS!';document.getElementById('btnPlay').style.display='none';document.getElementById('btnStop').style.display='block';}).catch(()=>{document.getElementById('status').innerText='Clique novamente';});}
+function pararClans(){let a=document.getElementById('radioClans');a.pause();a.src='';document.getElementById('status').innerText='Parado';document.getElementById('btnPlay').style.display='block';document.getElementById('btnStop').style.display='none';}
+function selPlano(d,v,n){planoSel={dias:d,valor:v,nome:n};document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active'));if(d==15)document.getElementById('p15').classList.add('active');if(d==30)document.getElementById('p30').classList.add('active');if(d==365)document.getElementById('p365').classList.add('active');document.getElementById('resumoPix').innerHTML='Plano: <b style=color:#0ff>'+n+' - R$'+v+',00</b><br>PIX: <b style=color:yellow>visitanteonline527@gmail.com</b>';}
+
+function getDados(){
+let radio=document.getElementById('nomeradio').value;
+let nome=document.getElementById('nomecli').value;
+if(!radio){alert('Digite o nome da rádio!');return null;}
+let emailGerado='visitanteonline527+'+radio.replace(/\s/g,'').toLowerCase()+'@gmail.com';
+return {radio,nome,emailGerado};
+}
+function irWhats(){
+let d=getDados(); if(!d) return;
+let msg=`Olá! Quero criar minha rádio na RADIOHOST:%0A%0ANome: ${d.nome}%0ARádio: ${d.radio}%0APlano: ${planoSel.nome} R$${planoSel.valor}%0AE-mail p/ criar no sistema: ${d.emailGerado}%0A%0AJá vou fazer o PIX para visitanteonline527@gmail.com`;
+window.open('https://wa.me/5517981135119?text='+msg,'_blank');
+}
+function irEmail(){
+let d=getDados(); if(!d) return;
+let assunto=`Quero criar minha rádio: ${d.radio} - Plano ${planoSel.nome}`;
+let corpo=`Olá,%0AQuero criar minha rádio:%0ANome: ${d.nome}%0ARádio: ${d.radio}%0APlano: ${planoSel.nome} R$${planoSel.valor}%0AE-mail sistema: ${d.emailGerado}%0A%0AVou enviar o PIX para visitanteonline527@gmail.com`;
+window.open(`mailto:visitanteonline527@gmail.com?subject=${assunto}&body=${corpo}`,'_blank');
+}
+selPlano(30,30,'30 DIAS');
+</script>
+</body>
+</html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -39,24 +133,4 @@ input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #
 <div class="plan active" onclick="selPlano(30,30,'30 DIAS')" id="p30"><div><span class="badge">MAIS VENDIDO</span></div><div style="font-size:28px;font-weight:900;color:#0ff">R$30</div><div>30 DIAS</div></div>
 <div class="plan" onclick="selPlano(365,600,'12 MESES')" id="p365" style="border-color:yellow"><div style="font-size:28px;font-weight:900;color:yellow">R$600</div><div style="color:yellow">12 MESES</div></div>
 
-<div class="card"><div class="pix"><div style="font-size:11px;color:#0f0">CHAVE PIX EMAIL</div><div style="color:yellow;font-weight:900;font-size:18px">radioclansweb@gmail.com</div><div id="resumoPix" style="background:#111;padding:6px;border-radius:8px;margin-top:6px;font-size:12px">Plano: <b style="color:#0ff">30 DIAS - R$30,00</b></div><button class="btn btnY" onclick="navigator.clipboard.writeText('radioclansweb@gmail.com');alert('PIX COPIADO')">📋 COPIAR PIX</button></div><button class="btn btnP" onclick="show('cad')">🚀 CRIAR MINHA RÁDIO</button><button class="btn" style="background:#222;color:#fff;border:1px solid #0ff" onclick="show('log')">LOGIN</button></div>
-</div>
-
-<div id="cad" style="display:none"><div class="card"><h3 style="color:#0ff">CADASTRO</h3><input id="n" placeholder="Nome"><input id="e" placeholder="Email"><input id="r" placeholder="Nome da rádio"><input id="s" type="password" placeholder="Senha"><div class="pix"><div id="valorCad" style="font-size:22px;color:yellow;font-weight:900">R$30,00</div><div>radioclansweb@gmail.com</div></div><button class="btn btnC" onclick="cadastrar()">CRIAR CONTA</button><button class="btn" style="background:#444;color:#fff" onclick="show('venda')">VOLTAR</button></div></div>
-<div id="log" style="display:none"><div class="card"><h3 style="color:#0ff">LOGIN</h3><input id="le" placeholder="Email"><input id="ls" type="password" placeholder="Senha"><button class="btn btnC" onclick="login()">ENTRAR</button><div style="font-size:10px;color:#aaa;margin-top:6px">ADMIN: radioclansweb@gmail.com / adminclans</div><button class="btn" style="background:#444;color:#fff" onclick="show('venda')">VOLTAR</button></div></div>
-<div id="painel" style="display:none"><div class="card"><h2 id="nomeRadio"></h2><div id="infoPlano" style="font-size:11px;background:#000;padding:6px;border-radius:8px;color:yellow"></div></div><div class="card"><button class="btn" style="background:red;color:#fff" onclick="location.reload()">SAIR</button></div></div>
-</div>
-
-<script>
-const STREAM_CLANS="https://stream.zeno.fm/kmbjkezl7uetv";
-let planoSel={dias:30,valor:30,nome:"30 DIAS"};
-function tocarClans(){let a=document.getElementById('radioClans');a.src=STREAM_CLANS;a.play().then(()=>{document.getElementById('status').innerHTML='✅ <b style=color:#0f0>TOCANDO WEB CLÃNS AO VIVO!</b>';document.getElementById('btnPlay').style.display='none';document.getElementById('btnStop').style.display='block';}).catch(()=>{document.getElementById('status').innerText='Clique novamente, navegador bloqueou autoplay.';});}
-function pararClans(){let a=document.getElementById('radioClans');a.pause();a.src='';document.getElementById('status').innerText='Parado';document.getElementById('btnPlay').style.display='block';document.getElementById('btnStop').style.display='none';}
-function selPlano(d,v,n){planoSel={dias:d,valor:v,nome:n};document.getElementById('p15').classList.remove('active');document.getElementById('p30').classList.remove('active');document.getElementById('p365').classList.remove('active');if(d==15)document.getElementById('p15').classList.add('active');if(d==30)document.getElementById('p30').classList.add('active');if(d==365)document.getElementById('p365').classList.add('active');document.getElementById('resumoPix').innerHTML='Plano: <b style=color:#0ff>'+n+' - R$'+v+',00</b>';document.getElementById('valorCad').innerText='R$'+v+',00';}
-function show(id){['venda','cad','log','painel'].forEach(x=>document.getElementById(x).style.display='none');document.getElementById(id).style.display='block';}
-function cadastrar(){let n=document.getElementById('n').value,e=document.getElementById('e').value,r=document.getElementById('r').value,s=document.getElementById('s').value;if(!n||!e||!r||!s){alert('Preencha tudo');return;}localStorage.setItem('rh_e',e);localStorage.setItem('rh_s',s);localStorage.setItem('rh_r',r);let v=new Date();v.setDate(v.getDate()+planoSel.dias);localStorage.setItem('rh_v',v.toISOString());alert('Conta criada! Pague R$'+planoSel.valor+' PIX: radioclansweb@gmail.com');show('painel');document.getElementById('nomeRadio').innerText=r;document.getElementById('infoPlano').innerText='Plano: '+planoSel.nome+' R$'+planoSel.valor;}
-function login(){let e=document.getElementById('le').value,s=document.getElementById('ls').value;if(e=='radioclansweb@gmail.com'&&s=='adminclans'){show('painel');document.getElementById('nomeRadio').innerText='RÁDIO WEB CLÃNS - ADMIN RÁDIOHOST 👑';document.getElementById('infoPlano').innerText='ADMIN VITALÍCIO';return;}if(e==localStorage.getItem('rh_e')&&s==localStorage.getItem('rh_s')){show('painel');document.getElementById('nomeRadio').innerText=localStorage.getItem('rh_r');}else alert('Login errado');}
-selPlano(30,30,'30 DIAS');
-</script>
-</body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   </html>
+<div class="card"><div class="pix"><div style="font-size:11px;color:#0f0">CHAVE PIX EMAIL</div><div style="color:yellow;font-weight:900;font-size:18px">radioclansweb@gmail.com</div><div id="resumoPix" style="background:#111;padding:6px;border-radius:8px;margin-top:6px;font-size:12px">Plano: <b style="color:#0ff">30 DIAS - R$30,00</b></div><button class="btn btnY" onclick="navigator.clipboard.writeText('radioclansweb@gmail.com');alert('PIX COPIADO')">📋                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </html>
