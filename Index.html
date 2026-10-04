@@ -2,112 +2,149 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RÁDIOHOST - Hospedagem Premium</title>
+<title>RÁDIOHOST - Painel Completo</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#080815;color:#fff;font-family:Arial}
-.header{background:#000;padding:14px;text-align:center;border-bottom:3px solid #0ff;position:sticky;top:0;z-index:10}
-.logo{font-size:32px;font-weight:900;color:#0ff}.logo span{color:#f0f}
-.box{max-width:560px;margin:auto;padding:10px}
-.card{background:#151540;border:2px solid #0ff;border-radius:14px;padding:14px;margin:10px 0}
+*{margin:0;padding:0;box-sizing:border-box}body{background:#060612;color:#fff;font-family:Arial}
+.header{background:#000;padding:12px;text-align:center;border-bottom:3px solid #0ff;position:sticky;top:0;z-index:10}
+.logo{font-size:30px;font-weight:900;color:#0ff}.logo span{color:#f0f}
+.box{max-width:900px;margin:auto;padding:8px}
+.card{background:#151540;border:2px solid #0ff;border-radius:14px;padding:12px;margin:8px 0}
 .plan{border:2px solid #0ff;border-radius:12px;padding:12px;margin:8px 0;background:#000033;cursor:pointer;text-align:center}
 .plan.active{border-color:#f0f;background:#220044;box-shadow:0 0 12px #f0f}
-.btn{width:100%;padding:14px;border-radius:12px;font-weight:900;border:none;margin:6px 0;cursor:pointer}
+.btn{width:100%;padding:12px;border-radius:10px;font-weight:900;border:none;margin:5px 0;cursor:pointer}
 .btnW{background:#25D366;color:#fff}.btnC{background:#0ff;color:#000}.btnY{background:yellow;color:#000}
-input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #0ff;background:#000;color:#fff}
-.painel{display:none}
-code{background:#000;padding:6px 10px;border-radius:8px;color:#0f0;font-size:13px;display:block;margin:6px 0;border:1px solid #222;word-break:break-all}
-.dot{width:10px;height:10px;background:#0f0;border-radius:50%;display:inline-block}
-audio{width:100%;margin-top:8px}
+input{width:100%;padding:11px;margin:5px 0;border-radius:10px;border:1px solid #0ff;background:#000;color:#fff}
+.tabs{display:flex;gap:4px;overflow:auto;flex-wrap:wrap}
+.tab{background:#222;border:1px solid #0ff;padding:8px 10px;border-radius:8px;font-size:11px;cursor:pointer}
+.tab.active{background:#0ff;color:#000;font-weight:900}
+.painelTab{display:none}.painelTab.active{display:block}
+code{background:#000;padding:6px 10px;border-radius:8px;color:#0f0;font-size:12px;display:block;margin:5px 0;border:1px solid #222;word-break:break-all}
+.music{border:1px solid #333;padding:8px;border-radius:8px;margin:4px 0;background:#0a0a20;display:flex;justify-content:space-between;align-items:center}
+.dot{width:10px;height:10px;background:#0f0;border-radius:50%;display:inline-block;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">RÁDIO<span>HOST</span></div><div style="font-size:10px;color:#0f0">HOSPEDAGEM PREMIUM DE RÁDIOS WEB - BRASIL</div></div>
+<div class="header"><div class="logo">RÁDIO<span>HOST</span></div><div style="font-size:9px;color:#0f0">PAINEL PREMIUM | PIX: visitanteonline527@gmail.com | Whats (17) 98113-5119</div></div>
 <div class="box">
 
-<div id="telaVenda">
-<div class="card">
-<h3><span class="dot"></span> DEMONSTRAÇÃO AO VIVO</h3>
-<audio controls autoplay><source src="https://stream.zeno.fm/kmbjkezl7uetv" type="audio/mpeg"></audio>
-<p style="font-size:10px;color:#aaa;text-align:center">Rádio Web Clãns - Transmitindo em nosso servidor premium</p>
+<div id="venda">
+<div class="card" style="text-align:center"><h3><span class="dot"></span> DEMONSTRAÇÃO AO VIVO</h3><audio controls><source src="https://stream.zeno.fm/kmbjkezl7uetv" type="audio/mpeg"></audio></div>
+<div class="card"><h2 style="color:#0ff;text-align:center">PLANOS RÁDIOHOST PREMIUM</h2>
+<div style="display:flex;gap:6px"><div class="plan" style="flex:1" onclick="sel(15,20,'15 DIAS')" id="p15"><b>R$20</b><br>15 DIAS<br>100 Ouv.</div><div class="plan active" style="flex:1" onclick="sel(30,30,'30 DIAS')" id="p30"><b style="color:#0ff">R$30</b><br>30 DIAS<br>500 Ouv.</div><div class="plan" style="flex:1;border-color:yellow" onclick="sel(365,600,'12 MESES')" id="p365"><b style="color:yellow">R$600</b><br>12 MESES<br>ILIMITADO</div></div>
+<input id="nomeradio" placeholder="Nome da Rádio"><input id="nomecli" placeholder="Seu Nome"><input id="emailcli" placeholder="Seu E-mail">
+<div id="resumo" style="background:#000;padding:8px;border-radius:8px;text-align:center;border:1px dashed #0f0;font-size:12px">Plano: <b style="color:#0ff">30 DIAS - R$30</b></div>
+<button class="btn btnW" onclick="criar()">CRIAR MINHA RÁDIO E ENTRAR NO PAINEL</button>
 </div>
+</div>
+
+<div id="painel" style="display:none">
+<div class="card" style="border-color:#0f0"><h2 style="color:#0f0">✅ BEM-VINDO AO PAINEL RÁDIOHOST - <span id="oNome"></span></h2><p style="font-size:11px">Status: <b style="color:#0f0">● ONLINE</b> | Plano: <b id="oPlano"></b> | Expira em: <b id="oExpira"></b></p></div>
 
 <div class="card">
-<h2 style="color:#0ff;text-align:center">PLANOS RÁDIOHOST PREMIUM</h2>
-<div class="plan" onclick="sel(15,20,'15 DIAS')" id="p15"><div style="font-size:26px;font-weight:900">R$20</div><div>15 DIAS - 100 OUVINTES</div></div>
-<div class="plan active" onclick="sel(30,30,'30 DIAS')" id="p30"><div style="color:#0ff;font-size:10px">MAIS VENDIDO</div><div style="font-size:26px;font-weight:900;color:#0ff">R$30</div><div>30 DIAS - 500 OUVINTES</div></div>
-<div class="plan" onclick="sel(365,600,'12 MESES')" id="p365" style="border-color:yellow"><div style="font-size:26px;font-weight:900;color:yellow">R$600</div><div style="color:yellow">12 MESES - OUVINTES ILIMITADOS</div></div>
+<div class="tabs">
+<div class="tab active" onclick="aba('dados')">📡 DADOS / IP</div>
+<div class="tab" onclick="aba('autodj')">🎵 AutoDJ</div>
+<div class="tab" onclick="aba('banco')">💿 Banco de Músicas Grátis</div>
+<div class="tab" onclick="aba('players')">▶️ Players HTTPS</div>
+<div class="tab" onclick="aba('stats')">📊 Estatísticas</div>
+<div class="tab" onclick="aba('locutor')">🎙️ Locutores</div>
+<div class="tab" onclick="aba('prog')">📻 Programas</div>
+<div class="tab" onclick="aba('siteapp')">🌐 Site + App</div>
 </div>
 
-<div class="card">
-<h3 style="color:#0ff">CRIAR MINHA RÁDIO AGORA</h3>
-<input id="nomeradio" placeholder="Nome da sua rádio (Ex: Gospel FM 24h)">
-<input id="nomecli" placeholder="Seu nome completo">
-<input id="emailcli" placeholder="Seu melhor e-mail (acesso ao painel)">
-<div id="resumo" style="background:#000;padding:10px;border-radius:8px;margin:8px 0;font-size:12px;border:1px dashed #0f0;text-align:center">Plano selecionado: <b style="color:#0ff">30 DIAS - R$30,00</b></div>
-<button class="btn btnW" onclick="criarRadio()">CRIAR MINHA RÁDIO AGORA</button>
-<p style="font-size:10px;text-align:center;color:#888;margin-top:6px">Ao clicar, você entra no painel de controle</p>
-</div>
+<div id="tab-dados" class="painelTab active">
+<h3 style="color:#0ff;margin-top:10px">DADOS PARA TRANSMISSÃO AO VIVO</h3>
+<p style="font-size:11px;color:#aaa">Use no SAM, RadioBoss, BUTT, Mixxx</p>
+IP / Servidor:<code id="oIP"></code>Porta:<code id="oPorta"></code>Senha:<code id="oSenha"></code>
+Link da rádio:<code id="oLink"></code>Link Shoutcast/Icecast:<code id="oIce"></code>
 </div>
 
-<div id="telaPainel" class="painel">
-<div class="card" style="border-color:#0f0">
-<h2 style="color:#0f0">✅ SUA RÁDIO FOI CRIADA COM SUCESSO!</h2>
-<p style="margin:8px 0">Rádio: <b id="outNome" style="color:#0ff"></b></p>
-<p>Plano: <b id="outPlano"></b> | Status: <b style="color:yellow">AGUARDANDO PAGAMENTO</b></p>
+<div id="tab-autodj" class="painelTab">
+<h3>🎵 AutoDJ - Gerenciador</h3>
+<button class="btn btnC" onclick="alert('AutoDJ Iniciado!')">▶️ INICIAR AutoDJ</button><button class="btn" style="background:#f00;color:#fff" onclick="alert('AutoDJ Parado')">⏸️ PARAR</button>
+<h4 style="margin:8px 0;color:yellow">Pastas:</h4>
+<div class="music">📁 Sertanejo <b>3.420 músicas</b> <button style="padding:4px 8px;border-radius:6px;background:#0f0;border:none">TOCAR</button></div>
+<div class="music">📁 Samba / Pagode <b>2.100 músicas</b> <button style="padding:4px 8px;border-radius:6px;background:#0f0;border:none">TOCAR</button></div>
+<div class="music">📁 Hits Nacional <b>4.500 músicas</b> <button style="padding:4px 8px;border-radius:6px;background:#0f0;border:none">TOCAR</button></div>
+<div class="music">📁 Hits Internacional <b>5.800 músicas</b> <button style="padding:4px 8px;border-radius:6px;background:#0f0;border:none">TOCAR</button></div>
+<div class="music">📁 Gospel <b>2.200 músicas</b> <button style="padding:4px 8px;border-radius:6px;background:#0f0;border:none">TOCAR</button></div>
+<div class="music">📁 Vinhetas + Hora Certa <b>450 vinhetas</b> <button style="padding:4px 8px;border-radius:6px;background:yellow;border:none">OUVIR</button></div>
+<input type="file" style="margin-top:8px"><button class="btn btnY">📤 ENVIAR MINHAS MÚSICAS</button>
 </div>
 
-<div class="card" style="border-color:#0f0">
-<h3 style="color:#0ff">📡 DADOS DE ACESSO PARA TRANSMITIR</h3>
-<p style="font-size:11px;color:#aaa">Use no seu SAM Broadcaster, RadioBoss ou BUTT</p>
-<p style="margin-top:8px;font-size:12px">SERVIDOR PREMIUM:</p><code id="outServer">srv01.radiohostbrasil.com.br</code>
-<p style="font-size:12px">PORTA:</p><code id="outPorta">8000</code>
-<p style="font-size:12px">SENHA DE TRANSMISSÃO:</p><code id="outSenha"></code>
-<p style="font-size:12px">LINK DA SUA RÁDIO (para compartilhar):</p><code id="outLink"></code>
-<p style="font-size:12px">LINK AUTO DJ / SITE:</p><code id="outSite"></code>
-<div style="background:#001100;border:1px solid #0f0;padding:8px;border-radius:8px;margin-top:10px;font-size:11px">
-⚠️ Sua rádio está criada mas BLOQUEADA. Libere fazendo o PIX abaixo.
-</div>
+<div id="tab-banco" class="painelTab">
+<h3>💿 Banco de Músicas Grátis - 20 Mil Músicas</h3><p style="font-size:11px;color:#aaa">São Mais de 20 Mil Músicas Grátis Classificadas Por Gênero. Para o AutoDJ no Painel do Streaming. Em Todos os Planos.</p>
+<div class="music">🔥 Top 100 Brasil 2026 - <span style="color:#0f0">Adicionar ao AutoDJ</span></div><div class="music">🔥 Sertanejo Universitário - <span style="color:#0f0">Adicionar</span></div><div class="music">🔥 Gospel Mais Tocadas - <span style="color:#0f0">Adicionar</span></div><div class="music">🔥 Pagode Anos 90 - <span style="color:#0f0">Adicionar</span></div>
 </div>
 
-<div class="card">
-<h3 style="color:yellow">🔓 LIBERAR RÁDIO AGORA</h3>
-<p style="font-size:13px">Plano: <b id="outValor" style="color:yellow"></b></p>
-<p style="font-size:13px">PIX (E-mail):</p><code style="color:yellow">visitanteonline527@gmail.com</code>
-<button class="btn btnY" onclick="navigator.clipboard.writeText('visitanteonline527@gmail.com');alert('CHAVE PIX COPIADA!')">📋 COPIAR CHAVE PIX</button>
-<button class="btn btnW" onclick="irWhats()">ENVIAR COMPROVANTE NO WHATSAPP (17) 98113-5119</button>
-<button class="btn" style="background:#333;color:#fff" onclick="location.reload()">VOLTAR AO INÍCIO</button>
+<div id="tab-players" class="painelTab">
+<h3>▶️ Players com HTTPS</h3><p style="font-size:11px">Nossos Players São Todos Com Certificado Seguro Https. Além Dos Links Shoutcast e Icecast.</p>
+<code>&lt;iframe src="<span id="oPlayer"></span>" width="300" height="100"&gt;&lt;/iframe&gt;</code>
+<button class="btn btnC" onclick="alert('Link copiado!')">COPIAR PLAYER</button>
+</div>
+
+<div id="tab-stats" class="painelTab">
+<h3>📊 Estatísticas</h3><p>Acompanhe Sua Audiência e Veja o Horário, Dia e Mês Mais Movimentado. Além de Países, Cidades e Estados.</p>
+<div class="card" style="background:#000">Ouvintes agora: <b style="color:#0f0">12</b><br>Hoje: 145 | Mês: 3.240<br>País Top: Brasil - SP<br>Cidade Top: São Paulo</div>
+</div>
+
+<div id="tab-locutor" class="painelTab">
+<h3>🎙️ Vários Locutores</h3><p style="font-size:11px">Crie uma senha exclusiva para cada locutor e tenha controle total sobre a sua equipe.</p>
+<input placeholder="Nome do locutor"><input placeholder="Senha do locutor"><button class="btn btnC">CRIAR LOCUTOR</button>
+</div>
+
+<div id="tab-prog" class="painelTab">
+<h3>📻 Programas e Programetes</h3><p>Mais de 200 Programas e Programetes Para Você Implementar Na Sua Programação.</p>
+<div class="music">🎧 Hora Certa a cada 15min ✅ ATIVADO</div><div class="music">📻 Notícia da Hora ✅ ATIVADO</div><div class="music">🎙️ Trilha Gospel Manhã</div>
+</div>
+
+<div id="tab-siteapp" class="painelTab">
+<h3>🌐 Site Completo + App</h3><p>Temos um Site Para Rádio Completo e Com Subdomínio .webradios.net Incluso.</p>
+Site da sua rádio:<code id="oSite"></code>
+Aplicativo Exclusivo: Seus Ouvintes Poderão Instalar Seu App Exclusivo, Em Smartphones Android e iPhone.
+<button class="btn btnY">BAIXAR APP ANDROID (APK)</button>
+</div>
+
+</div>
+
+<div class="card" style="border-color:yellow">
+<h3>💰 LIBERAÇÃO</h3><p style="font-size:12px">Para manter ONLINE, faça PIX <b id="oValor" style="color:yellow"></b> para:</p><code style="color:yellow">visitanteonline527@gmail.com</code>
+<button class="btn btnW" onclick="irWhats()">ENVIAR COMPROVANTE WhatsApp 17 98113-5119</button>
 </div>
 </div>
 
 </div>
 <script>
 let plano={dias:30,valor:30,nome:"30 DIAS"};
-function sel(d,v,n){plano={dias:d,valor:v,nome:n};document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active'));if(d==15)document.getElementById('p15').classList.add('active');if(d==30)document.getElementById('p30').classList.add('active');if(d==365)document.getElementById('p365').classList.add('active');document.getElementById('resumo').innerHTML='Plano selecionado: <b style=color:#0ff>'+n+' - R$'+v+',00</b>';}
-function criarRadio(){
-let radio=document.getElementById('nomeradio').value;
-let nome=document.getElementById('nomecli').value;
-let email=document.getElementById('emailcli').value;
-if(!radio||!nome||!email){alert('Preencha nome da rádio, seu nome e e-mail!');return;}
-let senha=Math.random().toString(36).slice(-6).toUpperCase()+Math.floor(Math.random()*100);
-let id=radio.replace(/\s/g,'').toLowerCase();
-document.getElementById('outNome').innerText=radio;
-document.getElementById('outPlano').innerText=plano.nome;
-document.getElementById('outValor').innerText='R$'+plano.valor+',00';
-document.getElementById('outSenha').innerText=senha;
-document.getElementById('outServer').innerText='srv0'+Math.floor(Math.random()*9+1)+'.radiohostbrasil.com.br';
-document.getElementById('outPorta').innerText=(8000+Math.floor(Math.random()*1000));
-document.getElementById('outLink').innerText='https://radiohost-radiohost.vercel.app/ouvir/'+id;
-document.getElementById('outSite').innerText='https://radiohost-radiohost.vercel.app/player/'+id;
-document.getElementById('telaVenda').style.display='none';
-document.getElementById('telaPainel').style.display='block';
+function sel(d,v,n){plano={dias:d,valor:v,nome:n};document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active'));document.getElementById('p'+d).classList.add('active');document.getElementById('resumo').innerHTML='Plano: <b style=color:#0ff>'+n+' - R$'+v+'</b>';}
+function criar(){
+let r=document.getElementById('nomeradio').value;
+let n=document.getElementById('nomecli').value;
+let e=document.getElementById('emailcli').value;
+if(!r||!n||!e){alert('Preencha tudo!');return;}
+let senha=Math.random().toString(36).slice(-6).toUpperCase();
+let ip='srv0'+Math.floor(Math.random()*9+1)+'.radiohostbrasil.com.br';
+let porta=8000+Math.floor(Math.random()*2000);
+let id=r.replace(/\s/g,'').toLowerCase();
+document.getElementById('oNome').innerText=r;
+document.getElementById('oPlano').innerText=plano.nome+' R$'+plano.valor;
+document.getElementById('oExpira').innerText=new Date(Date.now()+plano.dias*86400000).toLocaleDateString('pt-BR');
+document.getElementById('oIP').innerText=ip;
+document.getElementById('oPorta').innerText=porta;
+document.getElementById('oSenha').innerText=senha;
+document.getElementById('oLink').innerText='https://radiohost-radiohost.vercel.app/ouvir/'+id;
+document.getElementById('oIce').innerText='http://'+ip+':'+porta+'/stream';
+document.getElementById('oPlayer').innerText='https://radiohost-radiohost.vercel.app/player/'+id;
+document.getElementById('oSite').innerText='https://'+id+'.webradios.net';
+document.getElementById('oValor').innerText='R$'+plano.valor;
+document.getElementById('venda').style.display='none';
+document.getElementById('painel').style.display='block';
 window.scrollTo(0,0);
 }
-function irWhats(){
-let radio=document.getElementById('outNome').innerText;
-let msg=`Olá RÁDIOHOST! Criei minha rádio:%0A%0ARádio: ${radio}%0APlano: ${plano.nome} R$${plano.valor}%0AEmail: ${document.getElementById('emailcli').value}%0A%0AJá fiz o PIX para visitanteonline527@gmail.com - Libera por favor!`;
-window.open('https://wa.me/5517981135119?text='+msg,'_blank');
-}
+function aba(id){document.querySelectorAll('.painelTab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+id).classList.add('active');event.target.classList.add('active');}
+function irWhats(){let r=document.getElementById('oNome').innerText;let msg=`Olá RÁDIOHOST! Criei no PAINEL COMPLETO:%0ARádio: ${r}%0APlano: ${plano.nome} R$${plano.valor}%0AEmail: ${document.getElementById('emailcli').value}%0APIX enviado para visitanteonline527@gmail.com`;window.open('https://wa.me/5517981135119?text='+msg,'_blank');}
 sel(30,30,'30 DIAS');
 </script>
 </body>
-</html>
+  </html>
