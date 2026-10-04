@@ -2,101 +2,112 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RÁDIOHOST - Painel Brogic</title>
+<title>RÁDIOHOST - Hospedagem Premium</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:#0a0a1a;color:#fff;font-family:Arial}
-.header{background:#000;padding:12px;text-align:center;border-bottom:3px solid #0ff;position:sticky;top:0}
-.logo{font-size:28px;font-weight:900;color:#0ff}.logo span{color:#f0f}
-.box{max-width:600px;margin:auto;padding:10px}
+*{margin:0;padding:0;box-sizing:border-box}body{background:#080815;color:#fff;font-family:Arial}
+.header{background:#000;padding:14px;text-align:center;border-bottom:3px solid #0ff;position:sticky;top:0;z-index:10}
+.logo{font-size:32px;font-weight:900;color:#0ff}.logo span{color:#f0f}
+.box{max-width:560px;margin:auto;padding:10px}
 .card{background:#151540;border:2px solid #0ff;border-radius:14px;padding:14px;margin:10px 0}
-.plan{border:2px solid #0ff;border-radius:12px;padding:12px;margin:8px 0;background:#000033;cursor:pointer}
+.plan{border:2px solid #0ff;border-radius:12px;padding:12px;margin:8px 0;background:#000033;cursor:pointer;text-align:center}
 .plan.active{border-color:#f0f;background:#220044;box-shadow:0 0 12px #f0f}
 .btn{width:100%;padding:14px;border-radius:12px;font-weight:900;border:none;margin:6px 0;cursor:pointer}
 .btnW{background:#25D366;color:#fff}.btnC{background:#0ff;color:#000}.btnY{background:yellow;color:#000}
 input{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #0ff;background:#000;color:#fff}
-.painel{display:none;background:#000;border:2px solid #0f0;border-radius:14px;padding:14px}
-code{background:#111;padding:4px 8px;border-radius:6px;color:#0f0;font-size:12px;word-break:break-all}
-.dot{width:10px;height:10px;background:red;border-radius:50%;display:inline-block;animation:blink 1s infinite}
-@keyframes blink{50%{opacity:0}}
+.painel{display:none}
+code{background:#000;padding:6px 10px;border-radius:8px;color:#0f0;font-size:13px;display:block;margin:6px 0;border:1px solid #222;word-break:break-all}
+.dot{width:10px;height:10px;background:#0f0;border-radius:50%;display:inline-block}
 audio{width:100%;margin-top:8px}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">RÁDIO<span>HOST</span> - BROGIC STYLE</div><div style="font-size:10px;color:#0f0">PIX: visitanteonline527@gmail.com | Whats: (17) 98113-5119</div></div>
+<div class="header"><div class="logo">RÁDIO<span>HOST</span></div><div style="font-size:10px;color:#0f0">HOSPEDAGEM PREMIUM DE RÁDIOS WEB - BRASIL</div></div>
 <div class="box">
 
 <div id="telaVenda">
-<div class="card" style="border-color:#f0f">
-<h3><span class="dot"></span> RÁDIO WEB CLÃNS - AO VIVO (DEMO)</h3>
-<audio id="aClans" controls></audio>
-<button class="btn btnC" onclick="tocarClans()">▶️ TOCAR CLÃNS</button>
-<div id="status" style="font-size:11px;color:yellow"></div>
+<div class="card">
+<h3><span class="dot"></span> DEMONSTRAÇÃO AO VIVO</h3>
+<audio controls autoplay><source src="https://stream.zeno.fm/kmbjkezl7uetv" type="audio/mpeg"></audio>
+<p style="font-size:10px;color:#aaa;text-align:center">Rádio Web Clãns - Transmitindo em nosso servidor premium</p>
 </div>
 
 <div class="card">
-<h2 style="color:#0ff">CRIE SUA RÁDIO - ESTILO BROGIC</h2>
-<div class="plan" onclick="sel(15,20,'15 DIAS')" id="p15"><b>R$20 - 15 DIAS</b></div>
-<div class="plan active" onclick="sel(30,30,'30 DIAS')" id="p30"><b>R$30 - 30 DIAS - MAIS VENDIDO</b></div>
-<div class="plan" onclick="sel(365,600,'12 MESES')" id="p365" style="border-color:yellow"><b style="color:yellow">R$600 - 12 MESES INFINITO</b></div>
-<h3 style="margin-top:10px;color:#0ff">Dados da Rádio</h3>
-<input id="nomeradio" placeholder="Nome da Rádio Ex: Gospel FM">
-<input id="nomecli" placeholder="Seu Nome">
-<input id="emailcli" placeholder="Seu E-mail (para acessar o painel)">
-<div id="resumo" style="background:#000;padding:8px;border-radius:8px;margin:6px 0;font-size:12px;border:1px dashed #0f0">Plano: <b style="color:#0ff">30 DIAS - R$30,00</b><br>PIX: <b style="color:yellow">visitanteonline527@gmail.com</b></div>
+<h2 style="color:#0ff;text-align:center">PLANOS RÁDIOHOST PREMIUM</h2>
+<div class="plan" onclick="sel(15,20,'15 DIAS')" id="p15"><div style="font-size:26px;font-weight:900">R$20</div><div>15 DIAS - 100 OUVINTES</div></div>
+<div class="plan active" onclick="sel(30,30,'30 DIAS')" id="p30"><div style="color:#0ff;font-size:10px">MAIS VENDIDO</div><div style="font-size:26px;font-weight:900;color:#0ff">R$30</div><div>30 DIAS - 500 OUVINTES</div></div>
+<div class="plan" onclick="sel(365,600,'12 MESES')" id="p365" style="border-color:yellow"><div style="font-size:26px;font-weight:900;color:yellow">R$600</div><div style="color:yellow">12 MESES - OUVINTES ILIMITADOS</div></div>
+</div>
+
+<div class="card">
+<h3 style="color:#0ff">CRIAR MINHA RÁDIO AGORA</h3>
+<input id="nomeradio" placeholder="Nome da sua rádio (Ex: Gospel FM 24h)">
+<input id="nomecli" placeholder="Seu nome completo">
+<input id="emailcli" placeholder="Seu melhor e-mail (acesso ao painel)">
+<div id="resumo" style="background:#000;padding:10px;border-radius:8px;margin:8px 0;font-size:12px;border:1px dashed #0f0;text-align:center">Plano selecionado: <b style="color:#0ff">30 DIAS - R$30,00</b></div>
 <button class="btn btnW" onclick="criarRadio()">CRIAR MINHA RÁDIO AGORA</button>
-<button class="btn btnY" onclick="navigator.clipboard.writeText('visitanteonline527@gmail.com');alert('PIX COPIADO')">📋 COPIAR PIX</button>
+<p style="font-size:10px;text-align:center;color:#888;margin-top:6px">Ao clicar, você entra no painel de controle</p>
 </div>
 </div>
 
 <div id="telaPainel" class="painel">
-<h2 style="color:#0f0">✅ RÁDIO CRIADA! - PAINEL BROGIC</h2>
-<div style="margin:10px 0">
-<p>Nome: <b id="outNome"></b></p>
-<p>Plano: <b id="outPlano" style="color:#0ff"></b></p>
-<p>Status: <span style="color:#0f0">● ATIVA - AGUARDANDO PIX</span></p>
-</div>
 <div class="card" style="border-color:#0f0">
-<h3>🔗 DADOS DE TRANSMISSÃO (igual Brogic)</h3>
-<p style="font-size:11px;margin:6px 0">Servidor / IP:</p><code id="outServer">uk2freenew.listen2myradio.com</code>
-<p style="font-size:11px;margin:6px 0">Porta:</p><code>8181</code>
-<p style="font-size:11px;margin:6px 0">Senha:</p><code id="outSenha">123456</code>
-<p style="font-size:11px;margin:6px 0">Link para ouvir:</p><code id="outLink">http://uk2freenew.listen2myradio.com:8181/stream</code>
-<p style="font-size:11px;margin:6px 0">Link AutoDJ:</p><code>https://radiohost-radiohost.vercel.app/player/seuradio</code>
+<h2 style="color:#0f0">✅ SUA RÁDIO FOI CRIADA COM SUCESSO!</h2>
+<p style="margin:8px 0">Rádio: <b id="outNome" style="color:#0ff"></b></p>
+<p>Plano: <b id="outPlano"></b> | Status: <b style="color:yellow">AGUARDANDO PAGAMENTO</b></p>
 </div>
+
+<div class="card" style="border-color:#0f0">
+<h3 style="color:#0ff">📡 DADOS DE ACESSO PARA TRANSMITIR</h3>
+<p style="font-size:11px;color:#aaa">Use no seu SAM Broadcaster, RadioBoss ou BUTT</p>
+<p style="margin-top:8px;font-size:12px">SERVIDOR PREMIUM:</p><code id="outServer">srv01.radiohostbrasil.com.br</code>
+<p style="font-size:12px">PORTA:</p><code id="outPorta">8000</code>
+<p style="font-size:12px">SENHA DE TRANSMISSÃO:</p><code id="outSenha"></code>
+<p style="font-size:12px">LINK DA SUA RÁDIO (para compartilhar):</p><code id="outLink"></code>
+<p style="font-size:12px">LINK AUTO DJ / SITE:</p><code id="outSite"></code>
+<div style="background:#001100;border:1px solid #0f0;padding:8px;border-radius:8px;margin-top:10px;font-size:11px">
+⚠️ Sua rádio está criada mas BLOQUEADA. Libere fazendo o PIX abaixo.
+</div>
+</div>
+
 <div class="card">
-<h3>💰 LIBERAR RÁDIO</h3>
-<p style="font-size:12px">Faça o PIX de <b id="outValor" style="color:yellow"></b> para:</p><code>visitanteonline527@gmail.com</code><br><br>
-<button class="btn btnW" onclick="irWhatsPainel()">ENVIAR COMPROVANTE NO WHATSAPP 17 98113-5119</button>
-<button class="btn" style="background:#fff;color:#000" onclick="location.reload()">VOLTAR</button>
+<h3 style="color:yellow">🔓 LIBERAR RÁDIO AGORA</h3>
+<p style="font-size:13px">Plano: <b id="outValor" style="color:yellow"></b></p>
+<p style="font-size:13px">PIX (E-mail):</p><code style="color:yellow">visitanteonline527@gmail.com</code>
+<button class="btn btnY" onclick="navigator.clipboard.writeText('visitanteonline527@gmail.com');alert('CHAVE PIX COPIADA!')">📋 COPIAR CHAVE PIX</button>
+<button class="btn btnW" onclick="irWhats()">ENVIAR COMPROVANTE NO WHATSAPP (17) 98113-5119</button>
+<button class="btn" style="background:#333;color:#fff" onclick="location.reload()">VOLTAR AO INÍCIO</button>
 </div>
 </div>
 
 </div>
 <script>
-const STREAM="https://stream.zeno.fm/kmbjkezl7uetv";
 let plano={dias:30,valor:30,nome:"30 DIAS"};
-function tocarClans(){let a=document.getElementById('aClans');a.src=STREAM;a.play();document.getElementById('status').innerText='✅ TOCANDO WEB CLÃNS';}
-function sel(d,v,n){plano={dias:d,valor:v,nome:n};document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active'));if(d==15)document.getElementById('p15').classList.add('active');if(d==30)document.getElementById('p30').classList.add('active');if(d==365)document.getElementById('p365').classList.add('active');document.getElementById('resumo').innerHTML='Plano: <b style=color:#0ff>'+n+' - R$'+v+',00</b><br>PIX: <b style=color:yellow>visitanteonline527@gmail.com</b>';}
+function sel(d,v,n){plano={dias:d,valor:v,nome:n};document.querySelectorAll('.plan').forEach(p=>p.classList.remove('active'));if(d==15)document.getElementById('p15').classList.add('active');if(d==30)document.getElementById('p30').classList.add('active');if(d==365)document.getElementById('p365').classList.add('active');document.getElementById('resumo').innerHTML='Plano selecionado: <b style=color:#0ff>'+n+' - R$'+v+',00</b>';}
 function criarRadio(){
 let radio=document.getElementById('nomeradio').value;
 let nome=document.getElementById('nomecli').value;
 let email=document.getElementById('emailcli').value;
-if(!radio||!nome||!email){alert('Preencha tudo!');return;}
-let senha=Math.random().toString(36).slice(-6);
+if(!radio||!nome||!email){alert('Preencha nome da rádio, seu nome e e-mail!');return;}
+let senha=Math.random().toString(36).slice(-6).toUpperCase()+Math.floor(Math.random()*100);
+let id=radio.replace(/\s/g,'').toLowerCase();
 document.getElementById('outNome').innerText=radio;
-document.getElementById('outPlano').innerText=plano.nome+' - R$'+plano.valor;
-document.getElementById('outValor').innerText='R$'+plano.valor;
+document.getElementById('outPlano').innerText=plano.nome;
+document.getElementById('outValor').innerText='R$'+plano.valor+',00';
 document.getElementById('outSenha').innerText=senha;
+document.getElementById('outServer').innerText='srv0'+Math.floor(Math.random()*9+1)+'.radiohostbrasil.com.br';
+document.getElementById('outPorta').innerText=(8000+Math.floor(Math.random()*1000));
+document.getElementById('outLink').innerText='https://radiohost-radiohost.vercel.app/ouvir/'+id;
+document.getElementById('outSite').innerText='https://radiohost-radiohost.vercel.app/player/'+id;
 document.getElementById('telaVenda').style.display='none';
 document.getElementById('telaPainel').style.display='block';
 window.scrollTo(0,0);
 }
-function irWhatsPainel(){
+function irWhats(){
 let radio=document.getElementById('outNome').innerText;
-let msg=`Olá! Criei minha rádio no painel BROGIC:%0ARádio: ${radio}%0APlano: ${plano.nome} R$${plano.valor}%0AEmail: ${document.getElementById('emailcli').value}%0AVou enviar o PIX para visitanteonline527@gmail.com`;
+let msg=`Olá RÁDIOHOST! Criei minha rádio:%0A%0ARádio: ${radio}%0APlano: ${plano.nome} R$${plano.valor}%0AEmail: ${document.getElementById('emailcli').value}%0A%0AJá fiz o PIX para visitanteonline527@gmail.com - Libera por favor!`;
 window.open('https://wa.me/5517981135119?text='+msg,'_blank');
 }
 sel(30,30,'30 DIAS');
 </script>
 </body>
-  </html>
+</html>
