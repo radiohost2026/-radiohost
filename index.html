@@ -3,66 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RadioHost - Ao Vivo</title>
-<style>
-  body{margin:0;background:#08080f;color:#fff;font-family:Arial}
-  .top{background:#11111c;border-bottom:1px solid #222;display:flex;align-items:center;justify-content:space-between;padding:10px 16px;position:sticky;top:0;z-index:99}
-  .brand{display:flex;align-items:center;gap:10px}
-  .brand img{width:48px;height:48px;border-radius:12px;box-shadow:0 0 12px #00f0ff;object-fit:cover}
-  .brand h1{margin:0;font-size:22px;font-weight:900}
-  .brand .c{color:#00f0ff;text-shadow:0 0 10px #00f0ff}
-  .brand .p{color:#ff2ea6;text-shadow:0 0 10px #ff2ea6}
-  .player-top{display:flex;align-items:center;gap:10px;background:#1a1a2e;padding:6px 12px;border-radius:30px;border:1px solid #2e2e4e}
-  .tocando{font-size:11px;color:#00ff88;display:flex;align-items:center;gap:5px;font-weight:bold}
-  .dot{width:8px;height:8px;background:#00ff88;border-radius:50%;box-shadow:0 0 8px #00ff88;animation:blink 1s infinite}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-  .player-top audio{width:160px;height:30px}
-  .main{min-height:80vh;display:flex;justify-content:center;align-items:center;padding:20px}
-  .card{background:#151525;padding:30px;border-radius:20px;max-width:400px;width:100%;text-align:center;border:1px solid #2a2a50;box-shadow:0 0 40px rgba(0,240,255,.15)}
-  #admin{display:none;background:#fff;color:#000}
-  input,button{width:100%;padding:12px;margin:8px 0;border-radius:8px;box-sizing:border-box}
-  button{border:0;background:linear-gradient(90deg,#00f0ff,#ff2ea6);color:#fff;font-weight:bold;cursor:pointer}
-  @media(max-width:600px){.player-top audio{width:110px}.brand h1{font-size:18px}}
-</style>
+<title>RádioHost Premium</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body>
-
-<div class="top">
-  <div class="brand">
-    <img src="logo.png">
-    <h1><span class="c">RÁDIO</span><span class="p">HOST</span></h1>
-  </div>
-  <div class="player-top">
-    <div class="tocando"><div class="dot"></div> TOCANDO</div>
-    <audio controls autoplay src="https://stream.zeno.fm/kmbjkezl7uetv"></audio>
-  </div>
-</div>
-
-<div class="main">
-  <div class="card" id="site">
-    <h2>🔴 AO VIVO NO AR</h2>
-    <p style="opacity:.7">Sua rádio 24 horas no ar</p>
-    <img src="logo.png" style="width:100%;border-radius:15px;margin-top:15px;box-shadow:0 0 20px rgba(0,240,255,.3)">
-    <p style="font-size:12px;opacity:.5;margin-top:15px">/admin para configurar</p>
-  </div>
-
-  <div class="card" id="admin">
-    <h2>Painel Admin</h2>
-    <input id="n" placeholder="Nome da Rádio">
-    <input id="l" placeholder="Link Stream">
-    <button onclick="localStorage.setItem('n',document.getElementById('n').value);localStorage.setItem('l',document.getElementById('l').value);location.href='/'">Salvar</button>
-  </div>
-</div>
-
+<body class="bg-[#0f0f0f] text-white">
+<div id="app"></div>
 <script>
-if(location.pathname=='/admin'){
-  document.getElementById('site').style.display='none';
-  document.getElementById('admin').style.display='block';
+const ADMIN_EMAIL = "admin@radiohost.com.br";
+const ADMIN_PASS = "clans123";
+let radios = JSON.parse(localStorage.getItem('rh_radios') || '[]');
+function save(){ localStorage.setItem('rh_radios', JSON.stringify(radios)); }
+function router(){
+  const path = window.location.pathname;
+  const hash = window.location.hash;
+  if(path.includes('admin') || hash.includes('admin')){
+    if(hash.includes('admin-dashboard')) renderAdminDashboard(); else renderAdminLogin();
+  } else if(hash.includes('painel')){
+    const id = hash.split('=')[1];
+    renderPainel(id);
+  } else { renderHome(); }
 }
-const nn=localStorage.getItem('n');
-if(nn) document.querySelector('#site h2').innerText=nn;
-const ll=localStorage.getItem('l');
-if(ll) document.querySelectorAll('audio').forEach(a=>a.src=ll);
+function renderHome(){
+  document.getElementById('app').innerHTML = `
+  <header class="p-5 flex justify-between items-center max-w-7xl mx-auto">
+    <h1 class="text-2xl font-black text-purple-500">RÁDIOHOST</h1>
+    <a href="/admin" class="bg-zinc-800 px-4 py-2 rounded text-sm">Admin</a>
+  </header>
+  <section class="max-w-7xl mx-auto px-5 py-10 grid md:grid-cols-2 gap-10 items-center">
+    <div>
+      <div class="inline-block bg-purple-600/20 text-purple-400 px-3 py-1 rounded-full text-xs mb-4">DEMONSTRAÇÃO AO VIVO</div>
+      <h2 class="text-5xl font-black leading-tight">SEU STREAMING<br><span class="text-purple-500">PROFISSIONAL</span></h2>
+      <div class="grid grid-cols-3 gap-3 mt-8">
+        <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-center"><p class="font-bold text-xl">R$20</p><p class="text-xs text-zinc-500">15 DIAS<br>100 Ouv.</p><button onclick="selectPlan('15 DIAS - R$20')" class="mt-2 w-full bg-zinc-800 py-1 rounded text-xs">Escolher</button></div>
+        <div class="bg-purple-600 p-4 rounded-xl text-center border-2 border-purple-400"><p class="font-bold text-xl">R$30</p><p class="text-xs">30 DIAS<br>500 Ouv.</p><button onclick="selectPlan('30 DIAS - R$30')" class="mt-2 w-full bg-white text-purple-600 py-1 rounded text-xs font-bold">Escolher</button></div>
+        <div class="bg-zinc-900 border border-zinc-800 p-4 rounded-xl text-center"><p class="font-bold text-xl">R$600</p><p class="text-xs text-zinc-500">12 MESES<br>ILIMITADO</p><button onclick="selectPlan('12 MESES - R$600')" class="mt-2 w-full bg-zinc-800 py-1 rounded text-xs">Escolher</button></div>
+      </div>
+    </div>
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+      <h3 class="font-bold text-lg mb-4">CRIAR MINHA RÁDIO</h3>
+      <input id="nome" class="w-full bg-black border border-zinc-800 rounded p-3 mt-1 mb-3" placeholder="Nome da Rádio">
+      <input id="pessoa" class="w-full bg-black border border-zinc-800 rounded p-3 mt-1 mb-3" placeholder="Seu Nome">
+      <input id="email" class="w-full bg-black border border-zinc-800 rounded p-3 mt-1 mb-3" placeholder="Seu E-mail">
+      <input id="plano" class="w-full bg-black border border-zinc-800 rounded p-3 mt-1 mb-4" value="30 DIAS - R$30" readonly>
+      <button onclick="criarRadio()" class="w-full bg-green-500 text-black font-black py-3 rounded-xl">CRIAR MINHA RÁDIO E ENTRAR NO PAINEL</button>
+    </div>
+  </section>`;
+}
+function selectPlan(p){ document.getElementById('plano').value = p; }
+function criarRadio(){
+  const nome=document.getElementById('nome').value;
+  const pessoa=document.getElementById('pessoa').value;
+  const email=document.getElementById('email').value;
+  const plano=document.getElementById('plano').value;
+  if(!nome||!pessoa||!email){ alert('Preencha tudo'); return; }
+  const id=Date.now().toString();
+  radios.push({id,nome,pessoa,email,plano,data:new Date().toLocaleString(),status:'ativo',ouvintes:Math.floor(Math.random()*40)});
+  save(); window.location.hash='painel='+id; router();
+}
+function renderPainel(id){
+  const r=radios.find(x=>x.id==id)||radios[0];
+  if(!r){ renderHome(); return; }
+  document.getElementById('app').innerHTML=`<div class="p-5 max-w-4xl mx-auto"><div class="bg-zinc-900 border border-zinc-800 rounded-xl p-5"><h3 class="font-bold">Bem-vindo, ${r.pessoa}!</h3><p>Sua rádio <b>${r.nome}</b> foi criada! Plano: <b class="text-green-400">${r.plano}</b></p><div class="bg-black p-3 rounded border border-zinc-800 mt-4">STATUS: <span class="text-green-400">● AO VIVO 24H</span> | Ouvintes: ${r.ouvintes}</div><div class="border-2 border-dashed border-zinc-700 rounded-xl p-10 text-center mt-4"><p>Arraste suas músicas MP3 aqui</p></div><a href="/" class="text-xs text-zinc-500 mt-4 block">Voltar</a></div></div>`;
+}
+function renderAdminLogin(){
+  document.getElementById('app').innerHTML=`<div class="min-h-screen flex items-center justify-center p-5"><div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-8 w-full max-w-sm"><h2 class="text-2xl font-black text-center mb-6">LOGIN ADMIN</h2><input id="adm_email" class="w-full bg-black border border-zinc-800 rounded p-3 mb-3" value="admin@radiohost.com.br"><input id="adm_pass" type="password" class="w-full bg-black border border-zinc-800 rounded p-3 mb-4" placeholder="senha"><button onclick="doAdminLogin()" class="w-full bg-purple-600 font-bold py-3 rounded-xl">ENTRAR</button><p id="err" class="text-red-400 text-xs mt-3 text-center hidden">Senha incorreta</p></div></div>`;
+}
+function doAdminLogin(){
+  const e=document.getElementById('adm_email').value;
+  const p=document.getElementById('adm_pass').value;
+  if(e===ADMIN_EMAIL&&p===ADMIN_PASS){ localStorage.setItem('rh_admin','logado'); window.location.hash='admin-dashboard'; router(); } else { document.getElementById('err').classList.remove('hidden'); }
+}
+function renderAdminDashboard(){
+  if(localStorage.getItem('rh_admin')!=='logado'){ renderAdminLogin(); return; }
+  document.getElementById('app').innerHTML=`<div class="max-w-6xl mx-auto p-5"><h2 class="text-2xl font-black mb-6">PAINEL ADMIN - ${radios.length} rádios</h2><div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden"><table class="w-full text-sm"><thead class="bg-black text-zinc-500 text-xs"><tr><th class="p-3 text-left">Rádio</th><th class="p-3">Cliente</th><th class="p-3">Plano</th><th class="p-3">Ação</th></tr></thead><tbody>${radios.map(r=>`<tr class="border-t border-zinc-800"><td class="p-3 font-bold">${r.nome}</td><td class="p-3">${r.pessoa}<br><span class="text-xs text-zinc-500">${r.email}</span></td><td class="p-3 text-green-400">${r.plano}</td><td class="p-3"><button onclick="window.location.hash='painel='+${r.id}; router();" class="bg-white text-black px-3 py-1 rounded text-xs">Ver</button></td></tr>`).join('')}</tbody></table></div><a href="/" class="text-xs text-zinc-500 mt-4 block">Voltar ao site</a></div>`;
+}
+window.addEventListener('hashchange',router); router();
 </script>
 </body>
 </html>
