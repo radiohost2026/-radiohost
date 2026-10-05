@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RadioHost - Ao Vivo</title>
+<style>
+  body{margin:0;font-family:Arial;background:#0f0f0f;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .card{background:#1c1c1c;padding:30px;border-radius:20px;text-align:center;width:90%;max-width:400px;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+  h1{color:#ff0055}
+  audio{width:100%;margin-top:20px}
+  #admin{display:none;background:#fff;color:#000;padding:30px;border-radius:20px;width:90%;max-width:600px}
+  input{width:100%;padding:12px;margin:10px 0;border-radius:8px;border:1px solid #ccc}
+  button{width:100%;padding:12px;background:#ff0055;color:#fff;border:0;border-radius:8px;font-weight:bold;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="site" class="card">
+  <h1>🔴 RADIO AO VIVO</h1>
+  <p>Estamos no ar 24h</p>
+  <audio controls autoplay src="https://stream.zeno.fm/0r0xa792kwzuv"></audio>
+  <p style="margin-top:20px;font-size:12px;opacity:.5">Acesse /admin para configurar</p>
+</div>
+
+<div id="admin">
+  <h2>Painel Admin</h2>
+  <p>Configure sua rádio</p>
+  <input id="nomeRadio" placeholder="Nome da Rádio">
+  <input id="linkStream" placeholder="Link do Stream (mp3)">
+  <button onclick="salvar()">Salvar e Ver Site</button>
+  <p id="msg" style="color:green;margin-top:10px"></p>
+</div>
+
+<script>
+  // Mostra admin se a URL for /admin
+  if(window.location.pathname === '/admin' || window.location.hash === '#admin'){
+    document.getElementById('site').style.display='none';
+    document.getElementById('admin').style.display='block';
+  }
+  function salvar(){
+    localStorage.setItem('nome', document.getElementById('nomeRadio').value);
+    localStorage.setItem('stream', document.getElementById('linkStream').value);
+    document.getElementById('msg').innerText='Salvo! Redirecionando...';
+    setTimeout(()=>{ window.location.href='/'; }, 1000);
+  }
+  // Carrega config salva
+  const nomeSalvo = localStorage.getItem('nome');
+  const streamSalvo = localStorage.getItem('stream');
+  if(nomeSalvo) document.querySelector('#site h1').innerText = nomeSalvo;
+  if(streamSalvo) document.querySelector('#site audio').src = streamSalvo;
+</script>
+</body>
+</html>
