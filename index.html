@@ -1,75 +1,1964 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RadioHost Premium</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-.dot{width:8px;height:8px;background:#00ff88;border-radius:50%;box-shadow:0 0 8px #00ff88;animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.recursos-radio{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;padding:40px 20px;max-width:1200px;margin:0 auto}
-.recurso-item{background:#18181b;padding:30px;border-radius:16px;border:1px solid #27272a}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>RádioHost Premium</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Awesome -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  >
+
+  <style>
+    :root {
+      --primary: #7c3aed;
+      --cyan: #00f0ff;
+      --pink: #ff2ea6;
+      --green: #00ff88;
+      --bg: #0f0f0f;
+      --card: #18181b;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: white;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: .3;
+      }
+    }
+
+    .gradient-text {
+      background: linear-gradient(
+        90deg,
+        var(--cyan),
+        var(--pink)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .glass {
+      background: rgba(24, 24, 27, .75);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .recurso-item {
+      background: #18181b;
+      padding: 30px;
+      border-radius: 16px;
+      border: 1px solid #27272a;
+      transition: .3s ease;
+    }
+
+    .recurso-item:hover {
+      transform: translateY(-5px);
+      border-color: var(--primary);
+      box-shadow: 0 15px 30px rgba(124,58,237,.2);
+    }
+
+    .recurso-icon {
+      font-size: 32px;
+      color: var(--primary);
+      margin-bottom: 18px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      background: #18181b;
+      border: 1px solid #3f3f46;
+      padding: 14px 18px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.4);
+      z-index: 999;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: .3s;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    input,
+    select {
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #7c3aed !important;
+      box-shadow: 0 0 0 2px rgba(124,58,237,.15);
+    }
+
+    .loader {
+      width: 22px;
+      height: 22px;
+      border: 3px solid #ffffff30;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
-<body class="bg-[#0f0f0f] text-white">
-<div class="sticky top-0 z-50 bg-[#11111c] border-b border-zinc-800 p-3 flex justify-between items-center">
-<div class="flex items-center gap-2"><div class="w-8 h-8 bg-gradient-to-br from-cyan-400 to-pink-500 rounded flex items-center justify-center font-black">R</div><h1 class="font-black">RADIOHOST</h1></div>
-<div class="flex gap-2"><a href="#afiliados" class="bg-purple-600 px-3 py-1 rounded-full text-xs">AFILIADOS 20%</a><div class="flex items-center gap-2 bg-zinc-900 border border-zinc-700 px-3 py-1 rounded-full"><div class="dot"></div><span class="text-[10px] text-green-400">AO VIVO</span></div></div>
+
+<body>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="sticky top-0 z-50 bg-[#11111c]/95 backdrop-blur border-b border-[#23233a]">
+
+  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+
+    <a href="#home" class="flex items-center gap-3">
+
+      <div
+        class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00f0ff] to-[#ff2ea6] flex items-center justify-center font-black text-black"
+      >
+        R
+      </div>
+
+      <h1 class="text-xl font-black">
+        <span class="text-[#00f0ff]">RÁDIO</span><span class="text-[#ff2ea6]">HOST</span>
+      </h1>
+
+    </a>
+
+    <div class="flex items-center gap-3">
+
+      <a
+        href="#admin"
+        class="hidden sm:block text-xs text-zinc-400 hover:text-white transition"
+      >
+        Área administrativa
+      </a>
+
+      <div class="flex items-center gap-2 bg-[#1a1a2e] border border-zinc-700 px-3 py-1.5 rounded-full">
+
+        <div class="dot"></div>
+
+        <button
+          onclick="toggleTopPlay()"
+          class="bg-green-500 text-black w-7 h-7 rounded-full flex items-center justify-center hover:bg-green-400 transition"
+        >
+          <i id="iconTop" class="fa fa-play text-xs"></i>
+        </button>
+
+        <span class="text-[10px] font-bold text-[#00ff88]">
+          AO VIVO
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</header>
+
+<!-- PLAYER -->
+
+<audio id="topPlayer" preload="none">
+  <source
+    src="https://stream.zeno.fm/kmbjkezl7uetv"
+    type="audio/mpeg"
+  >
+</audio>
+
+
+<!-- =========================================================
+     APP
+========================================================= -->
+
+<main id="app"></main>
+
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div id="toast" class="toast">
+  <div class="flex items-center gap-3">
+    <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
+    <span id="toastMessage">Mensagem</span>
+  </div>
 </div>
-<div id="app"></div>
+
+
+<!-- =========================================================
+     MODAL PAGAMENTO
+========================================================= -->
+
+<div id="paymentModal" class="modal">
+
+  <div class="w-full max-w-lg bg-[#11111c] border border-zinc-800 rounded-3xl p-6 shadow-2xl">
+
+    <div class="flex justify-between items-center mb-6">
+
+      <div>
+        <h2 class="text-xl font-black">
+          Pagamento PIX
+        </h2>
+
+        <p class="text-xs text-zinc-500 mt-1">
+          Finalize sua contratação
+        </p>
+      </div>
+
+      <button
+        onclick="closePayment()"
+        class="text-zinc-500 hover:text-white"
+      >
+        <i class="fa-solid fa-xmark text-xl"></i>
+      </button>
+
+    </div>
+
+    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 mb-5">
+
+      <div class="flex justify-between mb-3">
+        <span class="text-sm text-zinc-400">Plano</span>
+        <strong id="paymentPlan">30 DIAS</strong>
+      </div>
+
+      <div class="flex justify-between">
+        <span class="text-sm text-zinc-400">Valor</span>
+        <strong id="paymentValue" class="text-green-400">
+          R$ 30,00
+        </strong>
+      </div>
+
+    </div>
+
+    <div class="text-center">
+
+      <p class="text-xs text-zinc-500 mb-2">
+        Chave PIX
+      </p>
+
+      <div class="bg-black border border-purple-900 rounded-xl p-4">
+
+        <div
+          id="pixKey"
+          class="font-bold text-purple-400 break-all"
+        >
+          radioclansweb@gmail.com
+        </div>
+
+      </div>
+
+      <button
+        onclick="copyPix()"
+        class="w-full mt-3 bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-bold transition"
+      >
+        <i class="fa-regular fa-copy mr-2"></i>
+        Copiar chave PIX
+      </button>
+
+      <div class="mt-5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-left">
+
+        <p class="text-xs text-yellow-300">
+          <i class="fa-solid fa-circle-info mr-1"></i>
+
+          Este pagamento está configurado como demonstração.
+          A confirmação automática do PIX necessita de integração
+          com um gateway/backend.
+        </p>
+
+      </div>
+
+      <button
+        onclick="confirmPayment()"
+        class="w-full mt-4 bg-green-500 hover:bg-green-400 text-black py-3 rounded-xl font-black transition"
+      >
+        JÁ FIZ O PAGAMENTO
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
 <script>
-const MEU_PIX="radioclansweb@gmail.com";
-let radios=JSON.parse(localStorage.getItem('rh_radios')||'[]');
-let afiliados=JSON.parse(localStorage.getItem('rh_afiliados')||'[]');
-let tempDados=JSON.parse(sessionStorage.getItem('rh_temp')||'null');
-function save(){localStorage.setItem('rh_radios',JSON.stringify(radios))}
-function saveAf(){localStorage.setItem('rh_afiliados',JSON.stringify(afiliados))}
-function getRef(){const p=new URLSearchParams(location.search);const r=p.get('ref');if(r){sessionStorage.setItem('rh_ref',r)}return sessionStorage.getItem('rh_ref')}
-function router(){getRef();const h=location.hash;if(h.includes('afiliado-painel=')) renderPainelAf(h.split('=')[1]);else if(h.includes('afiliados')) renderAfiliados();else if(h.includes('pagamento')) renderPagamento();else renderHome()}
-function selectPlan(p,v){document.getElementById('plano').value=p;document.getElementById('valor').value=v}
-function renderHome(){
-const ref=getRef();
-document.getElementById('app').innerHTML=`<div class="max-w-6xl mx-auto p-5">
-<h1 class="text-4xl font-black">SEU STREAMING PROFISSIONAL</h1>
-${ref?`<div class="bg-green-500/20 text-green-400 p-2 rounded mt-2 text-xs">Indicado por ${ref} - ele ganhara 20%</div>`:''}
-<div class="grid grid-cols-3 gap-3 mt-6 max-w-xl">
-<div class="bg-zinc-900 p-4 rounded text-center">R$20<br><button onclick="selectPlan('15 DIAS - R$20','20')" class="bg-zinc-800 px-3 py-1 rounded text-xs mt-2">Escolher</button></div>
-<div class="bg-purple-600 p-4 rounded text-center">R$30<br><button onclick="selectPlan('30 DIAS - R$30','30')" class="bg-white text-purple-600 px-3 py-1 rounded text-xs mt-2">Escolher</button></div>
-<div class="bg-zinc-900 p-4 rounded text-center">R$600<br><button onclick="selectPlan('12 MESES - R$600','600')" class="bg-zinc-800 px-3 py-1 rounded text-xs mt-2">Escolher</button></div>
-</div>
-<div class="mt-6 bg-zinc-900 p-5 rounded-2xl max-w-xl">
-<input id="nome" placeholder="Nome Radio" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded">
-<input id="pessoa" placeholder="Seu Nome" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded">
-<input id="email" placeholder="Email" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded">
-<input id="plano" value="30 DIAS - R$30" readonly class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded">
-<input id="valor" type="hidden" value="30">
-<button onclick="irPagamento()" class="w-full bg-green-500 text-black font-black py-3 rounded">IR PARA PAGAMENTO PIX</button>
-</div>
-<div class="mt-10 bg-[#11111c] border border-purple-900/40 rounded-3xl p-8">
-<h2 class="text-2xl font-black">Opcao de afiliados</h2>
-<h3 class="text-lg text-purple-300 mt-2">Painel de afiliados onde cada afiliado vai obter um link exclusivo para divulgar e convidar pessoas</h3>
-<p class="text-sm text-zinc-300 mt-4">Voce promove os nossos servicos atraves de um link exclusivo e ganha uma comissao recorrente de 20% do plano que assinarem atraves da sua indicacao.<br>A comissao e recorrente, voce recebe todo mes enquanto seu indicado permanecer nosso cliente.<br>A comissao entra em seu cadastro 8 dias automaticamente apos o cliente efetuar o pagamento do plano podendo resgatar ou trocar por preco de pacote mensal de funcionamento da radio hospedada<br>Ou se o afiliado optar so para divulgacao de afiliado e nao tiver a propria radio cadastrada na radiohost ele pode optar em sacar o dinheiro da comissao via pix</p>
-<h3 class="font-black mt-6">Como funciona - 20% de Comissao Recorrente</h3>
-<p class="text-sm mt-2">Veja um Exemplo - Veja abaixo os servicos comissionados e um exemplo do valor de comissao recebido</p>
-<div class="grid md:grid-cols-3 gap-4 mt-6">
-<div class="bg-zinc-950 border border-zinc-800 p-4 rounded"><b class="text-green-400">R$ 20,00 (15 Dias)</b><br><span class="text-xs">• Comissao por ciclo (15 dias): 20% de R$ 20,00 = R$ 4,00<br>• Mensal (2 ciclos): R$ 8,00/mes<br>• Anual (24 ciclos): R$ 96,00/Ano</span></div>
-<div class="bg-zinc-950 border border-zinc-800 p-4 rounded"><b class="text-green-400">R$ 30,00 (30 Dias)</b><br><span class="text-xs">• Mensal: 20% de R$ 30,00 = R$ 6,00/mes<br>• Anual: R$ 72,00/Ano</span></div>
-<div class="bg-zinc-950 border border-zinc-800 p-4 rounded"><b class="text-green-400">R$ 600,00 (12 meses)</b><br><span class="text-xs">• Anual: 20% de R$ 600,00 = R$ 120,00/Ano<br>• Mensal: R$ 10,00/mes</span></div>
-</div>
-<div class="mt-6"><a href="#afiliados" class="bg-purple-600 px-6 py-3 rounded font-bold">QUERO SER AFILIADO GRATIS</a></div>
-</div>
-</div>`;
+/* =========================================================
+   CONFIGURAÇÕES
+========================================================= */
+
+const CONFIG = {
+  adminEmail: "admin@radiohost.com.br",
+  adminPassword: "clans123",
+  pix: "radioclansweb@gmail.com",
+  radioStream: "https://stream.zeno.fm/kmbjkezl7uetv"
+};
+
+
+/* =========================================================
+   BANCO LOCAL
+========================================================= */
+
+let radios = JSON.parse(
+  localStorage.getItem("rh_radios") || "[]"
+);
+
+let affiliates = JSON.parse(
+  localStorage.getItem("rh_affiliates") || "[]"
+);
+
+let currentPlan = {
+  name: "30 DIAS - R$30",
+  value: 30
+};
+
+let topPlaying = false;
+
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function saveData() {
+
+  localStorage.setItem(
+    "rh_radios",
+    JSON.stringify(radios)
+  );
+
+  localStorage.setItem(
+    "rh_affiliates",
+    JSON.stringify(affiliates)
+  );
 }
-function irPagamento(){const nome=document.getElementById('nome').value,pessoa=document.getElementById('pessoa').value,email=document.getElementById('email').value,plano=document.getElementById('plano').value,valor=document.getElementById('valor').value;if(!nome||!pessoa||!email){alert('preencha');return}tempDados={nome,pessoa,email,plano,valor,ref:sessionStorage.getItem('rh_ref')||''};sessionStorage.setItem('rh_temp',JSON.stringify(tempDados));location.hash='pagamento';router()}
-function renderPagamento(){if(!tempDados){renderHome();return}document.getElementById('app').innerHTML=`<div class="max-w-lg mx-auto p-5 text-center"><div class="bg-zinc-900 p-6 rounded-2xl"><h2>PAGAMENTO PIX ${MEU_PIX}</h2><p>${tempDados.nome} - ${tempDados.plano} R$${tempDados.valor} ${tempDados.ref?`Indicado por ${tempDados.ref}`:''}</p><div class="bg-white p-3 rounded mt-4"><img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${MEU_PIX}" class="w-full"></div><button onclick="confirmarPagamento()" class="w-full bg-green-500 text-black font-black py-3 rounded mt-4">JA PAGUEI - LIBERAR</button></div></div>`}
-function confirmarPagamento(){if(!tempDados)return;const id=Date.now().toString();const v=parseFloat(tempDados.valor)||30;radios.push({id,nome:tempDados.nome});save();if(tempDados.ref){let af=afiliados.find(a=>a.codigo===tempDados.ref);if(af){let lib=new Date();lib.setDate(lib.getDate()+8);af.comissoes=af.comissoes||[];af.comissoes.push({radioNome:tempDados.nome,valorPlano:v,valorComissao:v*0.2,dataVenda:new Date().toLocaleDateString(),dataLiberacao:lib.toLocaleDateString(),dataLiberacaoTS:lib.getTime(),status:'pendente'});saveAf()}}sessionStorage.removeItem('rh_temp');alert('Radio liberada! Afiliado ganhou 20%');location.hash='';router()}
-function renderAfiliados(){let meuId=localStorage.getItem('rh_meu_afiliado');let meu=afiliados.find(a=>a.id===meuId);document.getElementById('app').innerHTML=`<div class="max-w-5xl mx-auto p-5"><h2 class="text-2xl font-black">PROGRAMA DE AFILIADOS - 20% RECORRENTE</h2><p class="text-sm text-zinc-400 mt-2">Voce promove os nossos servicos atraves de um link exclusivo e ganha 20% recorrente. Comissao libera em 8 dias. Pode trocar por credito de radio ou sacar via PIX se nao tiver radio.</p><div class="mt-6 bg-zinc-900 p-6 rounded-2xl">${meu?`<p>Ola ${meu.nome} - Codigo: <b class="text-purple-400">${meu.codigo}</b></p><div class="bg-black p-3 rounded mt-3"><p class="text-xs text-zinc-500">SEU LINK EXCLUSIVO</p><input value="${location.origin+location.pathname}?ref=${meu.codigo}" class="w-full bg-zinc-900 p-2 text-xs mt-1" readonly></div><button onclick="location.hash='afiliado-painel=${meu.id}';router()" class="w-full bg-green-500 text-black font-black py-3 rounded mt-4">MEU PAINEL DE COMISSOES</button><button onclick="localStorage.removeItem('rh_meu_afiliado');location.hash='afiliados';router()" class="bg-zinc-800 px-3 py-1 rounded text-xs mt-2">Sair</button>`: `<input id="af_nome" placeholder="Seu nome completo" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded"><input id="af_email" placeholder="Email" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded"><input id="af_pix" placeholder="Chave PIX" class="w-full bg-black border border-zinc-800 p-3 mb-2 rounded"><button onclick="criarAfiliado()" class="w-full bg-purple-600 py-3 rounded font-bold">GERAR MEU LINK DE AFILIADO</button>`}</div><div class="grid md:grid-cols-3 gap-4 mt-6"><div class="bg-black/50 p-4 rounded border border-zinc-800"><b>R$20</b><br><span class="text-xs">R$4 por ciclo / R$8 mes / R$96 ano</span></div><div class="bg-black/50 p-4 rounded border border-zinc-800"><b>R$30</b><br><span class="text-xs">R$6 mes / R$72 ano</span></div><div class="bg-black/50 p-4 rounded border border-zinc-800"><b>R$600</b><br><span class="text-xs">R$120 ano / R$10 mes</span></div></div></div>`}
-function criarAfiliado(){const nome=document.getElementById('af_nome').value,email=document.getElementById('af_email').value,pix=document.getElementById('af_pix').value;if(!nome||!email||!pix){alert('preencha');return}const codigo=nome.substring(0,4).toUpperCase().replace(/[^A-Z]/g,'')+Math.floor(100+Math.random()*900);const id=Date.now().toString();afiliados.push({id,nome,email,pix,codigo,comissoes:[]});saveAf();localStorage.setItem('rh_meu_afiliado',id);alert('Codigo: '+codigo);location.hash='afiliados';router()}
-function renderPainelAf(id){const af=afiliados.find(a=>a.id===id);if(!af){renderAfiliados();return}let agora=Date.now();af.comissoes.forEach(c=>{if(c.status==='pendente'&&agora>=c.dataLiberacaoTS)c.status='liberada'});saveAf();let lib=af.comissoes.filter(c=>c.status==='liberada');let totLib=lib.reduce((a,b)=>a+b.valorComissao,0);document.getElementById('app').innerHTML=`<div class="max-w-5xl mx-auto p-5"><h2>Painel ${af.nome} - ${af.codigo}</h2><p>Saldo liberado: R$ ${totLib.toFixed(2)}</p><p>Link: ${location.origin+location.pathname}?ref=${af.codigo}</p><p class="mt-4">PIX: ${af.pix}</p><div class="mt-4"><button onclick="usarCredito('${af.id}')" class="bg-zinc-800 px-4 py-2 rounded">TROCAR POR CREDITO RADIO</button><button onclick="sacarPix('${af.id}')" class="bg-green-600 text-black px-4 py-2 rounded ml-2">SACAR VIA PIX</button></div><div class="mt-6">${af.comissoes.map(c=>`<div class="bg-zinc-900 p-2 rounded mb-2 text-xs">${c.radioNome} - R$${c.valorComissao.toFixed(2)} - ${c.status} - Libera ${c.dataLiberacao}</div>`).join('')||'Nenhuma indicacao'}</div></div>`}
-function usarCredito(id){let af=afiliados.find(a=>a.id===id);let lib=af.comissoes.filter(c=>c.status==='liberada');let tot=lib.reduce((a,b)=>a+b.valorComissao,0);if(tot<=0){alert('sem saldo');return}lib.forEach(c=>c.status='usada_credito');saveAf();alert('Credito R$'+tot.toFixed(2)+' aplicado');renderPainelAf(id)}
-function sacarPix(id){let af=afiliados.find(a=>a.id===id);let lib=af.comissoes.filter(c=>c.status==='liberada');let tot=lib.reduce((a,b)=>a+b.valorComissao,0);if(tot<20){alert('Minimo R$20, tem R$'+tot.toFixed(2));return}lib.forEach(c=>c.status='sacada');saveAf();alert('Saque R$'+tot.toFixed(2)+' para '+af.pix);renderPainelAf(id)}
-window.addEventListener('hashchange',router);router();
+
+
+function showToast(message, type = "success") {
+
+  const toast = document.getElementById("toast");
+  const text = document.getElementById("toastMessage");
+  const icon = document.getElementById("toastIcon");
+
+  text.textContent = message;
+
+  if (type === "error") {
+    icon.className = "fa-solid fa-circle-xmark text-red-400";
+  } else {
+    icon.className = "fa-solid fa-circle-check text-green-400";
+  }
+
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 3000);
+}
+
+
+function formatMoney(value) {
+
+  return Number(value).toLocaleString(
+    "pt-BR",
+    {
+      style: "currency",
+      currency: "BRL"
+    }
+  );
+}
+
+
+function generateId() {
+
+  return Date.now().toString(36) +
+    Math.random().toString(36).substring(2, 8);
+}
+
+
+function escapeHTML(value) {
+
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================================
+   PLAYER
+========================================================= */
+
+function toggleTopPlay() {
+
+  const player = document.getElementById("topPlayer");
+  const icon = document.getElementById("iconTop");
+
+  if (!topPlaying) {
+
+    player.play()
+      .then(() => {
+
+        topPlaying = true;
+        icon.className = "fa fa-pause text-xs";
+
+      })
+      .catch(() => {
+
+        showToast(
+          "Não foi possível iniciar o streaming.",
+          "error"
+        );
+
+      });
+
+  } else {
+
+    player.pause();
+
+    topPlaying = false;
+
+    icon.className = "fa fa-play text-xs";
+  }
+}
+
+
+/* =========================================================
+   PLANOS
+========================================================= */
+
+function selectPlan(name, value) {
+
+  currentPlan = {
+    name,
+    value: Number(value)
+  };
+
+  const planInput = document.getElementById("plano");
+  const valueInput = document.getElementById("valor");
+
+  if (planInput) {
+    planInput.value = name;
+  }
+
+  if (valueInput) {
+    valueInput.value = value;
+  }
+
+  showToast("Plano selecionado: " + name);
+
+  document
+    .getElementById("cadastro")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
+}
+
+
+/* =========================================================
+   PAGAMENTO
+========================================================= */
+
+function openPayment() {
+
+  const nome = document.getElementById("nome")?.value.trim();
+  const pessoa = document.getElementById("pessoa")?.value.trim();
+  const email = document.getElementById("email")?.value.trim();
+
+  if (!nome || !pessoa || !email) {
+
+    showToast(
+      "Preencha nome da rádio, seu nome e e-mail.",
+      "error"
+    );
+
+    return;
+  }
+
+  if (!email.includes("@")) {
+
+    showToast(
+      "Digite um e-mail válido.",
+      "error"
+    );
+
+    return;
+  }
+
+  document.getElementById("paymentPlan").textContent =
+    currentPlan.name;
+
+  document.getElementById("paymentValue").textContent =
+    formatMoney(currentPlan.value);
+
+  document.getElementById("paymentModal")
+    .classList.add("active");
+}
+
+
+function closePayment() {
+
+  document
+    .getElementById("paymentModal")
+    .classList.remove("active");
+}
+
+
+function copyPix() {
+
+  navigator.clipboard
+    .writeText(CONFIG.pix)
+    .then(() => {
+
+      showToast(
+        "Chave PIX copiada!"
+      );
+
+    })
+    .catch(() => {
+
+      showToast(
+        "Não foi possível copiar automaticamente.",
+        "error"
+      );
+
+    });
+}
+
+
+function confirmPayment() {
+
+  const nome = document.getElementById("nome").value.trim();
+  const pessoa = document.getElementById("pessoa").value.trim();
+  const email = document.getElementById("email").value.trim();
+
+  const radio = {
+    id: generateId(),
+    radio: nome,
+    responsavel: pessoa,
+    email,
+    plano: currentPlan.name,
+    valor: currentPlan.value,
+    status: "Aguardando confirmação",
+    criadoEm: new Date().toLocaleString("pt-BR")
+  };
+
+  radios.push(radio);
+
+  saveData();
+
+  closePayment();
+
+  showToast(
+    "Cadastro recebido! Aguarde a confirmação do pagamento."
+  );
+
+  setTimeout(() => {
+
+    location.hash = "painel=" + radio.id;
+
+  }, 1200);
+}
+
+
+/* =========================================================
+   HOME
+========================================================= */
+
+function renderHome() {
+
+  document.getElementById("app").innerHTML = `
+
+    <section class="max-w-7xl mx-auto px-5 py-14">
+
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+        <div>
+
+          <div class="inline-flex items-center gap-2 bg-purple-600/20 text-purple-400 px-3 py-1.5 rounded-full text-xs mb-5">
+            <span class="dot"></span>
+            PLATAFORMA PROFISSIONAL DE RÁDIO
+          </div>
+
+          <h2 class="text-5xl md:text-6xl font-black leading-tight">
+
+            SUA RÁDIO
+            <br>
+
+            <span class="gradient-text">
+              ONLINE PROFISSIONAL
+            </span>
+
+          </h2>
+
+          <p class="text-zinc-400 mt-5 max-w-xl">
+            Crie sua rádio online, transmita sua programação
+            e tenha uma estrutura simples para administrar
+            sua estação.
+          </p>
+
+          <div class="flex flex-wrap gap-3 mt-7">
+
+            <a
+              href="#cadastro"
+              class="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-xl font-bold transition"
+            >
+              Criar minha rádio
+            </a>
+
+            <button
+              onclick="toggleTopPlay()"
+              class="border border-zinc-700 hover:border-purple-500 px-6 py-3 rounded-xl font-bold transition"
+            >
+              <i class="fa-solid fa-play mr-2"></i>
+              Ouvir demonstração
+            </button>
+
+          </div>
+
+          <div class="grid grid-cols-3 gap-4 mt-10">
+
+            <div>
+              <strong class="text-2xl">24/7</strong>
+              <p class="text-xs text-zinc-500">
+                Streaming
+              </p>
+            </div>
+
+            <div>
+              <strong class="text-2xl">20K+</strong>
+              <p class="text-xs text-zinc-500">
+                Músicas disponíveis
+              </p>
+            </div>
+
+            <div>
+              <strong class="text-2xl">100%</strong>
+              <p class="text-xs text-zinc-500">
+                Online
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="glass rounded-3xl p-6 shadow-2xl"
+        >
+
+          <div class="flex items-center justify-between mb-6">
+
+            <div>
+
+              <p class="text-xs text-zinc-500 uppercase">
+                Demonstração
+              </p>
+
+              <h3 class="font-black text-xl">
+                RádioHost Live
+              </h3>
+
+            </div>
+
+            <div class="flex items-center gap-2 text-green-400 text-xs">
+              <span class="dot"></span>
+              ONLINE
+            </div>
+
+          </div>
+
+          <div
+            class="bg-black rounded-2xl p-8 text-center"
+          >
+
+            <div
+              class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-3xl shadow-lg shadow-purple-900/40"
+            >
+              <i class="fa-solid fa-radio"></i>
+            </div>
+
+            <h4 class="font-black text-xl mt-5">
+              RádioHost Premium
+            </h4>
+
+            <p class="text-zinc-500 text-sm mt-1">
+              Streaming demonstrativo
+            </p>
+
+            <button
+              onclick="toggleTopPlay()"
+              class="mt-6 bg-green-500 hover:bg-green-400 text-black px-7 py-3 rounded-full font-black"
+            >
+              <i id="heroPlayIcon" class="fa-solid fa-play mr-2"></i>
+              OUVIR AGORA
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- PLANOS -->
+
+    <section
+      id="planos"
+      class="max-w-7xl mx-auto px-5 py-14"
+    >
+
+      <div class="text-center mb-10">
+
+        <span class="text-purple-400 text-xs font-bold uppercase">
+          Planos
+        </span>
+
+        <h3 class="text-3xl md:text-4xl font-black mt-2">
+          Escolha seu plano
+        </h3>
+
+        <p class="text-zinc-500 text-sm mt-2">
+          Comece pequeno e evolua quando precisar.
+        </p>
+
+      </div>
+
+
+      <div class="grid md:grid-cols-3 gap-5">
+
+        ${planCard(
+          "15 DIAS",
+          20,
+          "100 ouvintes",
+          false
+        )}
+
+        ${planCard(
+          "30 DIAS",
+          30,
+          "500 ouvintes",
+          true
+        )}
+
+        ${planCard(
+          "12 MESES",
+          600,
+          "Ouvintes ilimitados",
+          false
+        )}
+
+      </div>
+
+    </section>
+
+
+    <!-- CADASTRO -->
+
+    <section
+      id="cadastro"
+      class="max-w-7xl mx-auto px-5 py-14"
+    >
+
+      <div class="grid lg:grid-cols-2 gap-10">
+
+        <div>
+
+          <span class="text-purple-400 text-xs font-bold uppercase">
+            Comece agora
+          </span>
+
+          <h3 class="text-4xl font-black mt-2">
+            Crie sua rádio
+          </h3>
+
+          <p class="text-zinc-400 mt-4 text-sm leading-7">
+            Preencha seus dados e selecione o plano.
+            Depois você poderá acompanhar sua rádio através
+            do painel.
+          </p>
+
+          <div class="mt-8 space-y-4">
+
+            <div class="flex gap-3">
+              <i class="fa-solid fa-check text-green-400 mt-1"></i>
+              <span class="text-sm text-zinc-400">
+                Streaming online
+              </span>
+            </div>
+
+            <div class="flex gap-3">
+              <i class="fa-solid fa-check text-green-400 mt-1"></i>
+              <span class="text-sm text-zinc-400">
+                Painel administrativo
+              </span>
+            </div>
+
+            <div class="flex gap-3">
+              <i class="fa-solid fa-check text-green-400 mt-1"></i>
+              <span class="text-sm text-zinc-400">
+                Suporte para AutoDJ
+              </span>
+            </div>
+
+            <div class="flex gap-3">
+              <i class="fa-solid fa-check text-green-400 mt-1"></i>
+              <span class="text-sm text-zinc-400">
+                Programa de afiliados
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div
+          class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6"
+        >
+
+          <h3 class="font-black text-xl mb-5">
+            Dados da rádio
+          </h3>
+
+          <label class="text-xs text-zinc-400">
+            Nome da Rádio
+          </label>
+
+          <input
+            id="nome"
+            type="text"
+            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
+            placeholder="Ex.: Rádio Sucesso"
+          >
+
+
+          <label class="text-xs text-zinc-400">
+            Seu Nome
+          </label>
+
+          <input
+            id="pessoa"
+            type="text"
+            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
+            placeholder="Seu nome completo"
+          >
+
+
+          <label class="text-xs text-zinc-400">
+            E-mail
+          </label>
+
+          <input
+            id="email"
+            type="email"
+            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
+            placeholder="voce@email.com"
+          >
+
+
+          <label class="text-xs text-zinc-400">
+            Plano selecionado
+          </label>
+
+          <input
+            id="plano"
+            value="30 DIAS - R$30"
+            readonly
+            class="w-full bg-black border border-purple-700 rounded-xl p-3 mt-2 mb-4 text-purple-400 font-bold"
+          >
+
+          <input
+            id="valor"
+            type="hidden"
+            value="30"
+          >
+
+
+          <div class="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 mb-5">
+
+            <p class="text-xs text-zinc-400">
+              Chave PIX:
+            </p>
+
+            <strong class="text-purple-400 text-sm">
+              ${CONFIG.pix}
+            </strong>
+
+          </div>
+
+
+          <button
+            onclick="openPayment()"
+            class="w-full bg-green-500 hover:bg-green-400 text-black font-black py-3.5 rounded-xl transition"
+          >
+            <i class="fa-solid fa-qrcode mr-2"></i>
+            IR PARA PAGAMENTO PIX
+          </button>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- AFILIADOS -->
+
+    <section class="max-w-7xl mx-auto px-5 py-14">
+
+      <div class="bg-[#11111c] border border-purple-900/40 rounded-3xl p-8">
+
+        <div class="flex flex-col lg:flex-row justify-between gap-8">
+
+          <div>
+
+            <div class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full text-xs font-bold uppercase">
+              <i class="fa-solid fa-users"></i>
+              Programa de Afiliados
+            </div>
+
+            <h3 class="text-3xl font-black mt-4">
+              Ganhe dinheiro divulgando
+            </h3>
+
+            <p class="text-zinc-400 text-sm mt-2 max-w-xl">
+              Divulgue a RádioHost através do seu link exclusivo
+              e acompanhe suas indicações.
+            </p>
+
+          </div>
+
+
+          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl min-w-[280px]">
+
+            <span class="text-xs text-zinc-500 font-bold uppercase">
+              Seu link
+            </span>
+
+            <div class="flex gap-2 mt-2">
+
+              <input
+                id="linkAfiliado"
+                readonly
+                class="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-purple-400 w-full"
+              >
+
+              <button
+                onclick="copyAffiliate()"
+                class="bg-purple-600 hover:bg-purple-500 px-4 rounded-lg"
+              >
+                <i class="fa-regular fa-copy"></i>
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="grid md:grid-cols-3 gap-5 mt-8">
+
+          <div class="recurso-item">
+
+            <div class="recurso-icon">
+              <i class="fa-solid fa-rotate"></i>
+            </div>
+
+            <h3>
+              Comissão recorrente
+            </h3>
+
+            <p>
+              Receba comissão enquanto seus indicados
+              permanecerem ativos.
+            </p>
+
+          </div>
+
+
+          <div class="recurso-item">
+
+            <div class="recurso-icon text-green-400">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <h3>
+              Crédito automático
+            </h3>
+
+            <p>
+              Acompanhe suas indicações e valores através
+              do sistema.
+            </p>
+
+          </div>
+
+
+          <div class="recurso-item">
+
+            <div class="recurso-icon text-blue-400">
+              <i class="fa-solid fa-wallet"></i>
+            </div>
+
+            <h3>
+              Resgate
+            </h3>
+
+            <p>
+              Use suas comissões para serviços ou solicite
+              resgate quando disponível.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- RECURSOS -->
+
+    <section class="max-w-7xl mx-auto px-5 py-14">
+
+      <div class="text-center mb-10">
+
+        <h3 class="text-3xl font-black">
+          Tudo para sua rádio
+        </h3>
+
+        <p class="text-zinc-500 text-sm mt-2">
+          Uma estrutura simples para começar sua transmissão.
+        </p>
+
+      </div>
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+        ${featureCard(
+          "fa-music",
+          "AutoDJ",
+          "Mantenha sua rádio tocando automaticamente."
+        )}
+
+        ${featureCard(
+          "fa-chart-line",
+          "Estatísticas",
+          "Acompanhe ouvintes e desempenho."
+        )}
+
+        ${featureCard(
+          "fa-microphone",
+          "Programação",
+          "Organize sua programação e horários."
+        )}
+
+        ${featureCard(
+          "fa-headphones",
+          "Streaming",
+          "Transmissão online para seus ouvintes."
+        )}
+
+      </div>
+
+    </section>
+
+
+    <footer class="border-t border-zinc-800 mt-10">
+
+      <div class="max-w-7xl mx-auto px-5 py-8 flex flex-col md:flex-row justify-between gap-4">
+
+        <p class="text-xs text-zinc-600">
+          © ${new Date().getFullYear()} RádioHost Premium.
+          Todos os direitos reservados.
+        </p>
+
+        <div class="flex gap-5 text-xs text-zinc-500">
+
+          <a href="#home" class="hover:text-white">
+            Início
+          </a>
+
+          <a href="#planos" class="hover:text-white">
+            Planos
+          </a>
+
+          <a href="#admin" class="hover:text-white">
+            Administração
+          </a>
+
+        </div>
+
+      </div>
+
+    </footer>
+  `;
+
+  updateAffiliateLink();
+}
+
+
+function planCard(name, value, description, featured) {
+
+  return `
+
+    <div
+      class="${
+        featured
+        ? "bg-purple-600 border-purple-400 scale-[1.02]"
+        : "bg-zinc-900 border-zinc-800"
+      } border rounded-2xl p-6 relative"
+    >
+
+      ${
+        featured
+        ? `
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-purple-600 px-3 py-1 rounded-full text-[10px] font-black">
+            MAIS POPULAR
+          </div>
+        `
+        : ""
+      }
+
+      <p class="text-xs font-bold uppercase opacity-70">
+        ${name}
+      </p>
+
+      <div class="flex items-end gap-1 mt-3">
+
+        <span class="text-4xl font-black">
+          ${formatMoney(value)}
+        </span>
+
+      </div>
+
+      <p class="text-sm mt-3 opacity-70">
+        ${description}
+      </p>
+
+      <button
+        onclick="selectPlan('${name} - R$${value}', '${value}')"
+        class="${
+          featured
+          ? "bg-white text-purple-600"
+          : "bg-zinc-800 text-white"
+        } w-full mt-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
+      >
+        Escolher plano
+      </button>
+
+    </div>
+  `;
+}
+
+
+function featureCard(icon, title, description) {
+
+  return `
+
+    <div class="recurso-item">
+
+      <div class="recurso-icon">
+        <i class="fa-solid ${icon}"></i>
+      </div>
+
+      <h3>
+        ${title}
+      </h3>
+
+      <p>
+        ${description}
+      </p>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   AFILIADO
+========================================================= */
+
+function updateAffiliateLink() {
+
+  const input = document.getElementById("linkAfiliado");
+
+  if (!input) return;
+
+  const base =
+    window.location.href.split("#")[0];
+
+  const code =
+    localStorage.getItem("rh_affiliate_code") ||
+    generateId();
+
+  localStorage.setItem(
+    "rh_affiliate_code",
+    code
+  );
+
+  input.value =
+    base + "?ref=" + code;
+}
+
+
+function copyAffiliate() {
+
+  const input =
+    document.getElementById("linkAfiliado");
+
+  navigator.clipboard
+    .writeText(input.value)
+    .then(() => {
+
+      showToast(
+        "Link de afiliado copiado!"
+      );
+
+    });
+}
+
+
+/* =========================================================
+   LOGIN ADMIN
+========================================================= */
+
+function renderAdminLogin() {
+
+  document.getElementById("app").innerHTML = `
+
+    <section class="min-h-[80vh] flex items-center justify-center px-5">
+
+      <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-7">
+
+        <div class="text-center mb-7">
+
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+
+          <h2 class="text-2xl font-black mt-4">
+            Área Administrativa
+          </h2>
+
+          <p class="text-zinc-500 text-sm mt-1">
+            Acesse o painel da RádioHost
+          </p>
+
+        </div>
+
+
+        <label class="text-xs text-zinc-400">
+          E-mail
+        </label>
+
+        <input
+          id="adminEmail"
+          type="email"
+          class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4"
+          placeholder="admin@radiohost.com.br"
+        >
+
+
+        <label class="text-xs text-zinc-400">
+          Senha
+        </label>
+
+        <input
+          id="adminPass"
+          type="password"
+          class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-5"
+          placeholder="••••••••"
+          onkeydown="if(event.key==='Enter') adminLogin()"
+        >
+
+
+        <button
+          onclick="adminLogin()"
+          class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-black"
+        >
+          ENTRAR
+        </button>
+
+
+        <p class="text-[10px] text-zinc-600 text-center mt-5">
+          Demonstração local. Em produção, autenticação deve ser feita no servidor.
+        </p>
+
+      </div>
+
+    </section>
+  `;
+}
+
+
+function adminLogin() {
+
+  const email =
+    document.getElementById("adminEmail").value.trim();
+
+  const password =
+    document.getElementById("adminPass").value;
+
+  if (
+    email === CONFIG.adminEmail &&
+    password === CONFIG.adminPassword
+  ) {
+
+    sessionStorage.setItem(
+      "rh_admin",
+      "true"
+    );
+
+    location.hash = "admin-dashboard";
+
+  } else {
+
+    showToast(
+      "E-mail ou senha incorretos.",
+      "error"
+    );
+
+  }
+}
+
+
+function adminLogout() {
+
+  sessionStorage.removeItem("rh_admin");
+
+  location.hash = "admin";
+}
+
+
+/* =========================================================
+   DASHBOARD ADMIN
+========================================================= */
+
+function renderAdminDashboard() {
+
+  if (
+    sessionStorage.getItem("rh_admin") !== "true"
+  ) {
+
+    location.hash = "admin";
+    return;
+  }
+
+  const active = radios.filter(
+    r => r.status === "Ativa"
+  ).length;
+
+  const pending = radios.filter(
+    r => r.status === "Aguardando confirmação"
+  ).length;
+
+  const revenue = radios.reduce(
+    (total, radio) => total + Number(radio.valor || 0),
+    0
+  );
+
+
+  document.getElementById("app").innerHTML = `
+
+    <section class="max-w-7xl mx-auto px-5 py-10">
+
+      <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
+
+        <div>
+
+          <p class="text-xs text-purple-400 font-bold uppercase">
+            Dashboard
+          </p>
+
+          <h2 class="text-3xl font-black mt-1">
+            Administração
+          </h2>
+
+        </div>
+
+        <button
+          onclick="adminLogout()"
+          class="border border-zinc-700 px-5 py-2 rounded-xl text-sm hover:bg-zinc-800"
+        >
+          <i class="fa-solid fa-right-from-bracket mr-2"></i>
+          Sair
+        </button>
+
+      </div>
+
+
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+
+        ${adminStat(
+          "Rádios",
+          radios.length,
+          "fa-radio",
+          "text-purple-400"
+        )}
+
+        ${adminStat(
+          "Ativas",
+          active,
+          "fa-circle-check",
+          "text-green-400"
+        )}
+
+        ${adminStat(
+          "Pendentes",
+          pending,
+          "fa-clock",
+          "text-yellow-400"
+        )}
+
+        ${adminStat(
+          "Valor cadastrado",
+          formatMoney(revenue),
+          "fa-wallet",
+          "text-blue-400"
+        )}
+
+      </div>
+
+
+      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+
+        <div class="p-5 border-b border-zinc-800 flex justify-between items-center">
+
+          <h3 class="font-black">
+            Rádios cadastradas
+          </h3>
+
+          <span class="text-xs text-zinc-500">
+            ${radios.length} cadastro(s)
+          </span>
+
+        </div>
+
+
+        ${
+          radios.length === 0
+
+          ? `
+            <div class="p-10 text-center text-zinc-600">
+              Nenhuma rádio cadastrada.
+            </div>
+          `
+
+          : `
+            <div class="overflow-x-auto">
+
+              <table class="w-full text-sm">
+
+                <thead class="bg-black/30">
+
+                  <tr class="text-left text-xs text-zinc-500">
+
+                    <th class="p-4">Rádio</th>
+                    <th class="p-4">Responsável</th>
+                    <th class="p-4">Plano</th>
+                    <th class="p-4">Status</th>
+                    <th class="p-4">Ações</th>
+
+                  </tr>
+
+                </thead>
+
+                <tbody>
+
+                  ${radios.map(radio => `
+
+                    <tr class="border-t border-zinc-800">
+
+                      <td class="p-4 font-bold">
+                        ${escapeHTML(radio.radio)}
+                      </td>
+
+                      <td class="p-4 text-zinc-400">
+                        ${escapeHTML(radio.responsavel)}
+                        <br>
+                        <span class="text-xs">
+                          ${escapeHTML(radio.email)}
+                        </span>
+                      </td>
+
+                      <td class="p-4">
+                        ${escapeHTML(radio.plano)}
+                      </td>
+
+                      <td class="p-4">
+
+                        <span class="px-2 py-1 rounded-full text-[10px] font-bold
+                          ${
+                            radio.status === "Ativa"
+                            ? "bg-green-500/10 text-green-400"
+                            : "bg-yellow-500/10 text-yellow-400"
+                          }
+                        ">
+                          ${escapeHTML(radio.status)}
+                        </span>
+
+                      </td>
+
+                      <td class="p-4">
+
+                        <div class="flex gap-2">
+
+                          ${
+                            radio.status !== "Ativa"
+
+                            ? `
+                              <button
+                                onclick="activateRadio('${radio.id}')"
+                                class="bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded-lg text-xs"
+                              >
+                                Ativar
+                              </button>
+                            `
+                            : ""
+                          }
+
+                          <button
+                            onclick="deleteRadio('${radio.id}')"
+                            class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs"
+                          >
+                            Excluir
+                          </button>
+
+                        </div>
+
+                      </td>
+
+                    </tr>
+
+                  `).join("")}
+
+                </tbody>
+
+              </table>
+
+            </div>
+          `
+        }
+
+      </div>
+
+    </section>
+  `;
+}
+
+
+function adminStat(
+  title,
+  value,
+  icon,
+  color
+) {
+
+  return `
+
+    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+
+      <div class="flex justify-between">
+
+        <div>
+
+          <p class="text-xs text-zinc-500">
+            ${title}
+          </p>
+
+          <strong class="text-2xl font-black mt-1 block">
+            ${value}
+          </strong>
+
+        </div>
+
+        <i class="fa-solid ${icon} ${color} text-xl"></i>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function activateRadio(id) {
+
+  const radio = radios.find(
+    r => r.id === id
+  );
+
+  if (!radio) return;
+
+  radio.status = "Ativa";
+
+  saveData();
+
+  showToast(
+    "Rádio ativada com sucesso!"
+  );
+
+  renderAdminDashboard();
+}
+
+
+function deleteRadio(id) {
+
+  if (
+    !confirm(
+      "Tem certeza que deseja excluir esta rádio?"
+    )
+  ) {
+    return;
+  }
+
+  radios = radios.filter(
+    r => r.id !== id
+  );
+
+  saveData();
+
+  showToast(
+    "Rádio excluída."
+  );
+
+  renderAdminDashboard();
+}
+
+
+/* =========================================================
+   PAINEL DO CLIENTE
+========================================================= */
+
+function renderPainel(id) {
+
+  const radio = radios.find(
+    r => r.id === id
+  );
+
+  if (!radio) {
+
+    document.getElementById("app").innerHTML = `
+
+      <section class="min-h-[70vh] flex items-center justify-center">
+
+        <div class="text-center">
+
+          <i class="fa-solid fa-circle-exclamation text-5xl text-red-400"></i>
+
+          <h2 class="text-2xl font-black mt-5">
+            Rádio não encontrada
+          </h2>
+
+          <a
+            href="#home"
+            class="inline-block mt-5 bg-purple-600 px-5 py-3 rounded-xl"
+          >
+            Voltar
+          </a>
+
+        </div>
+
+      </section>
+
+    `;
+
+    return;
+  }
+
+
+  document.getElementById("app").innerHTML = `
+
+    <section class="max-w-7xl mx-auto px-5 py-10">
+
+      <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
+
+        <div>
+
+          <p class="text-xs text-purple-400 uppercase font-bold">
+            Painel da rádio
+          </p>
+
+          <h2 class="text-3xl font-black mt-1">
+            ${escapeHTML(radio.radio)}
+          </h2>
+
+        </div>
+
+        <div>
+
+          <span class="px-3 py-2 rounded-full text-xs font-bold
+            ${
+              radio.status === "Ativa"
+              ? "bg-green-500/10 text-green-400"
+              : "bg-yellow-500/10 text-yellow-400"
+            }
+          ">
+            <i class="fa-solid fa-circle text-[7px] mr-2"></i>
+            ${escapeHTML(radio.status)}
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <div class="grid md:grid-cols-3 gap-5">
+
+        <div class="md:col-span-2 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+
+          <h3 class="font-black text-lg mb-5">
+            Informações
+          </h3>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+
+            ${infoBox(
+              "Responsável",
+              radio.responsavel
+            )}
+
+            ${infoBox(
+              "E-mail",
+              radio.email
+            )}
+
+            ${infoBox(
+              "Plano",
+              radio.plano
+            )}
+
+            ${infoBox(
+              "Cadastro",
+              radio.criadoEm
+            )}
+
+          </div>
+
+        </div>
+
+
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
+
+          <div class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl mb-5">
+            <i class="fa-solid fa-radio"></i>
+          </div>
+
+          <h3 class="font-black">
+            Sua rádio
+          </h3>
+
+          <p class="text-zinc-500 text-sm mt-2">
+            Player de demonstração disponível no topo.
+          </p>
+
+          <button
+            onclick="toggleTopPlay()"
+            class="w-full mt-5 bg-green-500 text-black py-3 rounded-xl font-black"
+          >
+            <i class="fa-solid fa-play mr-2"></i>
+            OUVIR RÁDIO
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <div class="mt-6 bg-purple-500/10 border border-purple-500/20 rounded-2xl p-5">
+
+        <div class="flex gap-4">
+
+          <i class="fa-solid fa-circle-info text-purple-400 text-xl"></i>
+
+          <div>
+
+            <h4 class="font-bold">
+              Próximo passo
+            </h4>
+
+            <p class="text-sm text-zinc-400 mt-1">
+              ${
+                radio.status === "Ativa"
+                ? "Sua rádio está ativa."
+                : "Seu cadastro foi recebido e está aguardando a confirmação do pagamento."
+              }
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+  `;
+}
+
+
+function infoBox(label, value) {
+
+  return `
+
+    <div class="bg-black border border-zinc-800 rounded-xl p-4">
+
+      <p class="text-xs text-zinc-500">
+        ${label}
+      </p>
+
+      <p class="font-bold text-sm mt-1 break-words">
+        ${escapeHTML(value)}
+      </p>
+
+    </div>
+  `;
+}
+
+
+/* =========================================================
+   ROTEADOR
+========================================================= */
+
+function router() {
+
+  const hash =
+    location.hash.replace("#", "");
+
+  if (hash === "admin") {
+
+    renderAdminLogin();
+
+  } else if (hash === "admin-dashboard") {
+
+    renderAdminDashboard();
+
+  } else if (hash.startsWith("painel=")) {
+
+    const id =
+      decodeURIComponent(
+        hash.substring("painel=".length)
+      );
+
+    renderPainel(id);
+
+  } else {
+
+    renderHome();
+
+  }
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* =========================================================
+   INICIALIZAÇÃO
+========================================================= */
+
+window.addEventListener(
+  "hashchange",
+  router
+);
+
+window.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    router();
+
+  }
+);
+
+
+/* =========================================================
+   FECHAR MODAL CLICANDO FORA
+========================================================= */
+
+document.addEventListener(
+  "click",
+  event => {
+
+    const modal =
+      document.getElementById("paymentModal");
+
+    if (
+      event.target === modal
+    ) {
+      closePayment();
+    }
+
+  }
+);
+
 </script>
+
 </body>
-</html>
+
+  </html>
