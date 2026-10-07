@@ -6,10 +6,8 @@
 
   <title>RádioHost Premium</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Font Awesome -->
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -17,12 +15,11 @@
 
   <style>
     :root {
-      --primary: #7c3aed;
+      --purple: #7c3aed;
       --cyan: #00f0ff;
       --pink: #ff2ea6;
       --green: #00ff88;
       --bg: #0f0f0f;
-      --card: #18181b;
     }
 
     * {
@@ -50,61 +47,58 @@
     }
 
     @keyframes blink {
-      0%, 100% {
-        opacity: 1;
-      }
-
-      50% {
-        opacity: .3;
-      }
+      0%,100% { opacity: 1; }
+      50% { opacity: .3; }
     }
 
     .gradient-text {
-      background: linear-gradient(
-        90deg,
-        var(--cyan),
-        var(--pink)
-      );
+      background: linear-gradient(90deg, var(--cyan), var(--pink));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    .glass {
-      background: rgba(24, 24, 27, .75);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255,255,255,.08);
-    }
-
-    .recurso-item {
+    .card {
       background: #18181b;
-      padding: 30px;
-      border-radius: 16px;
       border: 1px solid #27272a;
-      transition: .3s ease;
+      border-radius: 18px;
     }
 
-    .recurso-item:hover {
-      transform: translateY(-5px);
-      border-color: var(--primary);
-      box-shadow: 0 15px 30px rgba(124,58,237,.2);
+    .input {
+      width: 100%;
+      background: #050505;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      padding: 13px;
+      color: white;
+      outline: none;
     }
 
-    .recurso-icon {
-      font-size: 32px;
-      color: var(--primary);
-      margin-bottom: 18px;
+    .input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 2px rgba(124,58,237,.15);
+    }
+
+    .btn {
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
     }
 
     .modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,.75);
+      background: rgba(0,0,0,.78);
       display: none;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      z-index: 100;
+      z-index: 200;
     }
 
     .modal.active {
@@ -115,12 +109,11 @@
       position: fixed;
       right: 20px;
       bottom: 20px;
+      z-index: 999;
       background: #18181b;
       border: 1px solid #3f3f46;
       padding: 14px 18px;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,.4);
-      z-index: 999;
       transform: translateY(120px);
       opacity: 0;
       transition: .3s;
@@ -131,30 +124,24 @@
       opacity: 1;
     }
 
-    input,
-    select {
-      outline: none;
+    .stat {
+      background: #18181b;
+      border: 1px solid #27272a;
+      border-radius: 18px;
+      padding: 20px;
     }
 
-    input:focus,
-    select:focus {
-      border-color: #7c3aed !important;
-      box-shadow: 0 0 0 2px rgba(124,58,237,.15);
+    .resource {
+      background: #18181b;
+      border: 1px solid #27272a;
+      padding: 25px;
+      border-radius: 18px;
+      transition: .25s;
     }
 
-    .loader {
-      width: 22px;
-      height: 22px;
-      border: 3px solid #ffffff30;
-      border-top-color: white;
-      border-radius: 50%;
-      animation: spin .7s linear infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
+    .resource:hover {
+      transform: translateY(-4px);
+      border-color: var(--purple);
     }
   </style>
 </head>
@@ -165,45 +152,43 @@
      HEADER
 ========================================================= -->
 
-<header class="sticky top-0 z-50 bg-[#11111c]/95 backdrop-blur border-b border-[#23233a]">
+<header class="sticky top-0 z-50 bg-[#11111c]/95 backdrop-blur border-b border-[#27272a]">
 
-  <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
     <a href="#home" class="flex items-center gap-3">
 
-      <div
-        class="w-10 h-10 rounded-lg bg-gradient-to-br from-[#00f0ff] to-[#ff2ea6] flex items-center justify-center font-black text-black"
-      >
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-pink-500 text-black font-black flex items-center justify-center">
         R
       </div>
 
-      <h1 class="text-xl font-black">
-        <span class="text-[#00f0ff]">RÁDIO</span><span class="text-[#ff2ea6]">HOST</span>
-      </h1>
+      <div class="font-black text-lg">
+        <span class="text-cyan-400">RÁDIO</span><span class="text-pink-500">HOST</span>
+      </div>
 
     </a>
 
     <div class="flex items-center gap-3">
 
-      <a
-        href="#admin"
-        class="hidden sm:block text-xs text-zinc-400 hover:text-white transition"
-      >
-        Área administrativa
-      </a>
+      <nav class="hidden md:flex gap-5 text-xs text-zinc-400">
+        <a href="#home" class="hover:text-white">Início</a>
+        <a href="#planos" class="hover:text-white">Planos</a>
+        <a href="#afiliados" class="hover:text-white">Afiliados</a>
+        <a href="#afiliado-login" class="hover:text-white">Área do Afiliado</a>
+      </nav>
 
       <div class="flex items-center gap-2 bg-[#1a1a2e] border border-zinc-700 px-3 py-1.5 rounded-full">
 
         <div class="dot"></div>
 
         <button
-          onclick="toggleTopPlay()"
-          class="bg-green-500 text-black w-7 h-7 rounded-full flex items-center justify-center hover:bg-green-400 transition"
+          onclick="toggleRadio()"
+          class="bg-green-500 text-black w-7 h-7 rounded-full"
         >
-          <i id="iconTop" class="fa fa-play text-xs"></i>
+          <i id="topPlayIcon" class="fa-solid fa-play text-xs"></i>
         </button>
 
-        <span class="text-[10px] font-bold text-[#00ff88]">
+        <span class="text-[10px] font-bold text-green-400">
           AO VIVO
         </span>
 
@@ -215,19 +200,14 @@
 
 </header>
 
-<!-- PLAYER -->
 
-<audio id="topPlayer" preload="none">
+<audio id="radioPlayer">
   <source
     src="https://stream.zeno.fm/kmbjkezl7uetv"
     type="audio/mpeg"
   >
 </audio>
 
-
-<!-- =========================================================
-     APP
-========================================================= -->
 
 <main id="app"></main>
 
@@ -237,20 +217,27 @@
 ========================================================= -->
 
 <div id="toast" class="toast">
+
   <div class="flex items-center gap-3">
+
     <i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i>
-    <span id="toastMessage">Mensagem</span>
+
+    <span id="toastText">
+      Mensagem
+    </span>
+
   </div>
+
 </div>
 
 
 <!-- =========================================================
-     MODAL PAGAMENTO
+     PAGAMENTO
 ========================================================= -->
 
 <div id="paymentModal" class="modal">
 
-  <div class="w-full max-w-lg bg-[#11111c] border border-zinc-800 rounded-3xl p-6 shadow-2xl">
+  <div class="w-full max-w-md card p-6">
 
     <div class="flex justify-between items-center mb-6">
 
@@ -259,81 +246,64 @@
           Pagamento PIX
         </h2>
 
-        <p class="text-xs text-zinc-500 mt-1">
-          Finalize sua contratação
+        <p class="text-xs text-zinc-500">
+          Confirmação demonstrativa
         </p>
       </div>
 
-      <button
-        onclick="closePayment()"
-        class="text-zinc-500 hover:text-white"
-      >
-        <i class="fa-solid fa-xmark text-xl"></i>
+      <button onclick="closePayment()">
+        <i class="fa-solid fa-xmark text-xl text-zinc-500"></i>
       </button>
 
     </div>
 
-    <div class="bg-zinc-950 border border-zinc-800 rounded-2xl p-5 mb-5">
+    <div class="bg-black rounded-xl p-5 mb-5">
 
       <div class="flex justify-between mb-3">
-        <span class="text-sm text-zinc-400">Plano</span>
-        <strong id="paymentPlan">30 DIAS</strong>
+
+        <span class="text-zinc-500 text-sm">
+          Plano
+        </span>
+
+        <strong id="payPlan"></strong>
+
       </div>
 
       <div class="flex justify-between">
-        <span class="text-sm text-zinc-400">Valor</span>
-        <strong id="paymentValue" class="text-green-400">
-          R$ 30,00
-        </strong>
+
+        <span class="text-zinc-500 text-sm">
+          Valor
+        </span>
+
+        <strong id="payValue" class="text-green-400"></strong>
+
       </div>
 
     </div>
 
-    <div class="text-center">
+    <p class="text-xs text-zinc-500 mb-2">
+      Chave PIX
+    </p>
 
-      <p class="text-xs text-zinc-500 mb-2">
-        Chave PIX
-      </p>
+    <div
+      id="pixDisplay"
+      class="bg-black border border-purple-900 rounded-xl p-4 text-center text-purple-400 font-bold break-all"
+    ></div>
 
-      <div class="bg-black border border-purple-900 rounded-xl p-4">
+    <button
+      onclick="copyPIX()"
+      class="btn w-full bg-purple-600 hover:bg-purple-500 mt-3"
+    >
+      <i class="fa-regular fa-copy mr-2"></i>
+      Copiar PIX
+    </button>
 
-        <div
-          id="pixKey"
-          class="font-bold text-purple-400 break-all"
-        >
-          radioclansweb@gmail.com
-        </div>
-
-      </div>
-
-      <button
-        onclick="copyPix()"
-        class="w-full mt-3 bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-bold transition"
-      >
-        <i class="fa-regular fa-copy mr-2"></i>
-        Copiar chave PIX
-      </button>
-
-      <div class="mt-5 bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 text-left">
-
-        <p class="text-xs text-yellow-300">
-          <i class="fa-solid fa-circle-info mr-1"></i>
-
-          Este pagamento está configurado como demonstração.
-          A confirmação automática do PIX necessita de integração
-          com um gateway/backend.
-        </p>
-
-      </div>
-
-      <button
-        onclick="confirmPayment()"
-        class="w-full mt-4 bg-green-500 hover:bg-green-400 text-black py-3 rounded-xl font-black transition"
-      >
-        JÁ FIZ O PAGAMENTO
-      </button>
-
-    </div>
+    <button
+      onclick="finishPayment()"
+      class="btn w-full bg-green-500 text-black mt-3"
+    >
+      JÁ FIZ O PAGAMENTO
+    </button>
 
   </div>
 
@@ -341,15 +311,23 @@
 
 
 <script>
+
 /* =========================================================
-   CONFIGURAÇÕES
+   CONFIGURAÇÃO
 ========================================================= */
 
 const CONFIG = {
+
   adminEmail: "admin@radiohost.com.br",
+
   adminPassword: "clans123",
+
   pix: "radioclansweb@gmail.com",
-  radioStream: "https://stream.zeno.fm/kmbjkezl7uetv"
+
+  commission: 0.20,
+
+  stream: "https://stream.zeno.fm/kmbjkezl7uetv"
+
 };
 
 
@@ -357,27 +335,34 @@ const CONFIG = {
    BANCO LOCAL
 ========================================================= */
 
-let radios = JSON.parse(
-  localStorage.getItem("rh_radios") || "[]"
-);
+let radios =
+  JSON.parse(localStorage.getItem("rh_radios") || "[]");
 
-let affiliates = JSON.parse(
-  localStorage.getItem("rh_affiliates") || "[]"
-);
+let affiliates =
+  JSON.parse(localStorage.getItem("rh_affiliates") || "[]");
 
-let currentPlan = {
+let commissions =
+  JSON.parse(localStorage.getItem("rh_commissions") || "[]");
+
+let withdrawals =
+  JSON.parse(localStorage.getItem("rh_withdrawals") || "[]");
+
+
+let selectedPlan = {
   name: "30 DIAS - R$30",
   value: 30
 };
 
-let topPlaying = false;
+
+let currentAffiliate =
+  sessionStorage.getItem("rh_affiliate_id") || null;
 
 
 /* =========================================================
-   HELPERS
+   STORAGE
 ========================================================= */
 
-function saveData() {
+function saveAll() {
 
   localStorage.setItem(
     "rh_radios",
@@ -388,58 +373,80 @@ function saveData() {
     "rh_affiliates",
     JSON.stringify(affiliates)
   );
+
+  localStorage.setItem(
+    "rh_commissions",
+    JSON.stringify(commissions)
+  );
+
+  localStorage.setItem(
+    "rh_withdrawals",
+    JSON.stringify(withdrawals)
+  );
 }
 
 
-function showToast(message, type = "success") {
+/* =========================================================
+   HELPERS
+========================================================= */
 
-  const toast = document.getElementById("toast");
-  const text = document.getElementById("toastMessage");
-  const icon = document.getElementById("toastIcon");
+function id() {
 
-  text.textContent = message;
+  return Date.now().toString(36) +
+    Math.random().toString(36).slice(2,8);
 
-  if (type === "error") {
-    icon.className = "fa-solid fa-circle-xmark text-red-400";
-  } else {
-    icon.className = "fa-solid fa-circle-check text-green-400";
-  }
-
-  toast.classList.add("show");
-
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 3000);
 }
 
 
-function formatMoney(value) {
+function money(value) {
 
-  return Number(value).toLocaleString(
+  return Number(value || 0).toLocaleString(
     "pt-BR",
     {
       style: "currency",
       currency: "BRL"
     }
   );
-}
 
-
-function generateId() {
-
-  return Date.now().toString(36) +
-    Math.random().toString(36).substring(2, 8);
 }
 
 
 function escapeHTML(value) {
 
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  return String(value || "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function toast(message, error = false) {
+
+  const box =
+    document.getElementById("toast");
+
+  const text =
+    document.getElementById("toastText");
+
+  const icon =
+    document.getElementById("toastIcon");
+
+  text.textContent = message;
+
+  icon.className =
+    error
+    ? "fa-solid fa-circle-xmark text-red-400"
+    : "fa-solid fa-circle-check text-green-400";
+
+  box.classList.add("show");
+
+  setTimeout(() => {
+    box.classList.remove("show");
+  }, 3000);
+
 }
 
 
@@ -447,25 +454,33 @@ function escapeHTML(value) {
    PLAYER
 ========================================================= */
 
-function toggleTopPlay() {
+let playing = false;
 
-  const player = document.getElementById("topPlayer");
-  const icon = document.getElementById("iconTop");
 
-  if (!topPlaying) {
+function toggleRadio() {
+
+  const player =
+    document.getElementById("radioPlayer");
+
+  const icon =
+    document.getElementById("topPlayIcon");
+
+  if (!playing) {
 
     player.play()
       .then(() => {
 
-        topPlaying = true;
-        icon.className = "fa fa-pause text-xs";
+        playing = true;
+
+        icon.className =
+          "fa-solid fa-pause text-xs";
 
       })
       .catch(() => {
 
-        showToast(
+        toast(
           "Não foi possível iniciar o streaming.",
-          "error"
+          true
         );
 
       });
@@ -474,10 +489,13 @@ function toggleTopPlay() {
 
     player.pause();
 
-    topPlaying = false;
+    playing = false;
 
-    icon.className = "fa fa-play text-xs";
+    icon.className =
+      "fa-solid fa-play text-xs";
+
   }
+
 }
 
 
@@ -485,137 +503,31 @@ function toggleTopPlay() {
    PLANOS
 ========================================================= */
 
-function selectPlan(name, value) {
+function choosePlan(name,value) {
 
-  currentPlan = {
+  selectedPlan = {
     name,
-    value: Number(value)
+    value:Number(value)
   };
 
-  const planInput = document.getElementById("plano");
-  const valueInput = document.getElementById("valor");
+  const plan =
+    document.getElementById("planInput");
 
-  if (planInput) {
-    planInput.value = name;
-  }
+  const val =
+    document.getElementById("valueInput");
 
-  if (valueInput) {
-    valueInput.value = value;
-  }
+  if (plan) plan.value = name;
 
-  showToast("Plano selecionado: " + name);
+  if (val) val.value = value;
+
+  toast("Plano selecionado: " + name);
 
   document
     .getElementById("cadastro")
     ?.scrollIntoView({
-      behavior: "smooth"
+      behavior:"smooth"
     });
-}
 
-
-/* =========================================================
-   PAGAMENTO
-========================================================= */
-
-function openPayment() {
-
-  const nome = document.getElementById("nome")?.value.trim();
-  const pessoa = document.getElementById("pessoa")?.value.trim();
-  const email = document.getElementById("email")?.value.trim();
-
-  if (!nome || !pessoa || !email) {
-
-    showToast(
-      "Preencha nome da rádio, seu nome e e-mail.",
-      "error"
-    );
-
-    return;
-  }
-
-  if (!email.includes("@")) {
-
-    showToast(
-      "Digite um e-mail válido.",
-      "error"
-    );
-
-    return;
-  }
-
-  document.getElementById("paymentPlan").textContent =
-    currentPlan.name;
-
-  document.getElementById("paymentValue").textContent =
-    formatMoney(currentPlan.value);
-
-  document.getElementById("paymentModal")
-    .classList.add("active");
-}
-
-
-function closePayment() {
-
-  document
-    .getElementById("paymentModal")
-    .classList.remove("active");
-}
-
-
-function copyPix() {
-
-  navigator.clipboard
-    .writeText(CONFIG.pix)
-    .then(() => {
-
-      showToast(
-        "Chave PIX copiada!"
-      );
-
-    })
-    .catch(() => {
-
-      showToast(
-        "Não foi possível copiar automaticamente.",
-        "error"
-      );
-
-    });
-}
-
-
-function confirmPayment() {
-
-  const nome = document.getElementById("nome").value.trim();
-  const pessoa = document.getElementById("pessoa").value.trim();
-  const email = document.getElementById("email").value.trim();
-
-  const radio = {
-    id: generateId(),
-    radio: nome,
-    responsavel: pessoa,
-    email,
-    plano: currentPlan.name,
-    valor: currentPlan.value,
-    status: "Aguardando confirmação",
-    criadoEm: new Date().toLocaleString("pt-BR")
-  };
-
-  radios.push(radio);
-
-  saveData();
-
-  closePayment();
-
-  showToast(
-    "Cadastro recebido! Aguarde a confirmação do pagamento."
-  );
-
-  setTimeout(() => {
-
-    location.hash = "painel=" + radio.id;
-
-  }, 1200);
 }
 
 
@@ -627,732 +539,1636 @@ function renderHome() {
 
   document.getElementById("app").innerHTML = `
 
-    <section class="max-w-7xl mx-auto px-5 py-14">
+  <section class="max-w-7xl mx-auto px-5 py-14">
 
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
 
-        <div>
+      <div>
 
-          <div class="inline-flex items-center gap-2 bg-purple-600/20 text-purple-400 px-3 py-1.5 rounded-full text-xs mb-5">
-            <span class="dot"></span>
-            PLATAFORMA PROFISSIONAL DE RÁDIO
-          </div>
-
-          <h2 class="text-5xl md:text-6xl font-black leading-tight">
-
-            SUA RÁDIO
-            <br>
-
-            <span class="gradient-text">
-              ONLINE PROFISSIONAL
-            </span>
-
-          </h2>
-
-          <p class="text-zinc-400 mt-5 max-w-xl">
-            Crie sua rádio online, transmita sua programação
-            e tenha uma estrutura simples para administrar
-            sua estação.
-          </p>
-
-          <div class="flex flex-wrap gap-3 mt-7">
-
-            <a
-              href="#cadastro"
-              class="bg-purple-600 hover:bg-purple-500 px-6 py-3 rounded-xl font-bold transition"
-            >
-              Criar minha rádio
-            </a>
-
-            <button
-              onclick="toggleTopPlay()"
-              class="border border-zinc-700 hover:border-purple-500 px-6 py-3 rounded-xl font-bold transition"
-            >
-              <i class="fa-solid fa-play mr-2"></i>
-              Ouvir demonstração
-            </button>
-
-          </div>
-
-          <div class="grid grid-cols-3 gap-4 mt-10">
-
-            <div>
-              <strong class="text-2xl">24/7</strong>
-              <p class="text-xs text-zinc-500">
-                Streaming
-              </p>
-            </div>
-
-            <div>
-              <strong class="text-2xl">20K+</strong>
-              <p class="text-xs text-zinc-500">
-                Músicas disponíveis
-              </p>
-            </div>
-
-            <div>
-              <strong class="text-2xl">100%</strong>
-              <p class="text-xs text-zinc-500">
-                Online
-              </p>
-            </div>
-
-          </div>
-
+        <div class="inline-flex items-center gap-2 bg-purple-600/10 text-purple-400 px-3 py-1 rounded-full text-xs">
+          <span class="dot"></span>
+          PLATAFORMA PROFISSIONAL
         </div>
 
+        <h1 class="text-5xl md:text-6xl font-black leading-tight mt-5">
 
-        <div
-          class="glass rounded-3xl p-6 shadow-2xl"
-        >
+          SUA RÁDIO
+          <br>
 
-          <div class="flex items-center justify-between mb-6">
-
-            <div>
-
-              <p class="text-xs text-zinc-500 uppercase">
-                Demonstração
-              </p>
-
-              <h3 class="font-black text-xl">
-                RádioHost Live
-              </h3>
-
-            </div>
-
-            <div class="flex items-center gap-2 text-green-400 text-xs">
-              <span class="dot"></span>
-              ONLINE
-            </div>
-
-          </div>
-
-          <div
-            class="bg-black rounded-2xl p-8 text-center"
-          >
-
-            <div
-              class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-3xl shadow-lg shadow-purple-900/40"
-            >
-              <i class="fa-solid fa-radio"></i>
-            </div>
-
-            <h4 class="font-black text-xl mt-5">
-              RádioHost Premium
-            </h4>
-
-            <p class="text-zinc-500 text-sm mt-1">
-              Streaming demonstrativo
-            </p>
-
-            <button
-              onclick="toggleTopPlay()"
-              class="mt-6 bg-green-500 hover:bg-green-400 text-black px-7 py-3 rounded-full font-black"
-            >
-              <i id="heroPlayIcon" class="fa-solid fa-play mr-2"></i>
-              OUVIR AGORA
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- PLANOS -->
-
-    <section
-      id="planos"
-      class="max-w-7xl mx-auto px-5 py-14"
-    >
-
-      <div class="text-center mb-10">
-
-        <span class="text-purple-400 text-xs font-bold uppercase">
-          Planos
-        </span>
-
-        <h3 class="text-3xl md:text-4xl font-black mt-2">
-          Escolha seu plano
-        </h3>
-
-        <p class="text-zinc-500 text-sm mt-2">
-          Comece pequeno e evolua quando precisar.
-        </p>
-
-      </div>
-
-
-      <div class="grid md:grid-cols-3 gap-5">
-
-        ${planCard(
-          "15 DIAS",
-          20,
-          "100 ouvintes",
-          false
-        )}
-
-        ${planCard(
-          "30 DIAS",
-          30,
-          "500 ouvintes",
-          true
-        )}
-
-        ${planCard(
-          "12 MESES",
-          600,
-          "Ouvintes ilimitados",
-          false
-        )}
-
-      </div>
-
-    </section>
-
-
-    <!-- CADASTRO -->
-
-    <section
-      id="cadastro"
-      class="max-w-7xl mx-auto px-5 py-14"
-    >
-
-      <div class="grid lg:grid-cols-2 gap-10">
-
-        <div>
-
-          <span class="text-purple-400 text-xs font-bold uppercase">
-            Comece agora
+          <span class="gradient-text">
+            ONLINE PROFISSIONAL
           </span>
 
-          <h3 class="text-4xl font-black mt-2">
-            Crie sua rádio
-          </h3>
+        </h1>
 
-          <p class="text-zinc-400 mt-4 text-sm leading-7">
-            Preencha seus dados e selecione o plano.
-            Depois você poderá acompanhar sua rádio através
-            do painel.
-          </p>
+        <p class="text-zinc-400 mt-5 max-w-xl">
+          Crie sua rádio online, tenha streaming,
+          painel administrativo e participe do nosso
+          programa de afiliados.
+        </p>
 
-          <div class="mt-8 space-y-4">
+        <div class="flex flex-wrap gap-3 mt-7">
 
-            <div class="flex gap-3">
-              <i class="fa-solid fa-check text-green-400 mt-1"></i>
-              <span class="text-sm text-zinc-400">
-                Streaming online
-              </span>
-            </div>
-
-            <div class="flex gap-3">
-              <i class="fa-solid fa-check text-green-400 mt-1"></i>
-              <span class="text-sm text-zinc-400">
-                Painel administrativo
-              </span>
-            </div>
-
-            <div class="flex gap-3">
-              <i class="fa-solid fa-check text-green-400 mt-1"></i>
-              <span class="text-sm text-zinc-400">
-                Suporte para AutoDJ
-              </span>
-            </div>
-
-            <div class="flex gap-3">
-              <i class="fa-solid fa-check text-green-400 mt-1"></i>
-              <span class="text-sm text-zinc-400">
-                Programa de afiliados
-              </span>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div
-          class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6"
-        >
-
-          <h3 class="font-black text-xl mb-5">
-            Dados da rádio
-          </h3>
-
-          <label class="text-xs text-zinc-400">
-            Nome da Rádio
-          </label>
-
-          <input
-            id="nome"
-            type="text"
-            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
-            placeholder="Ex.: Rádio Sucesso"
+          <a
+            href="#cadastro"
+            class="btn bg-purple-600 hover:bg-purple-500"
           >
-
-
-          <label class="text-xs text-zinc-400">
-            Seu Nome
-          </label>
-
-          <input
-            id="pessoa"
-            type="text"
-            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
-            placeholder="Seu nome completo"
-          >
-
-
-          <label class="text-xs text-zinc-400">
-            E-mail
-          </label>
-
-          <input
-            id="email"
-            type="email"
-            class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4 text-white"
-            placeholder="voce@email.com"
-          >
-
-
-          <label class="text-xs text-zinc-400">
-            Plano selecionado
-          </label>
-
-          <input
-            id="plano"
-            value="30 DIAS - R$30"
-            readonly
-            class="w-full bg-black border border-purple-700 rounded-xl p-3 mt-2 mb-4 text-purple-400 font-bold"
-          >
-
-          <input
-            id="valor"
-            type="hidden"
-            value="30"
-          >
-
-
-          <div class="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 mb-5">
-
-            <p class="text-xs text-zinc-400">
-              Chave PIX:
-            </p>
-
-            <strong class="text-purple-400 text-sm">
-              ${CONFIG.pix}
-            </strong>
-
-          </div>
-
+            Criar minha rádio
+          </a>
 
           <button
-            onclick="openPayment()"
-            class="w-full bg-green-500 hover:bg-green-400 text-black font-black py-3.5 rounded-xl transition"
+            onclick="toggleRadio()"
+            class="btn border border-zinc-700 hover:border-purple-500"
           >
-            <i class="fa-solid fa-qrcode mr-2"></i>
-            IR PARA PAGAMENTO PIX
+            <i class="fa-solid fa-play mr-2"></i>
+            Ouvir rádio
           </button>
 
         </div>
 
       </div>
 
-    </section>
 
+      <div class="card p-7">
 
-    <!-- AFILIADOS -->
+        <div class="bg-black rounded-2xl p-10 text-center">
 
-    <section class="max-w-7xl mx-auto px-5 py-14">
-
-      <div class="bg-[#11111c] border border-purple-900/40 rounded-3xl p-8">
-
-        <div class="flex flex-col lg:flex-row justify-between gap-8">
-
-          <div>
-
-            <div class="inline-flex items-center gap-2 bg-purple-500/10 text-purple-400 px-3 py-1 rounded-full text-xs font-bold uppercase">
-              <i class="fa-solid fa-users"></i>
-              Programa de Afiliados
-            </div>
-
-            <h3 class="text-3xl font-black mt-4">
-              Ganhe dinheiro divulgando
-            </h3>
-
-            <p class="text-zinc-400 text-sm mt-2 max-w-xl">
-              Divulgue a RádioHost através do seu link exclusivo
-              e acompanhe suas indicações.
-            </p>
-
+          <div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-3xl">
+            <i class="fa-solid fa-radio"></i>
           </div>
 
-
-          <div class="bg-zinc-950 border border-zinc-800 p-4 rounded-2xl min-w-[280px]">
-
-            <span class="text-xs text-zinc-500 font-bold uppercase">
-              Seu link
-            </span>
-
-            <div class="flex gap-2 mt-2">
-
-              <input
-                id="linkAfiliado"
-                readonly
-                class="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2 text-xs text-purple-400 w-full"
-              >
-
-              <button
-                onclick="copyAffiliate()"
-                class="bg-purple-600 hover:bg-purple-500 px-4 rounded-lg"
-              >
-                <i class="fa-regular fa-copy"></i>
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <div class="grid md:grid-cols-3 gap-5 mt-8">
-
-          <div class="recurso-item">
-
-            <div class="recurso-icon">
-              <i class="fa-solid fa-rotate"></i>
-            </div>
-
-            <h3>
-              Comissão recorrente
-            </h3>
-
-            <p>
-              Receba comissão enquanto seus indicados
-              permanecerem ativos.
-            </p>
-
-          </div>
-
-
-          <div class="recurso-item">
-
-            <div class="recurso-icon text-green-400">
-              <i class="fa-solid fa-clock"></i>
-            </div>
-
-            <h3>
-              Crédito automático
-            </h3>
-
-            <p>
-              Acompanhe suas indicações e valores através
-              do sistema.
-            </p>
-
-          </div>
-
-
-          <div class="recurso-item">
-
-            <div class="recurso-icon text-blue-400">
-              <i class="fa-solid fa-wallet"></i>
-            </div>
-
-            <h3>
-              Resgate
-            </h3>
-
-            <p>
-              Use suas comissões para serviços ou solicite
-              resgate quando disponível.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- RECURSOS -->
-
-    <section class="max-w-7xl mx-auto px-5 py-14">
-
-      <div class="text-center mb-10">
-
-        <h3 class="text-3xl font-black">
-          Tudo para sua rádio
-        </h3>
-
-        <p class="text-zinc-500 text-sm mt-2">
-          Uma estrutura simples para começar sua transmissão.
-        </p>
-
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-
-        ${featureCard(
-          "fa-music",
-          "AutoDJ",
-          "Mantenha sua rádio tocando automaticamente."
-        )}
-
-        ${featureCard(
-          "fa-chart-line",
-          "Estatísticas",
-          "Acompanhe ouvintes e desempenho."
-        )}
-
-        ${featureCard(
-          "fa-microphone",
-          "Programação",
-          "Organize sua programação e horários."
-        )}
-
-        ${featureCard(
-          "fa-headphones",
-          "Streaming",
-          "Transmissão online para seus ouvintes."
-        )}
-
-      </div>
-
-    </section>
-
-
-    <footer class="border-t border-zinc-800 mt-10">
-
-      <div class="max-w-7xl mx-auto px-5 py-8 flex flex-col md:flex-row justify-between gap-4">
-
-        <p class="text-xs text-zinc-600">
-          © ${new Date().getFullYear()} RádioHost Premium.
-          Todos os direitos reservados.
-        </p>
-
-        <div class="flex gap-5 text-xs text-zinc-500">
-
-          <a href="#home" class="hover:text-white">
-            Início
-          </a>
-
-          <a href="#planos" class="hover:text-white">
-            Planos
-          </a>
-
-          <a href="#admin" class="hover:text-white">
-            Administração
-          </a>
-
-        </div>
-
-      </div>
-
-    </footer>
-  `;
-
-  updateAffiliateLink();
-}
-
-
-function planCard(name, value, description, featured) {
-
-  return `
-
-    <div
-      class="${
-        featured
-        ? "bg-purple-600 border-purple-400 scale-[1.02]"
-        : "bg-zinc-900 border-zinc-800"
-      } border rounded-2xl p-6 relative"
-    >
-
-      ${
-        featured
-        ? `
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-purple-600 px-3 py-1 rounded-full text-[10px] font-black">
-            MAIS POPULAR
-          </div>
-        `
-        : ""
-      }
-
-      <p class="text-xs font-bold uppercase opacity-70">
-        ${name}
-      </p>
-
-      <div class="flex items-end gap-1 mt-3">
-
-        <span class="text-4xl font-black">
-          ${formatMoney(value)}
-        </span>
-
-      </div>
-
-      <p class="text-sm mt-3 opacity-70">
-        ${description}
-      </p>
-
-      <button
-        onclick="selectPlan('${name} - R$${value}', '${value}')"
-        class="${
-          featured
-          ? "bg-white text-purple-600"
-          : "bg-zinc-800 text-white"
-        } w-full mt-6 py-3 rounded-xl font-bold hover:opacity-90 transition"
-      >
-        Escolher plano
-      </button>
-
-    </div>
-  `;
-}
-
-
-function featureCard(icon, title, description) {
-
-  return `
-
-    <div class="recurso-item">
-
-      <div class="recurso-icon">
-        <i class="fa-solid ${icon}"></i>
-      </div>
-
-      <h3>
-        ${title}
-      </h3>
-
-      <p>
-        ${description}
-      </p>
-
-    </div>
-  `;
-}
-
-
-/* =========================================================
-   AFILIADO
-========================================================= */
-
-function updateAffiliateLink() {
-
-  const input = document.getElementById("linkAfiliado");
-
-  if (!input) return;
-
-  const base =
-    window.location.href.split("#")[0];
-
-  const code =
-    localStorage.getItem("rh_affiliate_code") ||
-    generateId();
-
-  localStorage.setItem(
-    "rh_affiliate_code",
-    code
-  );
-
-  input.value =
-    base + "?ref=" + code;
-}
-
-
-function copyAffiliate() {
-
-  const input =
-    document.getElementById("linkAfiliado");
-
-  navigator.clipboard
-    .writeText(input.value)
-    .then(() => {
-
-      showToast(
-        "Link de afiliado copiado!"
-      );
-
-    });
-}
-
-
-/* =========================================================
-   LOGIN ADMIN
-========================================================= */
-
-function renderAdminLogin() {
-
-  document.getElementById("app").innerHTML = `
-
-    <section class="min-h-[80vh] flex items-center justify-center px-5">
-
-      <div class="w-full max-w-md bg-zinc-900 border border-zinc-800 rounded-3xl p-7">
-
-        <div class="text-center mb-7">
-
-          <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-
-          <h2 class="text-2xl font-black mt-4">
-            Área Administrativa
+          <h2 class="font-black text-2xl mt-5">
+            RádioHost Live
           </h2>
 
-          <p class="text-zinc-500 text-sm mt-1">
-            Acesse o painel da RádioHost
+          <p class="text-zinc-500 text-sm mt-2">
+            Demonstração de streaming
           </p>
+
+          <button
+            onclick="toggleRadio()"
+            class="btn bg-green-500 text-black mt-6 px-8"
+          >
+            <i class="fa-solid fa-play mr-2"></i>
+            OUVIR AGORA
+          </button>
 
         </div>
 
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PLANOS -->
+
+  <section
+    id="planos"
+    class="max-w-7xl mx-auto px-5 py-14"
+  >
+
+    <div class="text-center mb-10">
+
+      <p class="text-purple-400 text-xs font-bold uppercase">
+        Planos
+      </p>
+
+      <h2 class="text-4xl font-black mt-2">
+        Escolha seu plano
+      </h2>
+
+    </div>
+
+
+    <div class="grid md:grid-cols-3 gap-5">
+
+      ${plan(
+        "15 DIAS",
+        20,
+        "100 ouvintes"
+      )}
+
+      ${plan(
+        "30 DIAS",
+        30,
+        "500 ouvintes",
+        true
+      )}
+
+      ${plan(
+        "12 MESES",
+        600,
+        "Ouvintes ilimitados"
+      )}
+
+    </div>
+
+  </section>
+
+
+  <!-- CADASTRO -->
+
+  <section
+    id="cadastro"
+    class="max-w-7xl mx-auto px-5 py-14"
+  >
+
+    <div class="grid lg:grid-cols-2 gap-10">
+
+      <div>
+
+        <p class="text-purple-400 text-xs font-bold uppercase">
+          Comece agora
+        </p>
+
+        <h2 class="text-4xl font-black mt-2">
+          Crie sua rádio
+        </h2>
+
+        <p class="text-zinc-400 mt-4 text-sm leading-7">
+          Cadastre sua rádio e depois acompanhe
+          o status pelo painel.
+        </p>
+
+        <div class="mt-8 space-y-4">
+
+          ${check("Streaming online")}
+          ${check("Painel da rádio")}
+          ${check("AutoDJ")}
+          ${check("Programa de afiliados")}
+
+        </div>
+
+      </div>
+
+
+      <div class="card p-6">
+
+        <h3 class="font-black text-xl mb-5">
+          Dados da rádio
+        </h3>
+
+        <label class="text-xs text-zinc-400">
+          Nome da Rádio
+        </label>
+
+        <input
+          id="radioName"
+          class="input mt-2 mb-4"
+          placeholder="Rádio Sucesso"
+        >
+
+        <label class="text-xs text-zinc-400">
+          Seu Nome
+        </label>
+
+        <input
+          id="personName"
+          class="input mt-2 mb-4"
+          placeholder="Seu nome"
+        >
 
         <label class="text-xs text-zinc-400">
           E-mail
         </label>
 
         <input
-          id="adminEmail"
+          id="radioEmail"
           type="email"
-          class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-4"
-          placeholder="admin@radiohost.com.br"
+          class="input mt-2 mb-4"
+          placeholder="voce@email.com"
         >
 
-
         <label class="text-xs text-zinc-400">
-          Senha
+          Plano
         </label>
 
         <input
-          id="adminPass"
-          type="password"
-          class="w-full bg-black border border-zinc-800 rounded-xl p-3 mt-2 mb-5"
-          placeholder="••••••••"
-          onkeydown="if(event.key==='Enter') adminLogin()"
+          id="planInput"
+          readonly
+          value="30 DIAS - R$30"
+          class="input mt-2 mb-4 text-purple-400 font-bold"
         >
 
+        <input
+          id="valueInput"
+          type="hidden"
+          value="30"
+        >
 
         <button
-          onclick="adminLogin()"
-          class="w-full bg-purple-600 hover:bg-purple-500 py-3 rounded-xl font-black"
+          onclick="openPayment()"
+          class="btn w-full bg-green-500 text-black"
         >
-          ENTRAR
+          <i class="fa-solid fa-qrcode mr-2"></i>
+          PAGAR COM PIX
         </button>
 
+      </div>
 
-        <p class="text-[10px] text-zinc-600 text-center mt-5">
-          Demonstração local. Em produção, autenticação deve ser feita no servidor.
+    </div>
+
+  </section>
+
+
+  <!-- AFILIADOS -->
+
+  <section
+    id="afiliados"
+    class="max-w-7xl mx-auto px-5 py-14"
+  >
+
+    <div class="card p-8">
+
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+
+        <div>
+
+          <span class="text-purple-400 text-xs font-bold uppercase">
+            Programa de afiliados
+          </span>
+
+          <h2 class="text-4xl font-black mt-3">
+            Ganhe 20% de comissão
+          </h2>
+
+          <p class="text-zinc-400 mt-4 text-sm leading-7">
+            Crie sua conta de afiliado, receba seu link exclusivo,
+            divulgue a RádioHost e acompanhe suas indicações
+            e comissões pelo painel.
+          </p>
+
+          <a
+            href="#afiliado-cadastro"
+            class="btn inline-block bg-purple-600 mt-6"
+          >
+            Quero ser afiliado
+          </a>
+
+        </div>
+
+
+        <div class="grid sm:grid-cols-2 gap-4">
+
+          ${affiliateFeature(
+            "fa-link",
+            "Link exclusivo",
+            "Cada afiliado recebe seu próprio link."
+          )}
+
+          ${affiliateFeature(
+            "fa-percent",
+            "20% de comissão",
+            "Comissão calculada sobre as vendas."
+          )}
+
+          ${affiliateFeature(
+            "fa-chart-line",
+            "Dashboard",
+            "Acompanhe suas indicações."
+          )}
+
+          ${affiliateFeature(
+            "fa-wallet",
+            "PIX",
+            "Cadastre sua chave PIX."
+          )}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RODAPÉ -->
+
+  <footer class="border-t border-zinc-800">
+
+    <div class="max-w-7xl mx-auto px-5 py-8 flex flex-col md:flex-row justify-between gap-4">
+
+      <p class="text-xs text-zinc-600">
+        © ${new Date().getFullYear()} RádioHost Premium
+      </p>
+
+      <div class="flex gap-5 text-xs text-zinc-500">
+
+        <a href="#admin">
+          Administração
+        </a>
+
+        <a href="#afiliado-login">
+          Afiliados
+        </a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  `;
+
+}
+
+
+/* =========================================================
+   COMPONENTES HOME
+========================================================= */
+
+function plan(name,value,description,featured=false) {
+
+  return `
+
+  <div class="
+    ${featured
+      ? "bg-purple-600 border-purple-400"
+      : "card"
+    }
+    p-6 relative
+  ">
+
+    ${
+      featured
+      ? `
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-purple-600 text-[10px] font-black px-3 py-1 rounded-full">
+          MAIS POPULAR
+        </div>
+      `
+      : ""
+    }
+
+    <p class="text-xs font-bold uppercase opacity-70">
+      ${name}
+    </p>
+
+    <div class="text-4xl font-black mt-3">
+      ${money(value)}
+    </div>
+
+    <p class="text-sm opacity-70 mt-2">
+      ${description}
+    </p>
+
+    <button
+      onclick="choosePlan('${name} - R$${value}','${value}')"
+      class="
+        w-full mt-6 py-3 rounded-xl font-bold
+        ${featured
+          ? "bg-white text-purple-600"
+          : "bg-zinc-800"
+        }
+      "
+    >
+      Escolher
+    </button>
+
+  </div>
+
+  `;
+
+}
+
+
+function check(text) {
+
+  return `
+
+  <div class="flex items-center gap-3">
+
+    <i class="fa-solid fa-check text-green-400"></i>
+
+    <span class="text-sm text-zinc-400">
+      ${text}
+    </span>
+
+  </div>
+
+  `;
+
+}
+
+
+function affiliateFeature(icon,title,text) {
+
+  return `
+
+  <div class="bg-black border border-zinc-800 rounded-xl p-5">
+
+    <i class="fa-solid ${icon} text-purple-400 text-xl"></i>
+
+    <h4 class="font-bold mt-3">
+      ${title}
+    </h4>
+
+    <p class="text-xs text-zinc-500 mt-2">
+      ${text}
+    </p>
+
+  </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PAGAMENTO RÁDIO
+========================================================= */
+
+function openPayment() {
+
+  const name =
+    document.getElementById("radioName").value.trim();
+
+  const person =
+    document.getElementById("personName").value.trim();
+
+  const email =
+    document.getElementById("radioEmail").value.trim();
+
+  if (!name || !person || !email) {
+
+    toast(
+      "Preencha todos os dados.",
+      true
+    );
+
+    return;
+
+  }
+
+  if (!email.includes("@")) {
+
+    toast(
+      "Digite um e-mail válido.",
+      true
+    );
+
+    return;
+
+  }
+
+  document.getElementById("payPlan").textContent =
+    selectedPlan.name;
+
+  document.getElementById("payValue").textContent =
+    money(selectedPlan.value);
+
+  document.getElementById("pixDisplay").textContent =
+    CONFIG.pix;
+
+  document
+    .getElementById("paymentModal")
+    .classList.add("active");
+
+}
+
+
+function closePayment() {
+
+  document
+    .getElementById("paymentModal")
+    .classList.remove("active");
+
+}
+
+
+function copyPIX() {
+
+  navigator.clipboard
+    .writeText(CONFIG.pix)
+    .then(() => toast("PIX copiado!"));
+
+}
+
+
+function finishPayment() {
+
+  const radio = {
+
+    id:id(),
+
+    radio:
+      document.getElementById("radioName").value.trim(),
+
+    responsavel:
+      document.getElementById("personName").value.trim(),
+
+    email:
+      document.getElementById("radioEmail").value.trim(),
+
+    plano:selectedPlan.name,
+
+    valor:selectedPlan.value,
+
+    status:"Aguardando confirmação",
+
+    afiliado:getReferralCode(),
+
+    criadoEm:new Date().toLocaleString("pt-BR")
+
+  };
+
+
+  radios.push(radio);
+
+  /*
+    Se existir um afiliado responsável pela indicação,
+    cria uma comissão pendente.
+  */
+
+  if (radio.afiliado) {
+
+    const affiliate =
+      affiliates.find(
+        a => a.code === radio.afiliado
+      );
+
+    if (affiliate) {
+
+      commissions.push({
+
+        id:id(),
+
+        affiliateId:affiliate.id,
+
+        radioId:radio.id,
+
+        customer:radio.radio,
+
+        amount:
+          Number(radio.valor) *
+          CONFIG.commission,
+
+        status:"Pendente",
+
+        createdAt:
+          new Date().toLocaleString("pt-BR")
+
+      });
+
+    }
+
+  }
+
+
+  saveAll();
+
+  closePayment();
+
+  toast(
+    "Cadastro realizado com sucesso!"
+  );
+
+  setTimeout(() => {
+
+    location.hash =
+      "painel=" + radio.id;
+
+  }, 1000);
+
+}
+
+
+/* =========================================================
+   REFERÊNCIA DE AFILIADO
+========================================================= */
+
+function getReferralCode() {
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  return params.get("ref") || null;
+
+}
+
+
+/* =========================================================
+   CADASTRO DE AFILIADO
+========================================================= */
+
+function renderAffiliateRegister() {
+
+  document.getElementById("app").innerHTML = `
+
+  <section class="min-h-[75vh] flex items-center justify-center px-5 py-12">
+
+    <div class="w-full max-w-lg card p-7">
+
+      <div class="text-center mb-7">
+
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
+          <i class="fa-solid fa-users"></i>
+        </div>
+
+        <h2 class="text-2xl font-black mt-4">
+          Criar conta de afiliado
+        </h2>
+
+        <p class="text-zinc-500 text-sm mt-2">
+          Ganhe 20% indicando novos clientes.
         </p>
 
       </div>
 
-    </section>
+
+      <input
+        id="affName"
+        class="input mb-3"
+        placeholder="Seu nome"
+      >
+
+      <input
+        id="affEmail"
+        type="email"
+        class="input mb-3"
+        placeholder="Seu e-mail"
+      >
+
+      <input
+        id="affPassword"
+        type="password"
+        class="input mb-3"
+        placeholder="Crie uma senha"
+      >
+
+      <input
+        id="affPix"
+        class="input mb-4"
+        placeholder="Sua chave PIX"
+      >
+
+      <button
+        onclick="registerAffiliate()"
+        class="btn w-full bg-purple-600"
+      >
+        CRIAR MINHA CONTA
+      </button>
+
+
+      <p class="text-center text-xs text-zinc-500 mt-5">
+
+        Já possui conta?
+
+        <a
+          href="#afiliado-login"
+          class="text-purple-400"
+        >
+          Entrar
+        </a>
+
+      </p>
+
+    </div>
+
+  </section>
+
   `;
+
+}
+
+
+function registerAffiliate() {
+
+  const name =
+    document.getElementById("affName").value.trim();
+
+  const email =
+    document.getElementById("affEmail").value.trim();
+
+  const password =
+    document.getElementById("affPassword").value;
+
+  const pix =
+    document.getElementById("affPix").value.trim();
+
+
+  if (!name || !email || !password || !pix) {
+
+    toast(
+      "Preencha todos os campos.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (
+    affiliates.some(
+      a =>
+        a.email.toLowerCase() ===
+        email.toLowerCase()
+    )
+  ) {
+
+    toast(
+      "Este e-mail já está cadastrado.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  const affiliate = {
+
+    id:id(),
+
+    name,
+
+    email,
+
+    password,
+
+    pix,
+
+    code:
+      "RH" +
+      Math.random()
+        .toString(36)
+        .substring(2,8)
+        .toUpperCase(),
+
+    status:"Ativo",
+
+    createdAt:
+      new Date().toLocaleString("pt-BR")
+
+  };
+
+
+  affiliates.push(affiliate);
+
+  saveAll();
+
+  sessionStorage.setItem(
+    "rh_affiliate_id",
+    affiliate.id
+  );
+
+  currentAffiliate =
+    affiliate.id;
+
+  toast(
+    "Conta criada com sucesso!"
+  );
+
+  setTimeout(() => {
+
+    location.hash =
+      "afiliado-dashboard";
+
+  }, 700);
+
+}
+
+
+/* =========================================================
+   LOGIN AFILIADO
+========================================================= */
+
+function renderAffiliateLogin() {
+
+  document.getElementById("app").innerHTML = `
+
+  <section class="min-h-[75vh] flex items-center justify-center px-5">
+
+    <div class="w-full max-w-md card p-7">
+
+      <div class="text-center mb-7">
+
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-600 flex items-center justify-center text-2xl">
+          <i class="fa-solid fa-user-tie"></i>
+        </div>
+
+        <h2 class="text-2xl font-black mt-4">
+          Área do Afiliado
+        </h2>
+
+        <p class="text-zinc-500 text-sm mt-2">
+          Acesse seu painel
+        </p>
+
+      </div>
+
+
+      <input
+        id="loginAffEmail"
+        type="email"
+        class="input mb-3"
+        placeholder="Seu e-mail"
+      >
+
+      <input
+        id="loginAffPassword"
+        type="password"
+        class="input mb-5"
+        placeholder="Sua senha"
+        onkeydown="if(event.key==='Enter') affiliateLogin()"
+      >
+
+
+      <button
+        onclick="affiliateLogin()"
+        class="btn w-full bg-purple-600"
+      >
+        ENTRAR
+      </button>
+
+
+      <p class="text-center text-xs text-zinc-500 mt-5">
+
+        Ainda não sou afiliado.
+
+        <a
+          href="#afiliado-cadastro"
+          class="text-purple-400"
+        >
+          Criar conta
+        </a>
+
+      </p>
+
+    </div>
+
+  </section>
+
+  `;
+
+}
+
+
+function affiliateLogin() {
+
+  const email =
+    document
+      .getElementById("loginAffEmail")
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById("loginAffPassword")
+      .value;
+
+
+  const affiliate =
+    affiliates.find(
+      a =>
+        a.email.toLowerCase() ===
+        email.toLowerCase() &&
+        a.password === password
+    );
+
+
+  if (!affiliate) {
+
+    toast(
+      "E-mail ou senha incorretos.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (affiliate.status !== "Ativo") {
+
+    toast(
+      "Sua conta está bloqueada.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  currentAffiliate =
+    affiliate.id;
+
+  sessionStorage.setItem(
+    "rh_affiliate_id",
+    affiliate.id
+  );
+
+
+  location.hash =
+    "afiliado-dashboard";
+
+}
+
+
+/* =========================================================
+   PAINEL AFILIADO
+========================================================= */
+
+function renderAffiliateDashboard() {
+
+  const affiliate =
+    affiliates.find(
+      a => a.id === currentAffiliate
+    );
+
+
+  if (!affiliate) {
+
+    location.hash =
+      "afiliado-login";
+
+    return;
+
+  }
+
+
+  const myCommissions =
+    commissions.filter(
+      c =>
+        c.affiliateId ===
+        affiliate.id
+    );
+
+
+  const pending =
+    myCommissions
+      .filter(c => c.status === "Pendente")
+      .reduce(
+        (sum,c) => sum + Number(c.amount),
+        0
+      );
+
+
+  const approved =
+    myCommissions
+      .filter(c => c.status === "Aprovada")
+      .reduce(
+        (sum,c) => sum + Number(c.amount),
+        0
+      );
+
+
+  const paid =
+    myCommissions
+      .filter(c => c.status === "Paga")
+      .reduce(
+        (sum,c) => sum + Number(c.amount),
+        0
+      );
+
+
+  const referrals =
+    radios.filter(
+      r =>
+        r.afiliado ===
+        affiliate.code
+    ).length;
+
+
+  const link =
+    window.location.href.split("#")[0] +
+    "?ref=" +
+    affiliate.code;
+
+
+  document.getElementById("app").innerHTML = `
+
+  <section class="max-w-7xl mx-auto px-5 py-10">
+
+    <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
+
+      <div>
+
+        <p class="text-xs text-purple-400 font-bold uppercase">
+          Painel de afiliado
+        </p>
+
+        <h1 class="text-3xl font-black mt-1">
+          Olá, ${escapeHTML(affiliate.name)}
+        </h1>
+
+      </div>
+
+
+      <button
+        onclick="affiliateLogout()"
+        class="btn border border-zinc-700"
+      >
+        <i class="fa-solid fa-right-from-bracket mr-2"></i>
+        Sair
+      </button>
+
+    </div>
+
+
+    <!-- LINK -->
+
+    <div class="card p-6 mb-6">
+
+      <p class="text-xs text-zinc-500 uppercase font-bold">
+        Seu link exclusivo
+      </p>
+
+      <div class="flex flex-col md:flex-row gap-3 mt-3">
+
+        <input
+          id="affiliateLink"
+          readonly
+          value="${link}"
+          class="input text-purple-400"
+        >
+
+        <button
+          onclick="copyAffiliateLink()"
+          class="btn bg-purple-600 md:w-40"
+        >
+          <i class="fa-regular fa-copy mr-2"></i>
+          Copiar
+        </button>
+
+      </div>
+
+      <p class="text-xs text-zinc-600 mt-3">
+        Código: ${affiliate.code}
+      </p>
+
+    </div>
+
+
+    <!-- ESTATÍSTICAS -->
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      ${affiliateStat(
+        "Indicações",
+        referrals,
+        "fa-users",
+        "text-purple-400"
+      )}
+
+      ${affiliateStat(
+        "Pendente",
+        money(pending),
+        "fa-clock",
+        "text-yellow-400"
+      )}
+
+      ${affiliateStat(
+        "Aprovado",
+        money(approved),
+        "fa-circle-check",
+        "text-green-400"
+      )}
+
+      ${affiliateStat(
+        "Pago",
+        money(paid),
+        "fa-wallet",
+        "text-blue-400"
+      )}
+
+    </div>
+
+
+    <!-- SAQUE -->
+
+    <div class="grid lg:grid-cols-2 gap-6 mt-6">
+
+      <div class="card p-6">
+
+        <h3 class="font-black text-lg">
+          Solicitar saque
+        </h3>
+
+        <p class="text-zinc-500 text-sm mt-2">
+          Saldo aprovado:
+          <strong class="text-green-400">
+            ${money(approved)}
+          </strong>
+        </p>
+
+
+        <input
+          id="withdrawAmount"
+          type="number"
+          min="1"
+          step="0.01"
+          class="input mt-5"
+          placeholder="Valor do saque"
+        >
+
+
+        <input
+          id="withdrawPix"
+          class="input mt-3"
+          value="${escapeHTML(affiliate.pix)}"
+          placeholder="Chave PIX"
+        >
+
+
+        <button
+          onclick="requestWithdrawal()"
+          class="btn w-full bg-green-500 text-black mt-4"
+        >
+          SOLICITAR SAQUE
+        </button>
+
+      </div>
+
+
+      <div class="card p-6">
+
+        <h3 class="font-black text-lg">
+          Seus dados
+        </h3>
+
+        <div class="mt-5 space-y-3">
+
+          ${dataRow("Nome",affiliate.name)}
+
+          ${dataRow("E-mail",affiliate.email)}
+
+          ${dataRow("PIX",affiliate.pix)}
+
+          ${dataRow("Status",affiliate.status)}
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- COMISSÕES -->
+
+    <div class="card mt-6 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Histórico de comissões
+        </h3>
+
+      </div>
+
+
+      ${
+        myCommissions.length === 0
+
+        ? `
+          <div class="p-8 text-center text-zinc-600">
+            Nenhuma comissão registrada.
+          </div>
+        `
+
+        : `
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-sm">
+
+            <thead>
+
+              <tr class="text-xs text-zinc-500 text-left">
+
+                <th class="p-4">Cliente</th>
+                <th class="p-4">Comissão</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Data</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${myCommissions.map(c => `
+
+                <tr class="border-t border-zinc-800">
+
+                  <td class="p-4">
+                    ${escapeHTML(c.customer)}
+                  </td>
+
+                  <td class="p-4 text-green-400 font-bold">
+                    ${money(c.amount)}
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(c.status)}
+                  </td>
+
+                  <td class="p-4 text-zinc-500">
+                    ${escapeHTML(c.createdAt)}
+                  </td>
+
+                </tr>
+
+              `).join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        `
+      }
+
+    </div>
+
+
+    <!-- SAQUES -->
+
+    <div class="card mt-6 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Meus saques
+        </h3>
+
+      </div>
+
+
+      ${
+        withdrawals.filter(
+          w =>
+            w.affiliateId ===
+            affiliate.id
+        ).length === 0
+
+        ? `
+          <div class="p-8 text-center text-zinc-600">
+            Nenhum saque solicitado.
+          </div>
+        `
+
+        : `
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-sm">
+
+            <thead>
+
+              <tr class="text-xs text-zinc-500 text-left">
+
+                <th class="p-4">Valor</th>
+                <th class="p-4">PIX</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Data</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${withdrawals
+                .filter(
+                  w =>
+                    w.affiliateId ===
+                    affiliate.id
+                )
+                .map(w => `
+
+                  <tr class="border-t border-zinc-800">
+
+                    <td class="p-4 font-bold">
+                      ${money(w.amount)}
+                    </td>
+
+                    <td class="p-4 text-zinc-400">
+                      ${escapeHTML(w.pix)}
+                    </td>
+
+                    <td class="p-4">
+                      ${escapeHTML(w.status)}
+                    </td>
+
+                    <td class="p-4 text-zinc-500">
+                      ${escapeHTML(w.createdAt)}
+                    </td>
+
+                  </tr>
+
+                `)
+                .join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+        `
+      }
+
+    </div>
+
+  </section>
+
+  `;
+
+}
+
+
+function affiliateStat(
+  title,
+  value,
+  icon,
+  color
+) {
+
+  return `
+
+  <div class="stat">
+
+    <div class="flex justify-between">
+
+      <div>
+
+        <p class="text-xs text-zinc-500">
+          ${title}
+        </p>
+
+        <strong class="text-2xl font-black block mt-1">
+          ${value}
+        </strong>
+
+      </div>
+
+      <i class="fa-solid ${icon} ${color} text-xl"></i>
+
+    </div>
+
+  </div>
+
+  `;
+
+}
+
+
+function dataRow(label,value) {
+
+  return `
+
+  <div class="bg-black border border-zinc-800 rounded-xl p-3">
+
+    <p class="text-[10px] uppercase text-zinc-600">
+      ${label}
+    </p>
+
+    <p class="text-sm mt-1 break-all">
+      ${escapeHTML(value)}
+    </p>
+
+  </div>
+
+  `;
+
+}
+
+
+/* =========================================================
+   SAQUE AFILIADO
+========================================================= */
+
+function requestWithdrawal() {
+
+  const affiliate =
+    affiliates.find(
+      a => a.id === currentAffiliate
+    );
+
+  if (!affiliate) return;
+
+
+  const amount =
+    Number(
+      document
+        .getElementById("withdrawAmount")
+        .value
+    );
+
+
+  const pix =
+    document
+      .getElementById("withdrawPix")
+      .value
+      .trim();
+
+
+  const approved =
+    commissions
+      .filter(
+        c =>
+          c.affiliateId === affiliate.id &&
+          c.status === "Aprovada"
+      )
+      .reduce(
+        (sum,c) =>
+          sum + Number(c.amount),
+        0
+      );
+
+
+  if (!amount || amount <= 0) {
+
+    toast(
+      "Digite um valor válido.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (amount > approved) {
+
+    toast(
+      "Saldo aprovado insuficiente.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  if (!pix) {
+
+    toast(
+      "Informe sua chave PIX.",
+      true
+    );
+
+    return;
+
+  }
+
+
+  withdrawals.push({
+
+    id:id(),
+
+    affiliateId:
+      affiliate.id,
+
+    amount,
+
+    pix,
+
+    status:"Solicitado",
+
+    createdAt:
+      new Date().toLocaleString("pt-BR")
+
+  });
+
+
+  /*
+    Marca comissões aprovadas como
+    vinculadas ao saque.
+  */
+
+  let remaining = amount;
+
+  commissions.forEach(c => {
+
+    if (
+      c.affiliateId === affiliate.id &&
+      c.status === "Aprovada" &&
+      remaining > 0
+    ) {
+
+      const value =
+        Number(c.amount);
+
+      if (value <= remaining) {
+
+        c.status = "Paga";
+
+        remaining -= value;
+
+      }
+
+    }
+
+  });
+
+
+  affiliate.pix = pix;
+
+  saveAll();
+
+  toast(
+    "Solicitação de saque enviada."
+  );
+
+  renderAffiliateDashboard();
+
+}
+
+
+/* =========================================================
+   LINK AFILIADO
+========================================================= */
+
+function copyAffiliateLink() {
+
+  const input =
+    document.getElementById("affiliateLink");
+
+  navigator.clipboard
+    .writeText(input.value)
+    .then(
+      () => toast("Link copiado!")
+    );
+
+}
+
+
+function affiliateLogout() {
+
+  sessionStorage.removeItem(
+    "rh_affiliate_id"
+  );
+
+  currentAffiliate = null;
+
+  location.hash =
+    "afiliado-login";
+
+}
+
+
+/* =========================================================
+   ADMIN
+========================================================= */
+
+function renderAdminLogin() {
+
+  document.getElementById("app").innerHTML = `
+
+  <section class="min-h-[75vh] flex items-center justify-center px-5">
+
+    <div class="w-full max-w-md card p-7">
+
+      <div class="text-center mb-7">
+
+        <div class="w-16 h-16 mx-auto rounded-2xl bg-purple-600 flex items-center justify-center">
+          <i class="fa-solid fa-lock text-xl"></i>
+        </div>
+
+        <h2 class="text-2xl font-black mt-4">
+          Administração
+        </h2>
+
+      </div>
+
+
+      <input
+        id="adminEmail"
+        class="input mb-3"
+        type="email"
+        placeholder="E-mail"
+      >
+
+      <input
+        id="adminPassword"
+        class="input mb-5"
+        type="password"
+        placeholder="Senha"
+        onkeydown="if(event.key==='Enter') adminLogin()"
+      >
+
+      <button
+        onclick="adminLogin()"
+        class="btn w-full bg-purple-600"
+      >
+        ENTRAR
+      </button>
+
+    </div>
+
+  </section>
+
+  `;
+
 }
 
 
@@ -1362,7 +2178,8 @@ function adminLogin() {
     document.getElementById("adminEmail").value.trim();
 
   const password =
-    document.getElementById("adminPass").value;
+    document.getElementById("adminPassword").value;
+
 
   if (
     email === CONFIG.adminEmail &&
@@ -1374,29 +2191,35 @@ function adminLogin() {
       "true"
     );
 
-    location.hash = "admin-dashboard";
+    location.hash =
+      "admin-dashboard";
 
   } else {
 
-    showToast(
-      "E-mail ou senha incorretos.",
-      "error"
+    toast(
+      "Login administrativo inválido.",
+      true
     );
 
   }
+
 }
 
 
 function adminLogout() {
 
-  sessionStorage.removeItem("rh_admin");
+  sessionStorage.removeItem(
+    "rh_admin"
+  );
 
-  location.hash = "admin";
+  location.hash =
+    "admin";
+
 }
 
 
 /* =========================================================
-   DASHBOARD ADMIN
+   DASHBOARD ADMINISTRATIVO
 ========================================================= */
 
 function renderAdminDashboard() {
@@ -1405,477 +2228,768 @@ function renderAdminDashboard() {
     sessionStorage.getItem("rh_admin") !== "true"
   ) {
 
-    location.hash = "admin";
+    location.hash =
+      "admin";
+
     return;
+
   }
 
-  const active = radios.filter(
-    r => r.status === "Ativa"
-  ).length;
 
-  const pending = radios.filter(
-    r => r.status === "Aguardando confirmação"
-  ).length;
+  const activeRadios =
+    radios.filter(
+      r => r.status === "Ativa"
+    ).length;
 
-  const revenue = radios.reduce(
-    (total, radio) => total + Number(radio.valor || 0),
-    0
-  );
+
+  const pendingRadios =
+    radios.filter(
+      r =>
+        r.status ===
+        "Aguardando confirmação"
+    ).length;
 
 
   document.getElementById("app").innerHTML = `
 
-    <section class="max-w-7xl mx-auto px-5 py-10">
+  <section class="max-w-7xl mx-auto px-5 py-10">
 
-      <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
+    <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
 
-        <div>
+      <div>
 
-          <p class="text-xs text-purple-400 font-bold uppercase">
-            Dashboard
-          </p>
+        <p class="text-xs text-purple-400 uppercase font-bold">
+          Painel administrativo
+        </p>
 
-          <h2 class="text-3xl font-black mt-1">
-            Administração
-          </h2>
+        <h1 class="text-3xl font-black">
+          RádioHost
+        </h1>
+
+      </div>
+
+      <button
+        onclick="adminLogout()"
+        class="btn border border-zinc-700"
+      >
+        Sair
+      </button>
+
+    </div>
+
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+      ${adminStat("Rádios",radios.length,"fa-radio")}
+
+      ${adminStat("Ativas",activeRadios,"fa-circle-check")}
+
+      ${adminStat("Pendentes",pendingRadios,"fa-clock")}
+
+      ${adminStat("Afiliados",affiliates.length,"fa-users")}
+
+    </div>
+
+
+    <!-- RÁDIOS -->
+
+    <div class="card mt-7 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Rádios cadastradas
+        </h3>
+
+      </div>
+
+      ${
+        radios.length === 0
+
+        ? `
+          <div class="p-8 text-center text-zinc-600">
+            Nenhuma rádio.
+          </div>
+        `
+
+        : `
+
+        <div class="overflow-x-auto">
+
+          <table class="w-full text-sm">
+
+            <thead>
+
+              <tr class="text-xs text-zinc-500 text-left">
+
+                <th class="p-4">Rádio</th>
+                <th class="p-4">Cliente</th>
+                <th class="p-4">Plano</th>
+                <th class="p-4">Afiliado</th>
+                <th class="p-4">Status</th>
+                <th class="p-4">Ação</th>
+
+              </tr>
+
+            </thead>
+
+            <tbody>
+
+              ${radios.map(r => `
+
+                <tr class="border-t border-zinc-800">
+
+                  <td class="p-4 font-bold">
+                    ${escapeHTML(r.radio)}
+                  </td>
+
+                  <td class="p-4 text-zinc-400">
+                    ${escapeHTML(r.responsavel)}
+                    <br>
+                    <span class="text-xs">
+                      ${escapeHTML(r.email)}
+                    </span>
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(r.plano)}
+                  </td>
+
+                  <td class="p-4 text-purple-400">
+                    ${r.afiliado || "-"}
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(r.status)}
+                  </td>
+
+                  <td class="p-4">
+
+                    ${
+                      r.status !== "Ativa"
+
+                      ? `
+                        <button
+                          onclick="activateRadio('${r.id}')"
+                          class="bg-green-600 px-3 py-1 rounded-lg text-xs"
+                        >
+                          Ativar
+                        </button>
+                      `
+                      : ""
+                    }
+
+                    <button
+                      onclick="deleteRadio('${r.id}')"
+                      class="bg-red-600/20 text-red-400 px-3 py-1 rounded-lg text-xs ml-1"
+                    >
+                      Excluir
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              `).join("")}
+
+            </tbody>
+
+          </table>
 
         </div>
 
-        <button
-          onclick="adminLogout()"
-          class="border border-zinc-700 px-5 py-2 rounded-xl text-sm hover:bg-zinc-800"
-        >
-          <i class="fa-solid fa-right-from-bracket mr-2"></i>
-          Sair
-        </button>
+        `
+      }
+
+    </div>
+
+
+    <!-- AFILIADOS -->
+
+    <div class="card mt-7 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Afiliados
+        </h3>
 
       </div>
 
+      <div class="overflow-x-auto">
 
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <table class="w-full text-sm">
 
-        ${adminStat(
-          "Rádios",
-          radios.length,
-          "fa-radio",
-          "text-purple-400"
-        )}
+          <thead>
 
-        ${adminStat(
-          "Ativas",
-          active,
-          "fa-circle-check",
-          "text-green-400"
-        )}
+            <tr class="text-xs text-zinc-500 text-left">
 
-        ${adminStat(
-          "Pendentes",
-          pending,
-          "fa-clock",
-          "text-yellow-400"
-        )}
+              <th class="p-4">Nome</th>
+              <th class="p-4">E-mail</th>
+              <th class="p-4">Código</th>
+              <th class="p-4">Status</th>
 
-        ${adminStat(
-          "Valor cadastrado",
-          formatMoney(revenue),
-          "fa-wallet",
-          "text-blue-400"
-        )}
+            </tr>
 
-      </div>
+          </thead>
 
+          <tbody>
 
-      <div class="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden">
+            ${
+              affiliates.length === 0
 
-        <div class="p-5 border-b border-zinc-800 flex justify-between items-center">
+              ? `
+                <tr>
+                  <td colspan="4" class="p-8 text-center text-zinc-600">
+                    Nenhum afiliado.
+                  </td>
+                </tr>
+              `
 
-          <h3 class="font-black">
-            Rádios cadastradas
-          </h3>
+              : affiliates.map(a => `
 
-          <span class="text-xs text-zinc-500">
-            ${radios.length} cadastro(s)
-          </span>
+                <tr class="border-t border-zinc-800">
 
-        </div>
+                  <td class="p-4">
+                    ${escapeHTML(a.name)}
+                  </td>
 
+                  <td class="p-4 text-zinc-400">
+                    ${escapeHTML(a.email)}
+                  </td>
 
-        ${
-          radios.length === 0
+                  <td class="p-4 text-purple-400 font-bold">
+                    ${a.code}
+                  </td>
 
-          ? `
-            <div class="p-10 text-center text-zinc-600">
-              Nenhuma rádio cadastrada.
-            </div>
-          `
+                  <td class="p-4">
 
-          : `
-            <div class="overflow-x-auto">
+                    <button
+                      onclick="toggleAffiliate('${a.id}')"
+                      class="px-3 py-1 rounded-lg text-xs ${
+                        a.status === "Ativo"
+                        ? "bg-green-500/10 text-green-400"
+                        : "bg-red-500/10 text-red-400"
+                      }"
+                    >
+                      ${a.status}
+                    </button>
 
-              <table class="w-full text-sm">
+                  </td>
 
-                <thead class="bg-black/30">
+                </tr>
 
-                  <tr class="text-left text-xs text-zinc-500">
+              `).join("")
+            }
 
-                    <th class="p-4">Rádio</th>
-                    <th class="p-4">Responsável</th>
-                    <th class="p-4">Plano</th>
-                    <th class="p-4">Status</th>
-                    <th class="p-4">Ações</th>
+          </tbody>
 
-                  </tr>
-
-                </thead>
-
-                <tbody>
-
-                  ${radios.map(radio => `
-
-                    <tr class="border-t border-zinc-800">
-
-                      <td class="p-4 font-bold">
-                        ${escapeHTML(radio.radio)}
-                      </td>
-
-                      <td class="p-4 text-zinc-400">
-                        ${escapeHTML(radio.responsavel)}
-                        <br>
-                        <span class="text-xs">
-                          ${escapeHTML(radio.email)}
-                        </span>
-                      </td>
-
-                      <td class="p-4">
-                        ${escapeHTML(radio.plano)}
-                      </td>
-
-                      <td class="p-4">
-
-                        <span class="px-2 py-1 rounded-full text-[10px] font-bold
-                          ${
-                            radio.status === "Ativa"
-                            ? "bg-green-500/10 text-green-400"
-                            : "bg-yellow-500/10 text-yellow-400"
-                          }
-                        ">
-                          ${escapeHTML(radio.status)}
-                        </span>
-
-                      </td>
-
-                      <td class="p-4">
-
-                        <div class="flex gap-2">
-
-                          ${
-                            radio.status !== "Ativa"
-
-                            ? `
-                              <button
-                                onclick="activateRadio('${radio.id}')"
-                                class="bg-green-600 hover:bg-green-500 px-3 py-1.5 rounded-lg text-xs"
-                              >
-                                Ativar
-                              </button>
-                            `
-                            : ""
-                          }
-
-                          <button
-                            onclick="deleteRadio('${radio.id}')"
-                            class="bg-red-600/20 text-red-400 hover:bg-red-600 hover:text-white px-3 py-1.5 rounded-lg text-xs"
-                          >
-                            Excluir
-                          </button>
-
-                        </div>
-
-                      </td>
-
-                    </tr>
-
-                  `).join("")}
-
-                </tbody>
-
-              </table>
-
-            </div>
-          `
-        }
+        </table>
 
       </div>
 
-    </section>
+    </div>
+
+
+    <!-- COMISSÕES -->
+
+    <div class="card mt-7 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Comissões
+        </h3>
+
+      </div>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full text-sm">
+
+          <thead>
+
+            <tr class="text-xs text-zinc-500 text-left">
+
+              <th class="p-4">Afiliado</th>
+              <th class="p-4">Cliente</th>
+              <th class="p-4">Comissão</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Ação</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              commissions.length === 0
+
+              ? `
+                <tr>
+                  <td colspan="5" class="p-8 text-center text-zinc-600">
+                    Nenhuma comissão.
+                  </td>
+                </tr>
+              `
+
+              : commissions.map(c => {
+
+                const a =
+                  affiliates.find(
+                    x =>
+                      x.id ===
+                      c.affiliateId
+                  );
+
+                return `
+
+                <tr class="border-t border-zinc-800">
+
+                  <td class="p-4">
+                    ${a ? escapeHTML(a.name) : "-"}
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(c.customer)}
+                  </td>
+
+                  <td class="p-4 text-green-400 font-bold">
+                    ${money(c.amount)}
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(c.status)}
+                  </td>
+
+                  <td class="p-4">
+
+                    ${
+                      c.status === "Pendente"
+
+                      ? `
+                        <button
+                          onclick="approveCommission('${c.id}')"
+                          class="bg-green-600 px-3 py-1 rounded-lg text-xs"
+                        >
+                          Aprovar
+                        </button>
+                      `
+
+                      : "-"
+                    }
+
+                  </td>
+
+                </tr>
+
+                `;
+
+              }).join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+
+    <!-- SAQUES -->
+
+    <div class="card mt-7 overflow-hidden">
+
+      <div class="p-5 border-b border-zinc-800">
+
+        <h3 class="font-black">
+          Solicitações de saque
+        </h3>
+
+      </div>
+
+      <div class="overflow-x-auto">
+
+        <table class="w-full text-sm">
+
+          <thead>
+
+            <tr class="text-xs text-zinc-500 text-left">
+
+              <th class="p-4">Afiliado</th>
+              <th class="p-4">Valor</th>
+              <th class="p-4">PIX</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Ação</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody>
+
+            ${
+              withdrawals.length === 0
+
+              ? `
+                <tr>
+                  <td colspan="5" class="p-8 text-center text-zinc-600">
+                    Nenhuma solicitação.
+                  </td>
+                </tr>
+              `
+
+              : withdrawals.map(w => {
+
+                const a =
+                  affiliates.find(
+                    x =>
+                      x.id ===
+                      w.affiliateId
+                  );
+
+                return `
+
+                <tr class="border-t border-zinc-800">
+
+                  <td class="p-4">
+                    ${a ? escapeHTML(a.name) : "-"}
+                  </td>
+
+                  <td class="p-4 text-green-400 font-bold">
+                    ${money(w.amount)}
+                  </td>
+
+                  <td class="p-4 text-zinc-400">
+                    ${escapeHTML(w.pix)}
+                  </td>
+
+                  <td class="p-4">
+                    ${escapeHTML(w.status)}
+                  </td>
+
+                  <td class="p-4">
+
+                    ${
+                      w.status === "Solicitado"
+
+                      ? `
+                        <button
+                          onclick="payWithdrawal('${w.id}')"
+                          class="bg-green-600 px-3 py-1 rounded-lg text-xs"
+                        >
+                          Marcar como pago
+                        </button>
+                      `
+
+                      : "-"
+                    }
+
+                  </td>
+
+                </tr>
+
+                `;
+
+              }).join("")
+            }
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+  </section>
+
   `;
+
 }
 
 
 function adminStat(
   title,
   value,
-  icon,
-  color
+  icon
 ) {
 
   return `
 
-    <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5">
+  <div class="stat">
 
-      <div class="flex justify-between">
+    <div class="flex justify-between">
 
-        <div>
+      <div>
 
-          <p class="text-xs text-zinc-500">
-            ${title}
-          </p>
+        <p class="text-xs text-zinc-500">
+          ${title}
+        </p>
 
-          <strong class="text-2xl font-black mt-1 block">
-            ${value}
-          </strong>
-
-        </div>
-
-        <i class="fa-solid ${icon} ${color} text-xl"></i>
+        <strong class="text-2xl font-black block mt-1">
+          ${value}
+        </strong>
 
       </div>
 
+      <i class="fa-solid ${icon} text-purple-400"></i>
+
     </div>
+
+  </div>
+
   `;
+
 }
 
 
-function activateRadio(id) {
+/* =========================================================
+   ADMIN - RÁDIOS
+========================================================= */
 
-  const radio = radios.find(
-    r => r.id === id
-  );
+function activateRadio(idRadio) {
+
+  const radio =
+    radios.find(
+      r => r.id === idRadio
+    );
 
   if (!radio) return;
 
   radio.status = "Ativa";
 
-  saveData();
+  /*
+    Ao ativar a rádio, a comissão do afiliado
+    continua pendente até aprovação administrativa.
+  */
 
-  showToast(
-    "Rádio ativada com sucesso!"
+  saveAll();
+
+  toast(
+    "Rádio ativada."
   );
 
   renderAdminDashboard();
+
 }
 
 
-function deleteRadio(id) {
+function deleteRadio(idRadio) {
 
   if (
     !confirm(
-      "Tem certeza que deseja excluir esta rádio?"
+      "Excluir esta rádio?"
     )
-  ) {
-    return;
-  }
+  ) return;
 
-  radios = radios.filter(
-    r => r.id !== id
-  );
+  radios =
+    radios.filter(
+      r => r.id !== idRadio
+    );
 
-  saveData();
-
-  showToast(
-    "Rádio excluída."
-  );
+  saveAll();
 
   renderAdminDashboard();
+
+}
+
+
+function toggleAffiliate(idAffiliate) {
+
+  const affiliate =
+    affiliates.find(
+      a => a.id === idAffiliate
+    );
+
+  if (!affiliate) return;
+
+  affiliate.status =
+    affiliate.status === "Ativo"
+    ? "Bloqueado"
+    : "Ativo";
+
+  saveAll();
+
+  renderAdminDashboard();
+
 }
 
 
 /* =========================================================
-   PAINEL DO CLIENTE
+   ADMIN - COMISSÕES
 ========================================================= */
 
-function renderPainel(id) {
+function approveCommission(idCommission) {
 
-  const radio = radios.find(
-    r => r.id === id
+  const commission =
+    commissions.find(
+      c =>
+        c.id === idCommission
+    );
+
+  if (!commission) return;
+
+  commission.status =
+    "Aprovada";
+
+  saveAll();
+
+  toast(
+    "Comissão aprovada."
   );
+
+  renderAdminDashboard();
+
+}
+
+
+/* =========================================================
+   ADMIN - SAQUES
+========================================================= */
+
+function payWithdrawal(idWithdrawal) {
+
+  const withdrawal =
+    withdrawals.find(
+      w =>
+        w.id === idWithdrawal
+    );
+
+  if (!withdrawal) return;
+
+  withdrawal.status =
+    "Pago";
+
+  saveAll();
+
+  toast(
+    "Saque marcado como pago."
+  );
+
+  renderAdminDashboard();
+
+}
+
+
+/* =========================================================
+   PAINEL CLIENTE
+========================================================= */
+
+function renderClientPanel(idRadio) {
+
+  const radio =
+    radios.find(
+      r =>
+        r.id === idRadio
+    );
 
   if (!radio) {
 
-    document.getElementById("app").innerHTML = `
-
-      <section class="min-h-[70vh] flex items-center justify-center">
-
-        <div class="text-center">
-
-          <i class="fa-solid fa-circle-exclamation text-5xl text-red-400"></i>
-
-          <h2 class="text-2xl font-black mt-5">
-            Rádio não encontrada
-          </h2>
-
-          <a
-            href="#home"
-            class="inline-block mt-5 bg-purple-600 px-5 py-3 rounded-xl"
-          >
-            Voltar
-          </a>
-
-        </div>
-
-      </section>
-
-    `;
+    location.hash =
+      "home";
 
     return;
+
   }
 
 
   document.getElementById("app").innerHTML = `
 
-    <section class="max-w-7xl mx-auto px-5 py-10">
+  <section class="max-w-7xl mx-auto px-5 py-12">
 
-      <div class="flex flex-col md:flex-row justify-between gap-5 mb-8">
+    <div class="flex justify-between items-center mb-7">
 
-        <div>
+      <div>
 
-          <p class="text-xs text-purple-400 uppercase font-bold">
-            Painel da rádio
-          </p>
+        <p class="text-xs text-purple-400 uppercase font-bold">
+          Painel da rádio
+        </p>
 
-          <h2 class="text-3xl font-black mt-1">
-            ${escapeHTML(radio.radio)}
-          </h2>
+        <h1 class="text-3xl font-black">
+          ${escapeHTML(radio.radio)}
+        </h1>
 
-        </div>
+      </div>
 
-        <div>
+      <span class="bg-green-500/10 text-green-400 px-3 py-2 rounded-full text-xs">
+        ${escapeHTML(radio.status)}
+      </span>
 
-          <span class="px-3 py-2 rounded-full text-xs font-bold
-            ${
-              radio.status === "Ativa"
-              ? "bg-green-500/10 text-green-400"
-              : "bg-yellow-500/10 text-yellow-400"
-            }
-          ">
-            <i class="fa-solid fa-circle text-[7px] mr-2"></i>
-            ${escapeHTML(radio.status)}
-          </span>
+    </div>
+
+
+    <div class="grid md:grid-cols-3 gap-5">
+
+      <div class="md:col-span-2 card p-6">
+
+        <h3 class="font-black text-xl">
+          Informações da rádio
+        </h3>
+
+        <div class="grid sm:grid-cols-2 gap-4 mt-5">
+
+          ${info("Responsável",radio.responsavel)}
+
+          ${info("E-mail",radio.email)}
+
+          ${info("Plano",radio.plano)}
+
+          ${info("Status",radio.status)}
 
         </div>
 
       </div>
 
 
-      <div class="grid md:grid-cols-3 gap-5">
+      <div class="card p-6">
 
-        <div class="md:col-span-2 bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-
-          <h3 class="font-black text-lg mb-5">
-            Informações
-          </h3>
-
-          <div class="grid sm:grid-cols-2 gap-4">
-
-            ${infoBox(
-              "Responsável",
-              radio.responsavel
-            )}
-
-            ${infoBox(
-              "E-mail",
-              radio.email
-            )}
-
-            ${infoBox(
-              "Plano",
-              radio.plano
-            )}
-
-            ${infoBox(
-              "Cadastro",
-              radio.criadoEm
-            )}
-
-          </div>
-
+        <div class="w-14 h-14 bg-purple-600 rounded-xl flex items-center justify-center text-xl">
+          <i class="fa-solid fa-radio"></i>
         </div>
 
+        <h3 class="font-black mt-5">
+          Streaming
+        </h3>
 
-        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-6">
-
-          <div class="w-16 h-16 rounded-2xl bg-purple-600 flex items-center justify-center text-2xl mb-5">
-            <i class="fa-solid fa-radio"></i>
-          </div>
-
-          <h3 class="font-black">
-            Sua rádio
-          </h3>
-
-          <p class="text-zinc-500 text-sm mt-2">
-            Player de demonstração disponível no topo.
-          </p>
-
-          <button
-            onclick="toggleTopPlay()"
-            class="w-full mt-5 bg-green-500 text-black py-3 rounded-xl font-black"
-          >
-            <i class="fa-solid fa-play mr-2"></i>
-            OUVIR RÁDIO
-          </button>
-
-        </div>
+        <button
+          onclick="toggleRadio()"
+          class="btn w-full bg-green-500 text-black mt-5"
+        >
+          OUVIR RÁDIO
+        </button>
 
       </div>
 
+    </div>
 
-      <div class="mt-6 bg-purple-500/10 border border-purple-500/20 rounded-2xl p-5">
+  </section>
 
-        <div class="flex gap-4">
-
-          <i class="fa-solid fa-circle-info text-purple-400 text-xl"></i>
-
-          <div>
-
-            <h4 class="font-bold">
-              Próximo passo
-            </h4>
-
-            <p class="text-sm text-zinc-400 mt-1">
-              ${
-                radio.status === "Ativa"
-                ? "Sua rádio está ativa."
-                : "Seu cadastro foi recebido e está aguardando a confirmação do pagamento."
-              }
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
   `;
+
 }
 
 
-function infoBox(label, value) {
+function info(label,value) {
 
   return `
 
-    <div class="bg-black border border-zinc-800 rounded-xl p-4">
+  <div class="bg-black border border-zinc-800 rounded-xl p-4">
 
-      <p class="text-xs text-zinc-500">
-        ${label}
-      </p>
+    <p class="text-xs text-zinc-500">
+      ${label}
+    </p>
 
-      <p class="font-bold text-sm mt-1 break-words">
-        ${escapeHTML(value)}
-      </p>
+    <p class="font-bold text-sm mt-1 break-all">
+      ${escapeHTML(value)}
+    </p>
 
-    </div>
+  </div>
+
   `;
+
 }
 
 
@@ -1886,40 +3000,78 @@ function infoBox(label, value) {
 function router() {
 
   const hash =
-    location.hash.replace("#", "");
+    location.hash.replace("#","");
 
-  if (hash === "admin") {
 
-    renderAdminLogin();
-
-  } else if (hash === "admin-dashboard") {
-
-    renderAdminDashboard();
-
-  } else if (hash.startsWith("painel=")) {
-
-    const id =
-      decodeURIComponent(
-        hash.substring("painel=".length)
-      );
-
-    renderPainel(id);
-
-  } else {
+  if (hash === "") {
 
     renderHome();
 
   }
 
+  else if (hash === "home") {
+
+    renderHome();
+
+  }
+
+  else if (hash === "admin") {
+
+    renderAdminLogin();
+
+  }
+
+  else if (hash === "admin-dashboard") {
+
+    renderAdminDashboard();
+
+  }
+
+  else if (hash === "afiliado-cadastro") {
+
+    renderAffiliateRegister();
+
+  }
+
+  else if (hash === "afiliado-login") {
+
+    renderAffiliateLogin();
+
+  }
+
+  else if (hash === "afiliado-dashboard") {
+
+    renderAffiliateDashboard();
+
+  }
+
+  else if (hash.startsWith("painel=")) {
+
+    renderClientPanel(
+      decodeURIComponent(
+        hash.substring(7)
+      )
+    );
+
+  }
+
+  else {
+
+    renderHome();
+
+  }
+
+
   window.scrollTo({
-    top: 0,
-    behavior: "smooth"
+    top:0,
+    behavior:"smooth"
   });
+
 }
 
 
 /* =========================================================
-   INICIALIZAÇÃO
+   EVENTOS
 ========================================================= */
 
 window.addEventListener(
@@ -1927,19 +3079,12 @@ window.addEventListener(
   router
 );
 
+
 window.addEventListener(
   "DOMContentLoaded",
-  () => {
-
-    router();
-
-  }
+  router
 );
 
-
-/* =========================================================
-   FECHAR MODAL CLICANDO FORA
-========================================================= */
 
 document.addEventListener(
   "click",
@@ -1951,7 +3096,9 @@ document.addEventListener(
     if (
       event.target === modal
     ) {
+
       closePayment();
+
     }
 
   }
