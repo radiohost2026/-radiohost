@@ -1,50 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RádioHost</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RádioHost Premium - Sua Rádio 24h no Ar</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--purple:#7c3aed;--cyan:#00f0ff;--pink:#ff2ea6;--green:#00ff88;--bg:#0f0f0f}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:white;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
+.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.gradient-text{background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+.card{background:#18181b;border:1px solid #27272a;border-radius:18px}
+.input{width:100%;background:#050505;border:1px solid #27272a;border-radius:12px;padding:13px;color:white;outline:none}
+.input:focus{border-color:var(--purple);box-shadow:0 0 0 2px rgba(124,58,237,.15)}
+.btn{border-radius:12px;padding:12px 18px;font-weight:800;transition:.2s;cursor:pointer}
+.btn:hover{transform:translateY(-1px)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:200}
+.modal.active{display:flex}
+.toast{position:fixed;right:20px;bottom:20px;z-index:999;background:#18181b;border:1px solid #3f3f46;padding:14px 18px;border-radius:12px;transform:translateY(120px);opacity:0;transition:.3s}
+.toast.show{transform:translateY(0);opacity:1}
+.stat{background:#18181b;border:1px solid #27272a;border-radius:18px;padding:20px}
+.resource{background:#18181b;border:1px solid #27272a;padding:25px;border-radius:18px;transition:.25s}
+.resource:hover{transform:translateY(-4px);border-color:var(--purple)}
+</style>
 </head>
-<body class="bg-black text-white">
-<header class="p-5 flex justify-between"><b>RÁDIO<span class="text-purple-500">HOST</span></b><a href="#ia" class="bg-purple-600 px-5 py-1 rounded-full text-sm">TESTAR IA</a></header>
-
-<section class="text-center py-16 px-4">
-<h1 class="text-4xl md:text-6xl font-black">SUA RÁDIO ONLINE<br><span class="text-purple-400">24H NO AR</span></h1>
-
-<!-- PLAYER AZURACAST INTEGRADO -->
-<div class="max-w-md mx-auto mt-8 bg-zinc-900 p-5 rounded-2xl border border-zinc-800">
-<p class="text-xs text-zinc-500 mb-2">🔴 AO VIVO - RÁDIOHOST + AZURACAST</p>
-<audio id="radio" controls autoplay class="w-full">
-<source src="https://SEU_AZURACAST_AQUI/radio.mp3" type="audio/mp3">
-</audio>
-<div id="musica" class="mt-3 text-sm text-purple-300">Conectando no AzuraCast...</div>
+<body>
+<header class="sticky top-0 z-50 bg-[#11111c]/95 backdrop-blur border-b border-[#27272a]">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+<a href="#home" class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-pink-500 text-black font-black flex items-center justify-center">R</div>
+<div class="font-black text-lg"><span class="text-cyan-400">RÁDIO</span><span class="text-pink-500">HOST</span></div>
+</a>
+<div class="flex items-center gap-3">
+<nav class="hidden md:flex gap-5 text-xs text-zinc-400">
+<a href="#home" class="hover:text-white">Início</a>
+<a href="#planos" class="hover:text-white">Planos</a>
+<a href="#afiliados" class="hover:text-white">Afiliados</a>
+<a href="#afiliado-login" class="hover:text-white">Área do Afiliado</a>
+</nav>
+<div class="flex items-center gap-2 bg-[#1a1a2e] border border-zinc-700 px-3 py-1.5 rounded-full">
+<div class="dot"></div>
+<button onclick="toggleRadio()" class="bg-green-500 text-black w-7 h-7 rounded-full flex items-center justify-center"><i id="topPlayIcon" class="fa-solid fa-play text-xs"></i></button>
+<span class="text-[10px] font-bold text-green-400">AO VIVO</span>
 </div>
-
-<div id="ia" class="max-w-lg mx-auto mt-12 bg-zinc-900 p-5 rounded-2xl text-left">
-<h3 class="font-bold mb-3">🎙️ Gerador de Vinheta IA (Gemini)</h3>
-<textarea id="txt" class="w-full bg-black border border-zinc-700 rounded p-3 h-20" placeholder="Ex: Você está na melhor, RádioHost!"></textarea>
-<button onclick="gerar()" class="w-full mt-3 bg-purple-600 py-3 rounded-xl font-bold">GERAR LOCUÇÃO</button>
-<audio id="voz" controls class="w-full mt-3 hidden"></audio>
-<p id="st" class="text-xs text-zinc-500 mt-2"></p>
 </div>
-</section>
-
+</div>
+</header>
+<audio id="radioPlayer" preload="none"><source src="https://radio.brazilianwave.com.br/radio.mp3" type="audio/mpeg"></audio>
+<main id="app"></main>
+<div id="toast" class="toast"><div class="flex items-center gap-3"><i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i><span id="toastText">Mensagem</span></div></div>
+<div id="payModal" class="modal"><div class="card p-6 max-w-sm w-full"><h3 class="font-black text-lg mb-2">Finalizar Assinatura</h3><p id="payPlan" class="text-zinc-400 text-sm mb-4"></p><input id="payEmail" class="input mb-3" placeholder="Seu e-mail"><button onclick="confirmPay()" class="btn w-full bg-purple-600 hover:bg-purple-500">PAGAR AGORA</button><button onclick="closeModal('payModal')" class="w-full mt-2 text-xs text-zinc-500">Cancelar</button></div></div>
 <script>
-const AZURA_URL = "https://SEU_AZURACAST_AQUI"; // << TROQUE AQUI SEU LINK
-
-async function gerar(){
- const t=document.getElementById('txt').value; if(!t)return alert('Digite o texto');
- document.getElementById('st').innerText='Gerando...';
- const r=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t})});
- const d=await r.json();
- if(d.error){document.getElementById('st').innerText='Erro: '+d.error; return;}
- document.getElementById('voz').src=d.audio; document.getElementById('voz').classList.remove('hidden');
- document.getElementById('st').innerText='Pronto! Baixe e use no AzuraCast.';
-}
-async function now(){
- try{ const r=await fetch(`${AZURA_URL}/api/nowplaying`); const j=await r.json(); const s=j[0].now_playing.song; document.getElementById('musica').innerText=s.artist+' - '+s.title; }catch(e){ document.getElementById('musica').innerText='Rádio ao vivo tocando'; }
-}
-setInterval(now,10000); now();
+const $=s=>document.querySelector(s);let isPlaying=false;const radio=$('#radioPlayer');
+function toggleRadio(){if(isPlaying){radio.pause();isPlaying=false;$('#topPlayIcon').className='fa-solid fa-play text-xs';showToast('Rádio pausada');}else{radio.play().then(()=>{isPlaying=true;$('#topPlayIcon').className='fa-solid fa-pause text-xs';showToast('Tocando ao vivo!');}).catch(()=>showToast('Clique novamente','error'));}}
+function showToast(msg,type='ok'){$('#toastText').textContent=msg;$('#toastIcon').className=type==='error'?'fa-solid fa-circle-xmark text-red-400':'fa-solid fa-circle-check text-green-400';$('#toast').classList.add('show');setTimeout(()=>$('#toast').classList.remove('show'),3000);}
+function openModal(id){$(`#${id}`).classList.add('active');}function closeModal(id){$(`#${id}`).classList.remove('active');}
+const routes={home:`<section id="home" class="max-w-7xl mx-auto px-4 py-10"><div class="grid md:grid-cols-2 gap-8 items-center"><div><h1 class="text-4xl md:text-6xl font-black leading-tight">SUA RÁDIO ONLINE<br><span class="gradient-text">24H NO AR</span></h1><p class="text-zinc-400 mt-4 text-sm">Player AzuraCast + Hospedagem ilimitada + Gerador de vinhetas com IA Gemini.</p><div class="flex gap-3 mt-6"><button onclick="toggleRadio()" class="btn bg-green-500 text-black"><i class="fa-solid fa-play"></i> OUVIR AGORA</button><a href="#planos" class="btn bg-zinc-800 border border-zinc-700">Ver Planos</a></div><div class="grid grid-cols-3 gap-3 mt-8"><div class="stat"><div class="text-2xl font-black">99.9%</div><div class="text-[10px] text-zinc-500">UPTIME</div></div><div class="stat"><div class="text-2xl font-black">24H</div><div class="text-[10px] text-zinc-500">NO AR</div></div><div class="stat"><div class="text-2xl font-black">∞</div><div class="text-[10px] text-zinc-500">OUVINTES</div></div></div></div><div class="space-y-4"><div class="card p-5"><div class="flex justify-between items-center mb-3"><span class="text-xs font-bold text-zinc-400">PLAYER AO VIVO</span><span class="text-[10px] bg-green-500/20 text-green-400 px-2 py-1 rounded-full">AZURACAST</span></div><div class="bg-black rounded-xl p-4 flex items-center gap-4"><button onclick="toggleRadio()" class="w-12 h-12 bg-white text-black rounded-full flex items-center justify-center"><i id="cardPlay" class="fa-solid fa-play"></i></button><div><div class="font-bold text-sm">Brazilian Wave Radio</div><div class="text-[11px] text-zinc-500">radio.brazilianwave.com.br • Ao vivo</div><div class="text-[10px] text-green-400 mt-1">● Tocando agora</div></div></div><audio controls class="w-full mt-3 rounded-lg"><source src="https://radio.brazilianwave.com.br/radio.mp3" type="audio/mpeg"></audio></div><div class="card p-5"><h3 class="font-bold text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Gerador de Vinheta IA (Gemini)</h3><textarea id="ttsText" class="input h-20 resize-none" placeholder="Ex: Você está na melhor, RádioHost!"></textarea><button id="ttsBtn" onclick="gerarVinheta()" class="btn w-full mt-3 bg-purple-600 hover:bg-purple-500"><i class="fa-solid fa-microphone"></i> GERAR LOCUÇÃO</button><audio id="ttsAudio" controls class="w-full mt-3 hidden"></audio><div id="ttsStatus" class="text-[11px] text-zinc-500 mt-2"></div></div></div></div></section><section id="planos" class="max-w-7xl mx-auto px-4 py-10"><h2 class="text-3xl font-black text-center mb-8">Escolha seu <span class="gradient-text">Plano</span></h2><div class="grid md:grid-cols-3 gap-4"><div class="resource"><h3 class="font-black">START</h3><div class="text-3xl font-black mt-2">R$29<span class="text-sm text-zinc-500">/mês</span></div><ul class="text-xs text-zinc-400 mt-4 space-y-2"><li>✓ 1 Rádio AzuraCast</li><li>✓ Ouvintes ilimitados</li><li>✓ Player HTML5</li></ul><button onclick="openPay('START - R$29')" class="btn w-full mt-5 bg-zinc-800">Assinar</button></div><div class="resource border-purple-500"><h3 class="font-black text-purple-400">PREMIUM ⭐ Mais vendido</h3><div class="text-3xl font-black mt-2">R$49<span class="text-sm text-zinc-500">/mês</span></div><ul class="text-xs text-zinc-400 mt-4 space-y-2"><li>✓ Tudo do Start</li><li>✓ IA de Vinhetas Gemini</li><li>✓ Site Premium</li><li>✓ Suporte 24h</li></ul><button onclick="openPay('PREMIUM - R$49')" class="btn w-full mt-5 bg-purple-600">Assinar Premium</button></div><div class="resource"><h3 class="font-black">PRO</h3><div class="text-3xl font-black mt-2">R$99<span class="text-sm text-zinc-500">/mês</span></div><ul class="text-xs text-zinc-400 mt-4 space-y-2"><li>✓ 5 Rádios</li><li>✓ Revenda</li><li>✓ Domínio próprio</li></ul><button onclick="openPay('PRO - R$99')" class="btn w-full mt-5 bg-zinc-800">Assinar</button></div></div></section>`,afiliados:`<section class="max-w-4xl mx-auto px-4 py-16 text-center"><h2 class="text-4xl font-black">Ganhe <span class="gradient-text">50% de comissão</span></h2><p class="text-zinc-400 mt-3">Indique a RádioHost e receba todo mês.</p><div class="card p-8 mt-8 text-left"><input id="affName" class="input mb-3" placeholder="Seu nome"><input id="affEmail" class="input mb-3" placeholder="Seu e-mail"><button onclick="showToast('Cadastro recebido!')" class="btn w-full bg-pink-600">Quero ser afiliado</button></div></section>`, 'afiliado-login':`<section class="max-w-md mx-auto px-4 py-16"><div class="card p-6"><h2 class="font-black text-xl mb-4">Área do Afiliado</h2><input class="input mb-3" placeholder="E-mail"><input class="input mb-3" type="password" placeholder="Senha"><button onclick="showToast('Login em breve!')" class="btn w-full bg-purple-600">Entrar</button></div></section>`};
+function render(){const hash=location.hash.replace('#','')||'home';$('#app').innerHTML=(routes[hash]||routes.home);const cardPlay=$('#cardPlay');if(cardPlay){cardPlay.className=isPlaying?'fa-solid fa-pause':'fa-solid fa-play';}}
+window.addEventListener('hashchange',render);render();
+function openPay(plan){$('#payPlan').textContent=plan;openModal('payModal');}
+function confirmPay(){const email=$('#payEmail').value;if(!email){showToast('Digite seu e-mail','error');return;}showToast('Redirecionando...');closeModal('payModal');}
+async function gerarVinheta(){const text=$('#ttsText').value.trim();if(!text){showToast('Digite o texto','error');return;}const btn=$('#ttsBtn'),status=$('#ttsStatus'),audio=$('#ttsAudio');btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> GERANDO...';btn.disabled=true;status.textContent='Conectando na IA...';try{const r=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erro');audio.src=data.audio;audio.classList.remove('hidden');audio.play();status.textContent='Pronto!';showToast('Vinheta pronta!');}catch(e){status.textContent='Erro: '+e.message;showToast(e.message,'error');}finally{btn.innerHTML='<i class="fa-solid fa-microphone"></i> GERAR LOCUÇÃO';btn.disabled=false;}}
 </script>
 </body>
 </html>
