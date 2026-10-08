@@ -1,96 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RádioHost Premium</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RádioHost - Hospedagem de Rádio Web Profissional | Crie Sua Rádio Online</title>
+<meta name="description" content="Crie sua rádio web sem anúncios na RádioHost. Painel completo, AutoDJ com 20 mil músicas grátis, suporte WhatsApp. Planos a partir de R$20. Streaming estável.">
+<meta name="keywords" content="hospedagem de rádio, criar rádio online, rádio web, streaming de áudio, painel rádio, autodj, rádio online sem anúncios">
 <style>
-:root{--purple:#7c3aed;--cyan:#00f0ff;--pink:#ff2ea6;--green:#00ff88;--bg:#0f0f0f}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:white;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
-.dot{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 8px var(--green);animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.gradient-text{background:linear-gradient(90deg,var(--cyan),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
-.card{background:#18181b;border:1px solid #27272a;border-radius:18px}
-.input{width:100%;background:#050505;border:1px solid #27272a;border-radius:12px;padding:13px;color:white;outline:none}
-.btn{border-radius:12px;padding:12px 18px;font-weight:800;transition:.2s;cursor:pointer}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;z-index:200}
-.modal.active{display:flex}
-.toast{position:fixed;right:20px;bottom:20px;z-index:999;background:#18181b;border:1px solid #3f3f46;padding:14px 18px;border-radius:12px;transform:translateY(120px);opacity:0;transition:.3s}
-.toast.show{transform:translateY(0);opacity:1}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+body{background:#0a0a0a;color:#fff;line-height:1.6;}
+.hero{background:linear-gradient(135deg,#ff006a 0%,#ff8a00 100%);padding:80px 20px;text-align:center;}
+.hero h1{font-size:2.8em;font-weight:900;margin-bottom:15px;}
+.badge{background:#fff;color:#ff006a;padding:8px 18px;border-radius:30px;font-weight:800;display:inline-block;margin-bottom:20px;}
+.btn{display:inline-block;background:#25D366;color:#fff;padding:18px 35px;border-radius:50px;font-weight:800;font-size:1.2em;text-decoration:none;box-shadow:0 10px 30px rgba(0,0,0,0.3);}
+.features{padding:60px 20px;max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;}
+.card{background:#161616;border:1px solid #222;padding:25px;border-radius:15px;}
+.card h3{color:#ff8a00;margin-bottom:10px;}
+.plans{background:#111;padding:70px 20px;text-align:center;}
+.plans h2{font-size:2.5em;margin-bottom:40px;}
+.plan-grid{max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
+.plan{background:#1c1c1c;border:2px solid #333;border-radius:20px;padding:35px 25px;position:relative;}
+.plan.popular{border-color:#ff006a;transform:scale(1.05);background:#21161c;}
+.plan.popular::before{content:"MAIS VENDIDO 🔥";position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:#ff006a;color:#fff;padding:5px 15px;border-radius:20px;font-size:0.8em;font-weight:800;}
+.price{font-size:3em;font-weight:900;color:#ff8a00;margin:15px 0;}
+.price small{font-size:0.4em;color:#aaa;}
+.plan ul{list-style:none;text-align:left;margin:20px 0;}
+.plan li{margin:8px 0;}
+.footer{padding:40px 20px;text-align:center;color:#777;background:#000;}
+.whats-float{position:fixed;bottom:20px;right:20px;background:#25D366;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;text-decoration:none;z-index:999;}
 </style>
 </head>
 <body>
-<header class="sticky top-0 z-50 bg-[#11111c]/95 backdrop-blur border-b border-[#27272a]">
-<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-<a href="#home" class="flex items-center gap-3"><div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-pink-500 text-black font-black flex items-center justify-center">R</div><div class="font-black text-lg"><span class="text-cyan-400">RÁDIO</span><span class="text-pink-500">HOST</span></div></a>
-<div class="flex items-center gap-3"><div class="flex items-center gap-2 bg-[#1a1a2e] border border-zinc-700 px-3 py-1.5 rounded-full"><div class="dot"></div><button onclick="toggleRadio()" class="bg-green-500 text-black w-7 h-7 rounded-full flex items-center justify-center"><i id="topPlayIcon" class="fa-solid fa-play text-xs"></i></button><span class="text-[10px] font-bold text-green-400">AO VIVO</span></div></div>
+<a class="whats-float" href="https://wa.me/5517981135119?text=Olá!%20Quero%20criar%20minha%20rádio%20na%20RádioHost" target="_blank">💬</a>
+<section class="hero">
+<div class="badge">SEM ANÚNCIOS • 100% SEU NOME</div>
+<h1>🎙️ RÁDIOHOST<br>CRIE SUA RÁDIO WEB PROFISSIONAL</h1>
+<p>Tenha sua própria rádio online no ar em 5 minutos. Sem anúncios, com seu nome, seu link e seu app.</p><br>
+<a class="btn" href="https://wa.me/5517981135119?text=Olá!%20Quero%20criar%20minha%20rádio%20na%20RádioHost" target="_blank">🚀 CRIAR MINHA RÁDIO AGORA</a>
+</section>
+<section class="features">
+<div class="card"><h3>✅ Painel Completo</h3><p>IP + Porta + Senha. Gerencie de qualquer lugar.</p></div>
+<div class="card"><h3>🎵 AutoDJ 20 MIL Músicas</h3><p>Sertanejo, Pagode, Gospel, Hits, Forró...</p></div>
+<div class="card"><h3>🎧 Vinhetas + Hora Certa</h3><p>Pacote profissional incluso.</p></div>
+<div class="card"><h3>📻 Players HTTPS + Site</h3><p>Player seguro pra site e Chrome.</p></div>
+<div class="card"><h3>📱 App da sua Rádio</h3><p>Sua rádio com seu nome na Play Store.</p></div>
+<div class="card"><h3>💬 Suporte WhatsApp</h3><p>Suporte humano rápido: (17) 98113-5119</p></div>
+</section>
+<section class="plans">
+<h2>💰 Escolha seu Plano</h2>
+<div class="plan-grid">
+<div class="plan"><h3>📻 15 dias</h3><div class="price">R$20<small>/15 dias</small></div><ul><li>Painel Completo</li><li>AutoDJ Ilimitado</li><li>20 Mil Músicas</li></ul><a class="btn" href="https://wa.me/5517981135119?text=Quero%20plano%2015%20dias%20R$20" style="padding:12px 20px;">Quero Esse</a></div>
+<div class="plan popular"><h3>🔥 30 dias</h3><div class="price">R$30<small>/30 dias</small></div><ul><li>Tudo do anterior</li><li>Player HTTPS</li><li>Sem anúncios</li><li>Ativação 5 min</li></ul><a class="btn" href="https://wa.me/5517981135119?text=Quero%20plano%2030%20dias%20R$30%20mais%20vendido" style="padding:12px 20px;">Quero o Mais Vendido</a></div>
+<div class="plan"><h3>💎 12 meses</h3><div class="price">R$600<small>/12 meses</small></div><ul><li>Tudo ilimitado</li><li>Economia de R$240</li><li>Suporte VIP</li></ul><a class="btn" href="https://wa.me/5517981135119?text=Quero%20plano%20anual%20R$600" style="padding:12px 20px;background:#ff006a;">Quero Anual</a></div>
 </div>
-</header>
-<audio id="radioPlayer" preload="none"><source src="https://radio.brazilianwave.com.br/radio.mp3" type="audio/mpeg"></audio>
-<main id="app"></main>
-<div id="toast" class="toast"><div class="flex items-center gap-3"><i id="toastIcon" class="fa-solid fa-circle-check text-green-400"></i><span id="toastText">Mensagem</span></div></div>
-<div id="paymentModal" class="modal"><div class="w-full max-w-md card p-6"><div class="flex justify-between items-center mb-6"><div><h2 class="text-xl font-black">Pagamento PIX</h2></div><button onclick="closePayment()"><i class="fa-solid fa-xmark text-xl text-zinc-500"></i></button></div><div class="bg-black rounded-xl p-5 mb-5"><div class="flex justify-between mb-3"><span class="text-zinc-500 text-sm">Plano</span><strong id="payPlan"></strong></div><div class="flex justify-between"><span class="text-zinc-500 text-sm">Valor</span><strong id="payValue" class="text-green-400"></strong></div></div><p class="text-xs text-zinc-500 mb-2">Chave PIX</p><div id="pixDisplay" class="bg-black border border-purple-900 rounded-xl p-4 text-center text-purple-400 font-bold break-all"></div><button onclick="copyPIX()" class="btn w-full bg-purple-600 mt-3">Copiar PIX</button><button onclick="sendWhatsAppProof()" class="btn w-full bg-green-500 text-black mt-3">ENVIAR COMPROVANTE NO WHATSAPP</button></div></div>
-<script>
-const CONFIG={adminEmail:"admin@radiohost.com.br",adminPassword:"clans123",pix:"radioclansweb@gmail.com",whatsapp:"5517981135119",commission:0.20,stream:"https://radio.brazilianwave.com.br/radio.mp3"};
-let radios=JSON.parse(localStorage.getItem("rh_radios")||"[]");let affiliates=JSON.parse(localStorage.getItem("rh_affiliates")||"[]");let commissions=JSON.parse(localStorage.getItem("rh_commissions")||"[]");let withdrawals=JSON.parse(localStorage.getItem("rh_withdrawals")||"[]");
-let selectedPlan={name:"30 DIAS - R$30",value:30};let currentAffiliate=sessionStorage.getItem("rh_affiliate_id")||null;
-function saveAll(){localStorage.setItem("rh_radios",JSON.stringify(radios));localStorage.setItem("rh_affiliates",JSON.stringify(affiliates));localStorage.setItem("rh_commissions",JSON.stringify(commissions));localStorage.setItem("rh_withdrawals",JSON.stringify(withdrawals));}
-function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8);}
-function money(v){return Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});}
-function escapeHTML(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");}
-function toast(m,e=false){const b=document.getElementById("toast"),t=document.getElementById("toastText"),i=document.getElementById("toastIcon");t.textContent=m;i.className=e?"fa-solid fa-circle-xmark text-red-400":"fa-solid fa-circle-check text-green-400";b.classList.add("show");setTimeout(()=>b.classList.remove("show"),3000);}
-let playing=false;function toggleRadio(){const p=document.getElementById("radioPlayer"),ic=document.getElementById("topPlayIcon");if(!playing){p.play().then(()=>{playing=true;ic.className="fa-solid fa-pause text-xs";toast("Tocando ao vivo!");}).catch(()=>toast("Não foi possível iniciar.",true));}else{p.pause();playing=false;ic.className="fa-solid fa-play text-xs";}}
-function choosePlan(n,v){selectedPlan={name:n,value:Number(v)};const pl=document.getElementById("planInput"),vl=document.getElementById("valueInput");if(pl)pl.value=n;if(vl)vl.value=v;toast("Plano: "+n);document.getElementById("cadastro")?.scrollIntoView({behavior:"smooth"});}
-function renderHome(){document.getElementById("app").innerHTML=`<section class="max-w-7xl mx-auto px-5 py-14"><div class="grid lg:grid-cols-2 gap-12 items-center"><div><div class="inline-flex items-center gap-2 bg-purple-600/10 text-purple-400 px-3 py-1 rounded-full text-xs"><span class="dot"></span>AZURACAST ONLINE</div><h1 class="text-5xl md:text-6xl font-black leading-tight mt-5">SUA RÁDIO<br><span class="gradient-text">ONLINE PROFISSIONAL</span></h1><div class="flex flex-wrap gap-3 mt-7"><a href="#cadastro" class="btn bg-purple-600">Criar minha rádio</a><button onclick="toggleRadio()" class="btn border border-zinc-700">Ouvir rádio</button></div></div><div class="space-y-4"><div class="card p-7"><div class="bg-black rounded-2xl p-8 text-center"><div class="w-24 h-24 mx-auto rounded-full bg-gradient-to-br from-purple-600 to-pink-500 flex items-center justify-center text-3xl"><i class="fa-solid fa-radio"></i></div><h2 class="font-black text-2xl mt-5">RádioHost Live</h2><button onclick="toggleRadio()" class="btn bg-green-500 text-black mt-6 px-8">OUVIR AGORA</button><audio controls class="w-full mt-4"><source src="https://radio.brazilianwave.com.br/radio.mp3"></audio></div></div><div class="card p-5"><h3 class="font-bold text-sm mb-2"><i class="fa-solid fa-wand-magic-sparkles text-purple-400"></i> Gerador de Vinheta IA</h3><textarea id="ttsText" class="input h-20 resize-none" placeholder="Ex: Você está na melhor, RádioHost!"></textarea><button id="ttsBtn" onclick="gerarVinheta()" class="btn w-full mt-3 bg-purple-600">GERAR LOCUÇÃO</button><audio id="ttsAudio" controls class="w-full mt-3 hidden"></audio><div id="ttsStatus" class="text-[11px] text-zinc-500 mt-2"></div></div></div></div></section><section id="planos" class="max-w-7xl mx-auto px-5 py-14"><div class="text-center mb-10"><h2 class="text-4xl font-black">Escolha seu plano</h2></div><div class="grid md:grid-cols-3 gap-5"><div class="card p-6"><p class="text-xs font-bold">15 DIAS</p><div class="text-4xl font-black mt-3">${money(20)}</div><button onclick="choosePlan('15 DIAS - R$20','20')" class="w-full mt-6 py-3 rounded-xl font-bold bg-zinc-800">Escolher</button></div><div class="bg-purple-600 p-6 rounded-2xl relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-purple-600 text-[10px] font-black px-3 py-1 rounded-full">MAIS POPULAR</div><p class="text-xs font-bold">30 DIAS</p><div class="text-4xl font-black mt-3">${money(30)}</div><button onclick="choosePlan('30 DIAS - R$30','30')" class="w-full mt-6 py-3 rounded-xl font-bold bg-white text-purple-600">Escolher</button></div><div class="card p-6"><p class="text-xs font-bold">12 MESES</p><div class="text-4xl font-black mt-3">${money(600)}</div><button onclick="choosePlan('12 MESES - R$600','600')" class="w-full mt-6 py-3 rounded-xl font-bold bg-zinc-800">Escolher</button></div></div></section><section id="cadastro" class="max-w-7xl mx-auto px-5 py-14"><div class="card p-6"><h3 class="font-black text-xl mb-5">Dados da rádio</h3><label class="text-xs text-zinc-400">Nome da Rádio</label><input id="radioName" class="input mt-2 mb-4" placeholder="Rádio Sucesso"><label class="text-xs text-zinc-400">Seu Nome</label><input id="personName" class="input mt-2 mb-4" placeholder="Seu nome"><label class="text-xs text-zinc-400">E-mail</label><input id="radioEmail" type="email" class="input mt-2 mb-4" placeholder="voce@email.com"><label class="text-xs text-zinc-400">Plano</label><input id="planInput" readonly value="30 DIAS - R$30" class="input mt-2 mb-4 text-purple-400 font-bold"><input id="valueInput" type="hidden" value="30"><button onclick="openPayment()" class="btn w-full bg-green-500 text-black">PAGAR COM PIX</button></div></section>`;}
-function openPayment(){const n=document.getElementById("radioName").value.trim(),p=document.getElementById("personName").value.trim(),e=document.getElementById("radioEmail").value.trim();if(!n||!p||!e){toast("Preencha todos os dados.",true);return;}document.getElementById("payPlan").textContent=selectedPlan.name;document.getElementById("payValue").textContent=money(selectedPlan.value);document.getElementById("pixDisplay").textContent=CONFIG.pix;document.getElementById("paymentModal").classList.add("active");}
-function closePayment(){document.getElementById("paymentModal").classList.remove("active");}
-function copyPIX(){navigator.clipboard.writeText(CONFIG.pix).then(()=>toast("PIX copiado!"));}
-function sendWhatsAppProof(){
-  const rn=document.getElementById("radioName").value.trim(),pn=document.getElementById("personName").value.trim(),em=document.getElementById("radioEmail").value.trim();
-  const isOwner = em.toLowerCase()==="radioclansweb@gmail.com" || em.toLowerCase()==="admin@radiohost.com.br" || rn.toLowerCase().includes("clans") || rn.toLowerCase().includes("clãns");
-  const statusInicial = isOwner? "Ativa" : "Aguardando confirmação";
-  const radio={id:id(),radio:rn,responsavel:pn,email:em,plano:selectedPlan.name,valor:selectedPlan.value,status:statusInicial,afiliado:getReferralCode(),criadoEm:new Date().toLocaleString("pt-BR")};
-  radios.push(radio);saveAll();closePayment();
-  if(isOwner){toast("Rádio Clãns ativada automaticamente! (Dono)");setTimeout(()=>{location.hash="painel="+radio.id;},500);return;}
-  const msg=`Olá! Paguei a RádioHost%0A*Plano:* ${encodeURIComponent(radio.plano)} - ${encodeURIComponent(money(radio.valor))}%0A*Rádio:* ${encodeURIComponent(radio.radio)}%0A*Nome:* ${encodeURIComponent(radio.responsavel)}%0A*E-mail:* ${encodeURIComponent(radio.email)}`;
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${msg}`,'_blank');toast("Cadastro criado!");setTimeout(()=>{location.hash="painel="+radio.id;},1500);
-}
-function getReferralCode(){const p=new URLSearchParams(window.location.search);return p.get("ref")||null;}
-function renderAdminLogin(){document.getElementById("app").innerHTML=`<section class="min-h-[75vh] flex items-center justify-center px-5"><div class="w-full max-w-md card p-7"><h2 class="text-2xl font-black">Administração</h2><input id="adminEmail" class="input mt-5 mb-3" type="email" placeholder="E-mail"><input id="adminPassword" class="input mb-5" type="password" placeholder="Senha"><button onclick="adminLogin()" class="btn w-full bg-purple-600">ENTRAR</button></div></section>`;}
-function adminLogin(){const e=document.getElementById("adminEmail").value.trim(),p=document.getElementById("adminPassword").value;if(e===CONFIG.adminEmail&&p===CONFIG.adminPassword){sessionStorage.setItem("rh_admin","true");location.hash="admin-dashboard";}else{toast("Login inválido.",true);}}
-function adminLogout(){sessionStorage.removeItem("rh_admin");location.hash="admin";}
-function renderAdminDashboard(){
- if(sessionStorage.getItem("rh_admin")!=="true"){location.hash="admin";return;}
- const act=radios.filter(r=>r.status==="Ativa").length,pend=radios.filter(r=>r.status==="Aguardando confirmação").length;
- document.getElementById("app").innerHTML=`
- <section class="max-w-7xl mx-auto px-5 py-10">
-  <div class="flex justify-between mb-8"><div><p class="text-xs text-purple-400 font-bold">Painel administrativo</p><h1 class="text-3xl font-black">RádioHost</h1></div><button onclick="adminLogout()" class="btn border border-zinc-700">Sair</button></div>
-  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-   <div class="card p-5"><p class="text-xs text-zinc-400">Rádios</p><p class="text-3xl font-black">${radios.length}</p></div>
-   <div class="card p-5"><p class="text-xs text-zinc-400">Ativas</p><p class="text-3xl font-black text-green-400">${act}</p></div>
-   <div class="card p-5"><p class="text-xs text-zinc-400">Pendentes</p><p class="text-3xl font-black text-yellow-400">${pend}</p></div>
-   <div class="card p-5"><p class="text-xs text-zinc-400">Afiliados</p><p class="text-3xl font-black">${affiliates.length}</p></div>
-  </div>
-  <div class="card mt-6 overflow-hidden">
-   <div class="p-5 border-b border-zinc-800 flex justify-between"><h3 class="font-black">Rádios cadastradas</h3><span class="text-xs text-zinc-500">→ arraste pro lado</span></div>
-   ${radios.length===0?`<div class="p-8 text-center text-zinc-600">Nenhuma rádio.</div>`:`<div class="overflow-x-auto"><table class="w-full text-sm min-w-[650px]"><thead><tr class="text-xs text-zinc-500 text-left bg-black/50"><th class="p-4">Rádio</th><th class="p-4">Cliente</th><th class="p-4">Plano</th><th class="p-4">Status</th><th class="p-4">Ação</th></tr></thead><tbody>${radios.map(r=>`<tr class="border-t border-zinc-800"><td class="p-4 font-bold">${escapeHTML(r.radio)}<br><span class="text-[10px] text-zinc-500">${escapeHTML(r.email)}</span></td><td class="p-4">${escapeHTML(r.responsavel)}</td><td class="p-4">${escapeHTML(r.plano)}<br><span class="text-xs text-green-400">${money(r.valor)}</span></td><td class="p-4"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${r.status==="Ativa"?"bg-green-500/20 text-green-400":"bg-yellow-500/20 text-yellow-400"}">${r.status}</span></td><td class="p-4"><div class="flex gap-2">${r.status!=="Ativa"?`<button onclick="activateRadio('${r.id}')" class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-xs font-black">ATIVAR</button>`:`<span class="text-green-400 text-xs">✓ Ativa</span>`}<button onclick="deleteRadio('${r.id}')" class="bg-red-600/20 text-red-400 px-3 py-2 rounded-lg text-xs">Excluir</button></div></td></tr>`).join("")}</tbody></table></div>`}
-  </div>
-  <div class="mt-6 p-4 bg-purple-900/20 border border-purple-800 rounded-xl text-xs text-zinc-400">Dica: Clique no botão verde <b class="text-green-400">ATIVAR</b> pra aprovar a rádio pendente.</div>
- </section>`;
-}
-function activateRadio(idR){const r=radios.find(x=>x.id===idR);if(!r)return;r.status="Ativa";saveAll();toast("Rádio ativada com sucesso!");renderAdminDashboard();}
-function deleteRadio(idR){if(!confirm("Excluir esta rádio?"))return;radios=radios.filter(x=>x.id!==idR);saveAll();toast("Rádio excluída.");renderAdminDashboard();}
-function renderAffiliateRegister(){document.getElementById("app").innerHTML=`<section class="min-h-[75vh] flex items-center justify-center px-5 py-12"><div class="w-full max-w-lg card p-7"><h2 class="text-2xl font-black">Criar conta de afiliado</h2><input id="affName" class="input mt-5 mb-3" placeholder="Seu nome"><input id="affEmail" type="email" class="input mt-3" placeholder="E-mail"><input id="affPassword" type="password" class="input mt-3" placeholder="Senha"><input id="affPix" class="input mt-4" placeholder="PIX"><button onclick="registerAffiliate()" class="btn w-full bg-purple-600 mt-4">CRIAR CONTA</button></div></section>`;}
-function registerAffiliate(){const n=document.getElementById("affName").value.trim(),e=document.getElementById("affEmail").value.trim(),p=document.getElementById("affPassword").value,x=document.getElementById("affPix").value.trim();if(!n||!e||!p||!x){toast("Preencha tudo.",true);return;}const aff={id:id(),name:n,email:e,password:p,pix:x,code:"RH"+Math.random().toString(36).substring(2,8).toUpperCase(),status:"Ativo"};affiliates.push(aff);saveAll();sessionStorage.setItem("rh_affiliate_id",aff.id);currentAffiliate=aff.id;toast("Conta criada!");setTimeout(()=>location.hash="afiliado-dashboard",700);}
-function renderAffiliateLogin(){document.getElementById("app").innerHTML=`<section class="min-h-[75vh] flex items-center justify-center px-5"><div class="w-full max-w-md card p-7"><h2 class="text-2xl font-black">Área do Afiliado</h2><input id="loginAffEmail" type="email" class="input mt-5 mb-3" placeholder="E-mail"><input id="loginAffPassword" type="password" class="input mt-3" placeholder="Senha"><button onclick="affiliateLogin()" class="btn w-full bg-purple-600 mt-4">ENTRAR</button></div></section>`;}
-function affiliateLogin(){const e=document.getElementById("loginAffEmail").value.trim(),p=document.getElementById("loginAffPassword").value,aff=affiliates.find(a=>a.email.toLowerCase()===e.toLowerCase()&&a.password===p);if(!aff){toast("Login inválido.",true);return;}currentAffiliate=aff.id;sessionStorage.setItem("rh_affiliate_id",aff.id);location.hash="afiliado-dashboard";}
-function renderAffiliateDashboard(){const aff=affiliates.find(a=>a.id===currentAffiliate);if(!aff){location.hash="afiliado-login";return;}document.getElementById("app").innerHTML=`<section class="max-w-7xl mx-auto px-5 py-10"><h1 class="text-3xl font-black">Olá, ${escapeHTML(aff.name)}</h1><div class="card p-6 mt-6"><p>Link: ${window.location.href.split("#")[0]}?ref=${aff.code}</p></div></section>`;}
-function renderClientPanel(idR){const r=radios.find(x=>x.id===idR);if(!r){location.hash="home";return;}document.getElementById("app").innerHTML=`<section class="max-w-7xl mx-auto px-5 py-12"><h1 class="text-3xl font-black">${escapeHTML(r.radio)}</h1><div class="card p-6 mt-5"><p>Status: ${escapeHTML(r.status)}</p></div></section>`;}
-async function gerarVinheta(){const txt=document.getElementById("ttsText")?.value.trim();if(!txt){toast("Digite o texto",true);return;}const btn=document.getElementById("ttsBtn"),st=document.getElementById("ttsStatus"),au=document.getElementById("ttsAudio");btn.innerHTML='GERANDO...';btn.disabled=true;st.textContent='Conectando na IA...';try{const r=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:txt})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Erro');au.src=d.audio;au.classList.remove('hidden');au.play();st.textContent='Pronto!';toast('Vinheta pronta!');}catch(e){st.textContent='Erro: '+e.message;toast(e.message,true);}finally{btn.innerHTML='GERAR LOCUÇÃO';btn.disabled=false;}}
-function router(){const h=location.hash.replace("#","");if(h===""||h==="home")renderHome();else if(h==="admin")renderAdminLogin();else if(h==="admin-dashboard")renderAdminDashboard();else if(h==="afiliado-cadastro")renderAffiliateRegister();else if(h==="afiliado-login")renderAffiliateLogin();else if(h==="afiliado-dashboard")renderAffiliateDashboard();else if(h.startsWith("painel="))renderClientPanel(decodeURIComponent(h.substring(7)));else renderHome();}
-window.addEventListener("hashchange",router);window.addEventListener("DOMContentLoaded",router);
-document.addEventListener("click",e=>{const m=document.getElementById("paymentModal");if(e.target===m)closePayment();});
-</script>
+</section>
+<div class="footer"><p><strong>RádioHost</strong> - Hospedagem de Rádio Web Profissional - (17) 98113-5119</p><p>© 2026 RádioHost</p></div>
 </body>
-</html>
+  </html>
