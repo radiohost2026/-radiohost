@@ -3,131 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RádioHost - Painel Completo</title>
+<title>RádioHost - Painel Completo com Afiliados</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:#080808;color:#fff;padding-top:56px}
-header{background:#111;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:56px;z-index:100;border-bottom:2px solid #ff006a;flex-wrap:wrap;gap:10px}
-.logo{font-weight:900;font-size:1.4em;color:#ff006a}
-.nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.nav a{color:#fff;text-decoration:none;font-weight:700;cursor:pointer;font-size:.9em}
-.nav a.btn-login{background:#ff006a;padding:9px 18px;border-radius:30px}
-.hero{background:#0f0f0f;padding:60px 20px;text-align:center;border-bottom:1px solid #1e1e1e}
-.hero h1{font-size:2em;font-weight:900;color:#fff;max-width:700px;margin:auto;line-height:1.15}
-.hero h1 span{color:#ff006a}
-.badge{background:#1a1a1a;color:#aaa;padding:6px 16px;border-radius:30px;font-size:.8em;border:1px solid #333;display:inline-block;margin-bottom:15px;font-weight:800}
-.btn{display:inline-block;background:#25D366;color:#fff;padding:13px 26px;border-radius:50px;font-weight:800;text-decoration:none;margin:5px;border:none;cursor:pointer;text-align:center}
+body{background:#0a0a0a;color:#fff}
+header{background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;border-bottom:2px solid #ff006a}
+.logo{font-weight:900;font-size:1.5em;color:#ff006a}
+.nav a{color:#fff;text-decoration:none;margin-left:15px;font-weight:700;cursor:pointer}
+.nav a.btn-login{background:#ff006a;padding:10px 20px;border-radius:30px}
+.hero{background:linear-gradient(135deg,#ff006a 0%,#ff8a00 100%);padding:60px 20px;text-align:center}
+.btn{display:inline-block;background:#25D366;color:#fff;padding:15px 30px;border-radius:50px;font-weight:800;text-decoration:none;margin:5px;border:none;cursor:pointer}
 .btn-pink{background:#ff006a}
-.btn-dark{background:#222;border:1px solid #444}
-.section{padding:35px 16px;max-width:1200px;margin:auto}
-.card{background:#151515;border:1px solid #222;padding:18px;border-radius:16px;margin-bottom:16px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
-input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #333;background:#1e1e1e;color:#fff}
-.status-ativo{color:#25D366;font-weight:900}
-.status-pendente{color:#ff4444;font-weight:900}
+.btn-outline{background:transparent;border:2px solid #ff006a;color:#ff006a}
+.section{padding:40px 20px;max-width:1200px;margin:auto}
+.card{background:#1a1a1a;border:1px solid #333;padding:20px;border-radius:15px;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px solid #333;background:#222;color:#fff}
+.status-ativo{color:#25D366;font-weight:800}
+.status-pendente{color:#ff4444;font-weight:800;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
 .hidden{display:none}
-.plan{border:2px solid #222;border-radius:20px;padding:24px;text-align:center;background:#151515}
-.plan.popular{border-color:#ff006a;background:#1f1218}
-.price{font-size:2.4em;font-weight:900;color:#fff}
-.price small{font-size:.45em;color:#888}
-.progress{background:#222;height:12px;border-radius:10px;overflow:hidden;margin:10px 0}
-.progress-bar{height:100%;background:linear-gradient(90deg,#ff006a,#ff8a00);width:0%}
+.plan{border:2px solid #333;border-radius:20px;padding:25px;text-align:center}
+.plan.popular{border-color:#ff006a;transform:scale(1.02)}
+.price{font-size:2.5em;font-weight:900;color:#ff8a00}
+.whats-float{position:fixed;bottom:20px;right:20px;background:#25D366;width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;text-decoration:none;z-index:999}
 table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{padding:10px;border-bottom:1px solid #222;text-align:left;font-size:.85em}
-.tabs{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.tab{padding:10px 18px;border-radius:30px;background:#222;border:1px solid #333;cursor:pointer;font-weight:700;font-size:.85em}
-.tab.ativo{background:#ff006a;border-color:#ff006a}
-.whats{position:fixed;bottom:20px;right:20px;background:#25D366;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;text-decoration:none;z-index:999}
-#top-player{position:fixed;top:0;left:0;width:100%;height:56px;background:#0a0a0a;border-bottom:2px solid #ff006a;z-index:99999;display:flex;align-items:center;gap:12px;padding:0 12px}
-#top-player button{width:42px;height:42px;border-radius:50%;background:#ff006a;border:none;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.track{flex:1;font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.dot{width:8px;height:8px;background:#ff006a;border-radius:50%;display:inline-block;margin-right:6px;animation:pulse 1.5s infinite}
-@keyframes pulse{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}
+th,td{padding:10px;border-bottom:1px solid #333;text-align:left;font-size:0.9em}
 </style>
 </head>
 <body>
-
-<div id="top-player">
-  <button id="playBtn" onclick="toggleRadio()">▶</button>
-  <div class="track"><span class="dot"></span> RÁDIO CLÃNS AO VIVO</div>
-  <div style="font-size:10px;color:#ff006a;font-weight:900;flex-shrink:0">AO VIVO</div>
-  <audio id="audioEl" preload="none"></audio>
-</div>
-
 <header>
 <div class="logo">🎙️ RÁDIOHOST</div>
 <div class="nav">
 <a onclick="show('home')">Início</a>
 <a onclick="show('planos')">Planos</a>
-<a onclick="show('login')" class="btn-login">Entrar</a>
+<a onclick="show('login')" class="btn-login">Entrar / Minha Rádio</a>
 </div>
 </header>
 
+<!-- HOME -->
 <div id="home">
 <section class="hero">
-<div class="badge">TECNOLOGIA PRÓPRIA • CONTROLE POR GB</div>
-<h1>STREAMING <span>PROFISSIONAL</span> COM CONTROLE INTELIGENTE</h1>
-<p style="color:#aaa;max-width:600px;margin:15px auto">Rádio sem travar, com limite de AutoDJ por plano e painel completo.</p><br>
-<a class="btn" onclick="show('planos')">💿 VER PLANOS COM GB</a>
-<a class="btn btn-pink" onclick="show('login')">🎧 MINHA RÁDIO</a>
+<h1>CRIE SUA RÁDIO WEB PROFISSIONAL</h1>
+<p>Sem anúncios • Com seu nome • No ar em 5 min • AutoDJ 20 mil músicas</p><br>
+<a class="btn" onclick="show('planos')">🚀 VER PLANOS</a>
+<a class="btn btn-pink" onclick="show('login')">🎧 ACESSAR MINHA RÁDIO</a>
 </section>
 <div class="section grid">
-<div class="card"><h3>📦 Controle por GB</h3><p style="color:#aaa">3GB / 10GB / 30GB. Servidor sempre leve.</p><div class="progress"><div class="progress-bar" style="width:70%"></div></div></div>
-<div class="card"><h3>💸 Afiliado 20% Recorrente</h3><p style="color:#aaa">Todo cliente já tem link e ganha todo mês.</p></div>
-<div class="card"><h3>⏰ Vencimento Automático</h3><p style="color:#aaa">Venceu, rádio para sozinha até renovar.</p></div>
+<div class="card"><h3>✅ Painel AzuraCast</h3><p>Acesso direto: http://173.212.231.94</p></div>
+<div class="card"><h3>🎵 20 Mil Músicas</h3><p>Biblioteca grátis inclusa</p></div>
+<div class="card"><h3>💸 Afiliado 20%</h3><p>Ganhe todo mês indicando</p></div>
 </div>
 </div>
 
-<div id="planos" class="hidden"><div class="section"><h2 style="text-align:center">Planos com Limite de GB</h2><br><div class="grid"><div class="plan"><h3>INICIANTE</h3><p>15 DIAS</p><div class="price">R$20<small>/15d</small></div><p style="color:#aaa;font-size:.9em">100 ouvintes • 3GB AutoDJ</p><br><button class="btn btn-dark" style="width:100%" onclick="assinar('Iniciante 3GB',20,15,3)">Assinar 3GB</button></div><div class="plan popular"><h3>PROFISSIONAL 🔥</h3><p>30 DIAS</p><div class="price">R$30<small>/30d</small></div><p style="color:#aaa;font-size:.9em">500 ouvintes • 10GB AutoDJ • App</p><br><button class="btn" style="width:100%" onclick="assinar('Pro 10GB',30,30,10)">Assinar 10GB</button></div><div class="plan"><h3>EMPRESARIAL</h3><p>12 MESES</p><div class="price">R$600<small>/ano</small></div><p style="color:#aaa;font-size:.9em">Ilimitado • 30GB AutoDJ</p><br><button class="btn btn-pink" style="width:100%" onclick="assinar('Empresarial 30GB',600,365,30)">Assinar 30GB</button></div></div></div></div>
-<div id="login" class="hidden"><div class="section" style="max-width:440px"><div class="card"><h2>Entrar</h2><input id="email" placeholder="Seu e-mail"><input id="senha" type="password" placeholder="Senha"><button class="btn btn-pink" style="width:100%" onclick="entrar()">ENTRAR NO PAINEL</button><hr style="margin:18px 0;border-color:#222"><button class="btn btn-dark" style="width:100%" onclick="entrarAdm()">👑 SOU ADM - Painel Afiliados</button></div></div></div>
-<div id="painel" class="hidden"><div class="section"><h2>🎧 Painel - <span id="userEmail"></span></h2><div class="tabs"><div class="tab ativo" id="tab1" onclick="abaCliente('radio')">📻 Minha Rádio</div><div class="tab" id="tab2" onclick="abaCliente('afiliado')">💸 Painel de Afiliado</div></div><div id="aba-radio"><div class="grid"><div class="card"><h3>📻 Minha Rádio - Controle GB</h3><p>Plano: <b id="radioPlano">-</b></p><p>Vence: <b id="radioVence">-</b> <span id="diasRest"></span></p><p>Status: <b id="radioStatus">-</b></p><br><p>Uso AutoDJ: <span id="usoGB">0</span>GB de <span id="limiteGB">0</span>GB</p><div class="progress"><div id="barraUso" class="progress-bar"></div></div><p style="font-size:.85em;color:#aaa" id="qtdMusicas">0 músicas aprox.</p><p id="alertaCheio" class="hidden" style="color:#ff4444;font-weight:800">⚠️ AutoDJ CHEIO! Apague músicas.</p><hr style="margin:12px 0;border-color:#222"><p style="font-size:.85em">AzuraCast: http://173.212.231.94<br>Limite: <span id="limiteServer">0</span> MB</p><a id="btnAzura" target="_blank" class="btn btn-pink" style="width:100%;margin-top:10px">GERENCIAR NO AZURACAST</a><p id="msgBloqueio" class="hidden" style="margin-top:12px;background:#ff444422;padding:10px;border-radius:10px;border:1px solid #ff4444">⛔ RÁDIO PARADA - Envie comprovante</p></div><div class="card"><h3>💳 Enviar Comprovante</h3><input type="file"><select id="tipoPlanoEnvio"><option>Iniciante 15d - R$20 - 3GB</option><option>Pro 30d - R$30 - 10GB</option><option>Empresarial 12m - R$600 - 30GB</option></select><button class="btn" style="width:100%" onclick="enviarComprovante()">📲 ENVIAR WHATSAPP</button></div></div></div><div id="aba-afiliado" class="hidden"><div class="card" style="border:2px solid #ff8a00"><h3>💸 Meu Painel de Afiliado (Cliente)</h3><div class="grid"><div><p>Seu link exclusivo:</p><input id="linkAfiliado" readonly><button class="btn btn-dark" style="width:100%" onclick="copiarLink()">Copiar Link</button><p style="margin-top:10px;font-size:.85em;color:#aaa">Ganhe 20% recorrente. Ex: R$30 = R$6 seu todo mês.</p></div><div><p>Cliques: <b id="afCliques">0</b> | Vendas: <b id="afVendas">0</b><br>Saldo: <b id="afSaldo" style="color:#25D366">R$0,00</b></p><br><button class="btn" onclick="sacar()">Sacar via PIX</button></div></div><br><table><tr><th>Data</th><th>Indicado</th><th>Plano</th><th>Comissão</th></tr><tbody id="tabelaAf"></tbody></table></div></div><button class="btn btn-dark" style="margin-top:16px" onclick="sair()">Sair</button></div></div>
-<div id="adm" class="hidden"><div class="section"><h2>👑 ADM RádioHost</h2><div class="tabs"><div class="tab ativo" id="admTab1" onclick="abaAdm('radios')">📻 Rádios + GB</div><div class="tab" id="admTab2" onclick="abaAdm('afiliados')">💸 Afiliados</div></div><div id="adm-aba-radios"><div class="grid"><div class="card"><h3>Total Clientes</h3><h2 id="admTotalClientes">0</h2></div><div class="card"><h3>Pendentes / Cheios</h3><h2 id="admPendentes" style="color:#ff4444">0</h2></div><div class="card"><h3>Uso Total VPS</h3><h2 id="admUso">0 GB</h2></div></div><div class="card"><h3>📻 Todas Rádios - Controle GB e Vencimento</h3><table><tr><th>Cliente</th><th>Plano / Limite</th><th>Uso</th><th>Vence</th><th>Status</th><th>Ação</th></tr><tbody id="admRadios"></tbody></table></div></div><div id="adm-aba-afiliados" class="hidden"><div class="grid"><div class="card"><h3>Comissões a Pagar</h3><h2 id="admComissoes" style="color:#ff8a00">R$0</h2></div><div class="card"><h3>Total Afiliados</h3><h2 id="admTotalAf">0</h2></div><div class="card"><h3>Vendas por Afiliado</h3><h2 id="admVendasAf">0</h2></div></div><div class="card"><h3>💸 Painel de Afiliados para ADM</h3><table><tr><th>Afiliado</th><th>Link</th><th>Cliques</th><th>Vendas</th><th>A Pagar</th><th>Ação</th></tr><tbody id="admAfiliados"></tbody></table></div></div><button class="btn btn-dark" onclick="show('home')">Voltar</button></div></div>
-<a class="whats" href="https://wa.me/5517981135119" target="_blank">💬</a>
+<!-- PLANOS -->
+<div id="planos" class="hidden">
+<div class="section">
+<h2 style="text-align:center;font-size:2.5em;margin-bottom:30px">Escolha seu Plano</h2>
+<div class="grid">
+<div class="plan"><h3>15 DIAS</h3><div class="price">R$20</div><p>Teste completo</p><br><button class="btn" onclick="assinar('15 dias - R$20',20,15)">Assinar 15 dias</button></div>
+<div class="plan popular"><h3>30 DIAS 🔥</h3><div class="price">R$30</div><p>Mais vendido</p><br><button class="btn" onclick="assinar('30 dias - R$30',30,30)">Assinar 30 dias</button></div>
+<div class="plan"><h3>12 MESES</h3><div class="price">R$600</div><p>Economia total</p><br><button class="btn" onclick="assinar('12 meses - R$600',600,365)">Assinar Anual</button></div>
+</div>
+</div>
+</div>
+
+<!-- LOGIN / CADASTRO -->
+<div id="login" class="hidden">
+<div class="section" style="max-width:500px">
+<div class="card">
+<h2>Entrar na RádioHost</h2>
+<input id="email" placeholder="Seu e-mail">
+<input id="senha" type="password" placeholder="Sua senha">
+<button class="btn btn-pink" style="width:100%" onclick="entrar()">ENTRAR NO PAINEL</button>
+<p style="margin-top:15px;text-align:center;color:#aaa">Primeiro acesso? Digite e-mail e senha e clique em Entrar que já cria sua conta.</p>
+<hr style="margin:20px 0;border-color:#333">
+<button class="btn" style="width:100%;background:#333" onclick="entrarAdm()">SOU ADM - Acessar ADM Afiliados</button>
+</div>
+</div>
+</div>
+
+<!-- PAINEL CLIENTE -->
+<div id="painel" class="hidden">
+<div class="section">
+<h2>🎧 Painel do Cliente - <span id="userEmail"></span> <span id="statusGeral"></span></h2>
+
+<div class="grid">
+<div class="card">
+<h3>📻 Minha Rádio</h3>
+<p><b>Rádio:</b> <span id="radioNome">Rádio Teste</span></p>
+<p><b>Plano:</b> <span id="radioPlano">-</span></p>
+<p><b>Vence em:</b> <span id="radioVence">-</span> <span id="diasRest"></span></p>
+<p><b>Status:</b> <span id="radioStatus">-</span></p>
+<hr style="margin:15px 0;border-color:#333">
+<p style="font-size:0.9em;color:#aaa">Dados de transmissão AzuraCast:</p>
+<p>IP: 173.212.231.94<br>Porta: 8000<br>Senha: sua senha do AzuraCast</p>
+<br>
+<a id="btnAzura" target="_blank" class="btn btn-pink" style="width:100%;text-align:center">GERENCIAR RÁDIO NO AZURACAST</a>
+<p id="msgBloqueio" class="hidden" style="margin-top:15px;background:#ff444422;padding:15px;border-radius:10px;border:1px solid #ff4444">⛔ RÁDIO PARADA - Plano vencido! Envie o comprovante abaixo pra ativar novamente.</p>
+</div>
+
+<div class="card">
+<h3>💳 Financeiro - Enviar Comprovante</h3>
+<p>Seu plano venceu ou é novo? Envie o comprovante aqui:</p>
+<input type="file" id="comprovante">
+<select id="tipoPlanoEnvio"><option>15 dias - R$20</option><option>30 dias - R$30</option><option>12 meses - R$600</option></select>
+<button class="btn" style="width:100%" onclick="enviarComprovante()">📲 ENVIAR COMPROVANTE NO WHATSAPP (17) 98113-5119</button>
+<p style="font-size:0.8em;color:#aaa;margin-top:10px">Ao enviar, você será redirecionado pro WhatsApp da RádioHost. Anexe o print do PIX e aguarde ativação.</p>
+<div id="historicoPag" style="margin-top:20px"></div>
+</div>
+</div>
+
+<!-- PAINEL AFILIADO CLIENTE -->
+<div class="card" style="margin-top:20px;border:2px solid #ff8a00">
+<h3>💸 Meu Painel de Afiliado - Ganhe 20% Recorrente</h3>
+<div class="grid">
+<div><p>Seu link exclusivo:</p><input id="linkAfiliado" readonly><button class="btn btn-outline" onclick="copiarLink()">Copiar Link</button></div>
+<div><p>Resumo:</p><p>Cliques: <b id="afCliques">0</b> | Vendas: <b id="afVendas">0</b> | Saldo: <b id="afSaldo" style="color:#25D366">R$0,00</b></p><button class="btn" onclick="sacar()">Solicitar Saque PIX</button></div>
+</div>
+<p style="margin-top:15px;font-size:0.9em">Compartilhe: <span id="banners">radiohost.com.br/?ref=SEULINK | Ganhe R$6 por venda de R$30 todo mês!</span></p>
+<table><tr><th>Data</th><th>Cliente Indicado</th><th>Plano</th><th>Comissão</th></tr><tbody id="tabelaAf"></tbody></table>
+</div>
+
+<button class="btn" style="background:#333;margin-top:20px" onclick="sair()">Sair</button>
+</div>
+</div>
+
+<!-- PAINEL ADM AFILIADOS -->
+<div id="adm" class="hidden">
+<div class="section">
+<h2>👑 ADM RádioHost - Controle Total + Afiliados</h2>
+<div class="grid">
+<div class="card"><h3>Total Clientes</h3><h2 id="admTotalClientes">0</h2></div>
+<div class="card"><h3>Rádios Pendentes (Vencidas)</h3><h2 id="admPendentes" style="color:#ff4444">0</h2></div>
+<div class="card"><h3>Comissões a Pagar</h3><h2 id="admComissoes" style="color:#ff8a00">R$0</h2></div>
+</div>
+
+<div class="card">
+<h3>📻 Rádios - Ativar / Pausar</h3>
+<table><tr><th>Cliente</th><th>Plano</th><th>Vencimento</th><th>Status</th><th>Ação</th></tr><tbody id="admRadios"></tbody></table>
+</div>
+
+<div class="card">
+<h3>💸 Afiliados - Controle</h3>
+<table><tr><th>Afiliado</th><th>Link</th><th>Vendas</th><th>A Pagar</th><th>Ação</th></tr><tbody id="admAfiliados"></tbody></table>
+</div>
+
+<button class="btn" style="background:#333" onclick="show('home')">Voltar ao Site</button>
+</div>
+</div>
+
+<a class="whats-float" href="https://wa.me/5517981135119?text=Olá!%20Preciso%20de%20ajuda%20na%20RádioHost" target="_blank">💬</a>
 
 <script>
-let isPlaying=false;
-function toggleRadio(){
-  let a=document.getElementById('audioEl');
-  let b=document.getElementById('playBtn');
-  if(!isPlaying){
-    let httpUrl = "http://173.212.231.94/listen/radioclans/radio.mp3";
-    let proxyUrl = "https://corsproxy.io/?" + encodeURIComponent(httpUrl);
-    a.src = proxyUrl;
-    a.volume = 0.8;
-    a.play().then(()=>{
-      b.innerText='⏸';
-      isPlaying=true;
-    }).catch(err=>{
-      console.log("Proxy falhou, tentando https direto", err);
-      a.src = "https://173.212.231.94/listen/radioclans/radio.mp3";
-      a.play().then(()=>{b.innerText='⏸'; isPlaying=true;}).catch(()=>{
-        b.innerText='▶';
-      });
-    });
-  }else{
-    a.pause();
-    a.src="";
-    b.innerText='▶';
-    isPlaying=false;
-  }
+// LOGICA DE VENCIMENTO AUTOMATICO
+let users = JSON.parse(localStorage.getItem('rh_users')||'{}');
+let currentUser = localStorage.getItem('rh_current')||'';
+
+function show(id){
+document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));
+document.getElementById(id).classList.remove('hidden');
+if(id==='painel') atualizarPainel();
+if(id==='adm') atualizarAdm();
 }
-let users=JSON.parse(localStorage.getItem('rh_v8_users')||'{}');
-let current=localStorage.getItem('rh_v8_current')||'';
-function show(id){document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='painel') updPainel(); if(id==='adm') updAdm();}
-function abaCliente(qual){document.getElementById('aba-radio').classList.toggle('hidden',qual!=='radio');document.getElementById('aba-afiliado').classList.toggle('hidden',qual!=='afiliado');document.getElementById('tab1').classList.toggle('ativo',qual==='radio');document.getElementById('tab2').classList.toggle('ativo',qual==='afiliado');}
-function abaAdm(qual){document.getElementById('adm-aba-radios').classList.toggle('hidden',qual!=='radios');document.getElementById('adm-aba-afiliados').classList.toggle('hidden',qual!=='afiliados');document.getElementById('admTab1').classList.toggle('ativo',qual==='radios');document.getElementById('admTab2').classList.toggle('ativo',qual==='afiliados');}
-function assinar(plano,valor,dias,gb){let email=prompt("Digite seu e-mail:"); if(!email) return; let venc=new Date(); venc.setDate(venc.getDate()+dias); let uso=(Math.random()*gb*0.6).toFixed(1); users[email]={plano,valor,dias,gb,uso:parseFloat(uso),vencimento:venc.toISOString(),status:'pendente',criado:new Date().toISOString(),afiliado:localStorage.getItem('ref')||'direto'}; localStorage.setItem('rh_v8_users',JSON.stringify(users)); current=email; localStorage.setItem('rh_v8_current',email); alert(`Conta criada com limite de ${gb}GB! Envie comprovante.`); show('painel');}
-function entrar(){let email=document.getElementById('email').value; if(!email){alert("Digite e-mail");return} if(!users[email]){users[email]={plano:'Aguardando',valor:0,dias:0,gb:0,uso:0,vencimento:new Date().toISOString(),status:'pendente',criado:new Date().toISOString(),afiliado:localStorage.getItem('ref')||'direto'}; localStorage.setItem('rh_v8_users',JSON.stringify(users));} current=email; localStorage.setItem('rh_v8_current',email); show('painel');}
+
+function assinar(plano,valor,dias){
+let email = prompt("Digite seu e-mail para criar conta:");
+if(!email) return;
+let venc = new Date(); venc.setDate(venc.getDate()+dias);
+users[email]={plano,valor,dias,vencimento:venc.toISOString(),status:dias>0?'ativo':'pendente',criado:new Date().toISOString(),afiliado:localStorage.getItem('ref')||'direto',comprovantes:[]};
+localStorage.setItem('rh_users',JSON.stringify(users));
+currentUser=email; localStorage.setItem('rh_current',email);
+alert("Conta criada! Agora envie o comprovante no WhatsApp para ativarmos.");
+show('painel');
+}
+
+function entrar(){
+let email=document.getElementById('email').value;
+let senha=document.getElementById('senha').value;
+if(!email){alert("Digite e-mail");return}
+if(!users[email]){
+let venc=new Date(); venc.setDate(venc.getDate()+0);
+users[email]={plano:'Nenhum - Aguardando pagamento',valor:0,dias:0,vencimento:venc.toISOString(),status:'pendente',criado:new Date().toISOString(),afiliado:localStorage.getItem('ref')||'direto',comprovantes:[]};
+localStorage.setItem('rh_users',JSON.stringify(users));
+}
+currentUser=email; localStorage.setItem('rh_current',email);
+show('painel');
+}
+
 function entrarAdm(){show('adm')}
-function updPainel(){let u=users[current]; if(!u) return;document.getElementById('userEmail').innerText=current;let venc=new Date(u.vencimento); let hoje=new Date(); let diff=Math.ceil((venc-hoje)/(1000*60*60*24));document.getElementById('radioPlano').innerText=u.plano;document.getElementById('radioVence').innerText=venc.toLocaleDateString('pt-BR');document.getElementById('diasRest').innerText=diff>0?`(${diff}d)`:`(VENCIDO)`;document.getElementById('limiteGB').innerText=u.gb;document.getElementById('limiteServer').innerText=u.gb*1024;document.getElementById('usoGB').innerText=u.uso;document.getElementById('qtdMusicas').innerText=Math.floor(u.uso*200)+' músicas aprox.';let perc=u.gb>0?Math.min(100,(u.uso/u.gb)*100):0;document.getElementById('barraUso').style.width=perc+'%';if(perc>=90) document.getElementById('alertaCheio').classList.remove('hidden'); else document.getElementById('alertaCheio').classList.add('hidden');let st=document.getElementById('radioStatus'); let blk=document.getElementById('msgBloqueio'); let btn=document.getElementById('btnAzura');if(diff<=0 || u.status==='pendente' || perc>=100){st.innerText='PENDENTE - PARADA'; st.className='status-pendente'; blk.classList.remove('hidden'); btn.innerText='⛔ BLOQUEADA'; btn.href='#';}else{st.innerText='ATIVO - TOCANDO'; st.className='status-ativo'; blk.classList.add('hidden'); btn.innerText='🎧 GERENCIAR NO AZURACAST'; btn.href='http://173.212.231.94';}let ref=current.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8);document.getElementById('linkAfiliado').value='https://radiohost.com.br/?ref='+ref;document.getElementById('afCliques').innerText=Math.floor(Math.random()*80+10);document.getElementById('afVendas').innerText=Math.floor(Math.random()*6);document.getElementById('afSaldo').innerText='R$'+(Math.random()*120).toFixed(2);let tb=document.getElementById('tabelaAf'); tb.innerHTML=`<tr><td>${new Date().toLocaleDateString()}</td><td>cliente@teste.com</td><td>${u.plano}</td><td>R$${(u.valor*0.2).toFixed(2)}</td></tr>`;}
-function enviarComprovante(){window.open(`https://wa.me/5517981135119?text=Comprovante - ${current} - ${users[current]?.uso||0}GB`,'_blank');}
+
+function atualizarPainel(){
+let u=users[currentUser]; if(!u) return;
+document.getElementById('userEmail').innerText=currentUser;
+let venc=new Date(u.vencimento);
+let hoje=new Date();
+let diff=Math.ceil((venc-hoje)/(1000*60*60*24));
+let statusEl=document.getElementById('radioStatus');
+let diasEl=document.getElementById('diasRest');
+let bloqueio=document.getElementById('msgBloqueio');
+let btnAzura=document.getElementById('btnAzura');
+
+document.getElementById('radioPlano').innerText=u.plano;
+document.getElementById('radioVence').innerText=venc.toLocaleDateString('pt-BR');
+document.getElementById('radioNome').innerText="Rádio de "+currentUser.split('@')[0];
+
+if(diff<=0 || u.status==='pendente'){
+statusEl.innerText="PENDENTE - RÁDIO PARADA"; statusEl.className="status-pendente";
+diasEl.innerText=" (VENCIDO)";
+bloqueio.classList.remove('hidden');
+btnAzura.innerText="⛔ RÁDIO BLOQUEADA - RENOVE";
+btnAzura.href="#";
+btnAzura.style.opacity="0.5";
+u.status='pendente';
+}else{
+statusEl.innerText="ATIVO - TOCANDO"; statusEl.className="status-ativo";
+diasEl.innerText=" ("+diff+" dias restantes)";
+bloqueio.classList.add('hidden');
+btnAzura.innerText="🎧 GERENCIAR NO AZURACAST - 173.212.231.94";
+btnAzura.href="http://173.212.231.94";
+btnAzura.style.opacity="1";
+}
+
+localStorage.setItem('rh_users',JSON.stringify(users));
+
+// Afiliado link
+let ref=currentUser.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8);
+let link="https://radiohost.com.br/?ref="+ref;
+document.getElementById('linkAfiliado').value=link;
+
+// Simula afiliado
+document.getElementById('afCliques').innerText=Math.floor(Math.random()*50);
+}
+
+function enviarComprovante(){
+let plano=document.getElementById('tipoPlanoEnvio').value;
+let msg=`Olá RádioHost!%0A%0A📲 *NOVO COMPROVANTE*%0ACliente: ${currentUser}%0APlano: ${plano}%0AData: ${new Date().toLocaleString('pt-BR')}%0A%0AAnexo comprovante aqui. Libera minha rádio por favor!%0A%0ALink AzuraCast: http://173.212.231.94`;
+window.open(`https://wa.me/5517981135119?text=${msg}`,'_blank');
+let u=users[currentUser];
+u.comprovantes.push({data:new Date().toISOString(),plano});
+localStorage.setItem('rh_users',JSON.stringify(users));
+alert("Você será levado ao WhatsApp. Envie o PRINT do comprovante lá que eu ativo sua rádio!");
+}
+
 function copiarLink(){let l=document.getElementById('linkAfiliado');l.select();document.execCommand('copy');alert("Link copiado!")}
-function sacar(){window.open(`https://wa.me/5517981135119?text=Saque afiliado - ${current}`,'_blank')}
-function updAdm(){document.getElementById('admTotalClientes').innerText=Object.keys(users).length;let pend=Object.values(users).filter(u=>u.status==='pendente').length;document.getElementById('admPendentes').innerText=pend;let totalUso=Object.values(users).reduce((a,b)=>a+(b.uso||0),0).toFixed(1);document.getElementById('admUso').innerText=totalUso+' GB / 400GB';document.getElementById('admComissoes').innerText='R$'+(totalUso*2).toString();document.getElementById('admTotalAf').innerText=Object.keys(users).length;document.getElementById('admVendasAf').innerText=Object.keys(users).length*2;let tbody=document.getElementById('admRadios'); tbody.innerHTML='';let tbodyAf=document.getElementById('admAfiliados'); tbodyAf.innerHTML='';for(let email in users){let u=users[email]; let venc=new Date(u.vencimento); let perc=u.gb>0?Math.floor((u.uso/u.gb)*100):0;tbody.innerHTML+=`<tr><td>${email}</td><td>${u.plano} - ${u.gb}GB</td><td>${u.uso}GB (${perc}%)</td><td>${venc.toLocaleDateString()}</td><td class="${u.status==='ativo'?'status-ativo':'status-pendente'}">${u.status}</td><td><button onclick="ativar('${email}')" class="btn btn-pink" style="padding:5px 10px;font-size:.8em">Ativar +30d</button> <button onclick="parar('${email}')" class="btn btn-dark" style="padding:5px 10px;font-size:.8em">Parar</button></td></tr>`;let ref=email.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8);tbodyAf.innerHTML+=`<tr><td>${email}</td><td>ref=${ref}</td><td>${Math.floor(Math.random()*80)}</td><td>${Math.floor(Math.random()*5)}</td><td>R$${(Math.random()*50).toFixed(2)}</td><td><button class="btn btn-dark" style="padding:4px 8px;font-size:.75em" onclick="alert('Pago!')">Pagar</button></td></tr>`;}}
-function ativar(email){let u=users[email]; let venc=new Date(); venc.setDate(venc.getDate()+30); u.vencimento=venc.toISOString(); u.status='ativo'; localStorage.setItem('rh_v8_users',JSON.stringify(users)); updAdm();}
-function parar(email){users[email].status='pendente'; localStorage.setItem('rh_v8_users',JSON.stringify(users)); updAdm();}
-function sair(){localStorage.removeItem('rh_v8_current'); show('home')}
-let p=new URLSearchParams(window.location.search); if(p.get('ref')) localStorage.setItem('ref',p.get('ref'));
+
+function sacar(){window.open(`https://wa.me/5517981135119?text=Olá! Sou ${currentUser} e quero sacar meu saldo de afiliado. Meu PIX é:`,'_blank')}
+
+function atualizarAdm(){
+let total=Object.keys(users).length;
+document.getElementById('admTotalClientes').innerText=total;
+let pend=Object.values(users).filter(u=>u.status==='pendente').length;
+document.getElementById('admPendentes').innerText=pend;
+let tbody=document.getElementById('admRadios'); tbody.innerHTML='';
+for(let email in users){
+let u=users[email];
+let venc=new Date(u.vencimento);
+let tr=`<tr><td>${email}</td><td>${u.plano}</td><td>${venc.toLocaleDateString()}</td><td class="${u.status==='ativo'?'status-ativo':'status-pendente'}">${u.status.toUpperCase()}</td><td><button onclick="ativar('${email}')" class="btn btn-pink" style="padding:5px 10px">Ativar +30d</button> <button onclick="parar('${email}')" class="btn" style="padding:5px 10px;background:#ff4444">Parar</button></td></tr>`;
+tbody.innerHTML+=tr;
+}
+}
+
+function ativar(email){
+let u=users[email];
+let venc=new Date(); venc.setDate(venc.getDate()+30);
+u.vencimento=venc.toISOString(); u.status='ativo'; u.plano='30 dias - R$30 (Ativado pelo ADM)';
+localStorage.setItem('rh_users',JSON.stringify(users));
+atualizarAdm(); alert("Rádio de "+email+" ATIVADA por +30 dias!");
+}
+
+function parar(email){
+users[email].status='pendente'; localStorage.setItem('rh_users',JSON.stringify(users)); atualizarAdm();
+}
+
+function sair(){localStorage.removeItem('rh_current');show('home')}
+
+// Pega REF da URL
+let urlParams=new URLSearchParams(window.location.search);
+if(urlParams.get('ref')){localStorage.setItem('ref',urlParams.get('ref'))}
 </script>
 </body>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </html>
+  </html>
