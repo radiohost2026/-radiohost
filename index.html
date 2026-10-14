@@ -58,7 +58,7 @@ th,td{padding:10px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.
   <button id="playBtn" onclick="toggleRadio()">▶</button>
   <div class="track"><span class="dot"></span> RÁDIO CLÃNS AO VIVO</div>
   <div style="font-size:10px;color:#00f0ff;font-weight:900" id="playerStatus">AO VIVO</div>
-  <audio id="audioEl" preload="none" crossorigin="anonymous"></audio>
+  <audio id="audioEl" preload="none"></audio>
 </div>
 
 <header><div class="logo">RÁDIOHOST</div><div class="nav"><a onclick="show('home')">Início</a><a onclick="show('planos')">Planos</a><a onclick="show('login')" class="btn-login">Entrar</a></div></header>
@@ -82,7 +82,6 @@ th,td{padding:10px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.
 <div id="painel" class="hidden"><div class="section">
 <h2>🎧 Painel - <span id="userEmail"></span></h2>
 <div class="tabs"><div class="tab ativo" id="tab1" onclick="abaCliente('radio')">📻 Minha Rádio</div><div class="tab" id="tab2" onclick="abaCliente('afiliado')">💸 Painel Afiliado</div></div>
-
 <div id="aba-radio"><div class="grid">
 <div class="card">
 <h3>📻 Minha Rádio</h3>
@@ -105,7 +104,6 @@ th,td{padding:10px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.
 <button class="btn-ative" style="padding:12px;margin-top:8px" onclick="enviarComprovante()">📲 ENVIAR COMPROVANTE VIA WHATSAPP</button>
 </div>
 </div></div>
-
 <div id="aba-afiliado" class="hidden"><div class="af-box"><h3 style="color:#ff8ad8">💸 Meu Painel de Afiliado (Cliente)</h3><p style="font-size:.85em;color:#aaa">Ganhe 20% recorrente. R$30 = R$6 seu todo mês.</p><div class="grid"><div><p style="font-size:.8em">Seu link exclusivo:</p><input id="linkAfiliado" readonly style="border-color:#ff00a8;box-shadow:0 0 10px #ff00a866"><button class="btn btn-dark" style="width:100%;margin-top:6px" onclick="copiarLink()">📋 Copiar Link</button><button class="btn-ative" style="padding:8px;margin-top:8px;font-size:.8em" onclick="compartilharZap()">📲 Divulgar no WhatsApp</button></div><div class="card" style="background:#0006;margin:0"><p>Cliques: <b id="afCliques" style="color:#00f0ff">0</b></p><p>Vendas: <b id="afVendas" style="color:#ff00a8">0</b></p><p>Comissão: <b id="afSaldo" style="color:#25D366;font-size:1.4em">R$0,00</b></p><br><button class="btn-ative" style="padding:8px" onclick="sacar()">💰 Sacar via PIX</button></div></div><br><h4 style="color:#00f0ff">Minhas Indicações:</h4><table><tr><th>Data</th><th>Indicado</th><th>Plano</th><th>Comissão 20%</th></tr><tbody id="tabelaAf"></tbody></table></div></div>
 <button class="btn btn-dark" style="margin-top:16px" onclick="sair()">Sair</button>
 </div></div>
@@ -119,45 +117,30 @@ th,td{padding:10px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.
 <a class="whats" href="https://wa.me/5517981135119" target="_blank">💬</a>
 
 <script>
-// PLAYER QUE NÃO PARA - AUTO RECONECTA
-let isPlaying=false, tentativaIdx=0, reconnectTimer=null;
-const STREAM_ORIGINAL="http://173.212.231.94/listen/radioclans/radio.mp3";
-const STREAMS=[
-  "https://corsproxy.io/?"+encodeURIComponent(STREAM_ORIGINAL),
-  "https://api.allorigins.win/raw?url="+encodeURIComponent(STREAM_ORIGINAL),
-  "https://thingproxy.freeboard.io/fetch/"+encodeURIComponent(STREAM_ORIGINAL),
-  "http://173.212.231.94/listen/radioclans/radio.mp3"
-];
+// PLAYER CORRIGIDO - SEM TRAVAR - USA PROXY DA VERCEL
+let isPlaying=false;
+const STREAM_FIXO="/radio/listen/radioclans/radio.mp3";
+
 function toggleRadio(){
   let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus');
-  if(!isPlaying){ playRadio(0); }
-  else{ stopRadio(); }
+  if(!isPlaying){
+    a.src=STREAM_FIXO+"?t="+Date.now();
+    a.volume=0.9;
+    b.innerText='⏳'; s.innerText='CONECTANDO...';
+    a.play().then(()=>{
+      isPlaying=true; b.innerText='⏸'; s.innerText='TOCANDO AO VIVO';
+    }).catch(e=>{
+      s.innerText='ERRO - TENTANDO...';
+      setTimeout(()=>toggleRadio(),1500);
+    });
+  } else {
+    isPlaying=false; a.pause(); b.innerText='▶'; s.innerText='AO VIVO';
+  }
 }
-function playRadio(idx){
-  let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus');
-  if(idx>=STREAMS.length) idx=0;
-  tentativaIdx=idx;
-  a.src=STREAMS[idx];
-  a.volume=0.8;
-  b.innerText='⏳'; s.innerText='CONECTANDO...';
-  a.play().then(()=>{
-    isPlaying=true; b.innerText='⏸'; s.innerText='TOCANDO';
-    clearInterval(reconnectTimer);
-    reconnectTimer=setInterval(()=>{
-      if(isPlaying && a.paused){
-        console.log("Reconectando...");
-        playRadio((tentativaIdx+1)%STREAMS.length);
-      }
-    },3000);
-  }).catch(()=>{ playRadio((idx+1)%STREAMS.length); });
-}
-function stopRadio(){
-  let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus');
-  isPlaying=false; a.pause(); a.src=""; a.load(); b.innerText='▶'; s.innerText='AO VIVO'; clearInterval(reconnectTimer);
-}
+
 let audioEl=document.getElementById('audioEl');
-audioEl.addEventListener('pause',()=>{ if(isPlaying){ setTimeout(()=>{ if(isPlaying) audioEl.play().catch(()=>{}); },800); }});
-audioEl.addEventListener('error',()=>{ if(isPlaying) playRadio((tentativaIdx+1)%STREAMS.length); });
+audioEl.addEventListener('ended',()=>{ if(isPlaying){ audioEl.src=STREAM_FIXO+"?t="+Date.now(); audioEl.play(); }});
+audioEl.addEventListener('error',()=>{ if(isPlaying){ setTimeout(()=>{ audioEl.src=STREAM_FIXO+"?t="+Date.now(); audioEl.play().catch(()=>{}); },2000); }});
 audioEl.addEventListener('stalled',()=>{ if(isPlaying){ audioEl.load(); audioEl.play().catch(()=>{}); }});
 
 // SISTEMA CLIENTES + AFILIADOS
@@ -223,4 +206,4 @@ function sair(){localStorage.removeItem('rh_final_current'); show('home')}
 let p=new URLSearchParams(window.location.search); if(p.get('ref')) localStorage.setItem('ref',p.get('ref'));
 </script>
 </body>
-  </html>
+                                                                                                                                                                                                                                                                         </html>
