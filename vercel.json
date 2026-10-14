@@ -2,7 +2,8 @@
   "rewrites": [
     {
       "source": "/radio/:path*",
-      "destination": "http://173.212.231.94:8000/radio/:path*"
+      "destination": "http://stm1.radiohost.com.br:8000/:path*"
     }
-  ]
+  ],
+  "cleanUrls": true
 }
