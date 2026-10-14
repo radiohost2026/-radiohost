@@ -48,7 +48,7 @@ table{width:100%;border-collapse:collapse}th,td{padding:10px;border-bottom:1px s
 <script>
 // PLAYER SEM TRAVAR
 let isPlaying=false;const audio=document.getElementById('audioEl');const btn=document.getElementById('playBtn');const st=document.getElementById('playerStatus');
-const STREAM_FINAL="https://173.212.231.94/radio/8000/radio.mp3";
+const STREAM_FINAL="/radio/8000/radio.mp3";
 function toggleRadio(){if(!isPlaying){btn.innerText='⏳';st.innerText='CONECTANDO...';audio.src=STREAM_FINAL;audio.volume=0.9;audio.play().then(()=>{isPlaying=true;btn.innerText='⏸';st.innerText='TOCANDO AO VIVO';}).catch(e=>{st.innerText='ACEITE CERTIFICADO';window.open(STREAM_FINAL,'_blank');});}else{audio.pause();audio.src="";audio.load();isPlaying=false;btn.innerText='▶';st.innerText='AO VIVO';}}
 // ADM COM SENHA
 let users=JSON.parse(localStorage.getItem('rh_final_users')||'{}');let current=localStorage.getItem('rh_final_current')||'';
