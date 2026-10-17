@@ -1,39 +1,49 @@
 <!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RADIOHOST ADM</title>
-<style>body{background:#0a0f1f;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111a33;border:1px solid #00e5ff33;border-radius:20px;padding:20px;max-width:400px;margin:auto} input,select{width:100%;padding:12px;border-radius:12px;background:#1a2444;color:#fff;border:1px solid #333;margin:6px 0 12px} button{width:100%;padding:14px;background:#00e5ff;color:#000;font-weight:800;border-radius:14px;border:none;font-size:16px} .ok{background:#00ff8855;border:1px solid #00ff88;padding:12px;border-radius:12px;margin-top:12px} .err{background:#ff005555;border:1px solid #ff0055;padding:12px;border-radius:12px;margin-top:12px}</style>
+<style>body{background:#0a0f1f;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111a33;border:1px solid #00e5ff33;border-radius:20px;padding:20px;max-width:400px;margin:auto} input,select{width:100%;padding:12px;border-radius:12px;background:#1a2444;color:#fff;border:1px solid #333;margin:6px 0 12px} button{width:100%;padding:14px;background:#00e5ff;color:#000;font-weight:800;border-radius:14px;border:none;font-size:16px} .ok{background:#00ff8855;border:1px solid #00ff88;padding:12px;border-radius:12px;margin-top:12px;word-break:break-all} </style>
 </head><body>
 <div class="card">
 <h2 style="text-align:center;color:#00e5ff">📻 RADIOHOST ADM</h2>
 <p style="text-align:center;font-size:13px">Ativação após PIX<br><b style="color:#00e5ff">radioclansweb@gmail.com</b><br>WhatsApp 17 98113-5119</p>
 
-<label>Nome da rádio</label><input id="nome" value="Rádio teste">
-<label>E-mail do cliente</label><input id="email" value="vivajogo309@gmail.com">
-<label>Plano</label><select id="plano"><option>R$20 - 15 dias / 100 ouvintes / 30GB</option><option>R$35 - 30 dias</option></select>
+<label>Nome da rádio</label><input id="nome" placeholder="Ex: Viva FM" value="Viva FM">
+<label>E-mail do cliente</label><input id="email" placeholder="cliente@gmail.com" value="vivajogo309@gmail.com">
+<label>Plano</label>
+<select id="plano">
+  <option value="R$20 - 15 Dias">R$20 - 15 Dias</option>
+  <option value="R$30 - 30 Dias">R$30 - 30 Dias</option>
+  <option value="R$600 - 12 Meses">R$600 - 12 Meses</option>
+</select>
 
 <button onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
 <div id="res"></div>
 
 <div style="margin-top:14px;border:1px dashed #00e5ff55;border-radius:12px;padding:12px;font-size:13px">
-<b style="color:#00e5ff">Fluxo:</b><br>1. Cliente paga PIX: <b style="color:#00e5ff">radioclansweb@gmail.com</b><br>2. Envia comprovante WhatsApp: <b style="color:#00e5ff">(17) 98113-5119</b><br>3. Você confere e clica ATIVAR aqui<br>4. Sistema cria rádio em <b style="color:#00e5ff">173.212.231.94</b>
+<b style="color:#00e5ff">Fluxo:</b><br>
+1. Cliente paga PIX: <b style="color:#00e5ff">radioclansweb@gmail.com</b><br>
+2. Envia comprovante WhatsApp: <b style="color:#00e5ff">(17) 98113-5119</b><br>
+3. Você confere e clica ATIVAR aqui
 </div>
 </div>
 <script>
 function ativar(){
   const nome=document.getElementById('nome').value||'Rádio';
   const email=document.getElementById('email').value||'';
+  const plano=document.getElementById('plano').value;
   const short=nome.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10)+Date.now().toString().slice(-4);
   const senha=Math.random().toString(36).slice(-8)+'A1!';
   document.getElementById('res').innerHTML=`
   <div class="ok">
   ✅ <b>CRIADO COM SUCESSO!</b><br><br>
   <b>Rádio:</b> ${nome}<br>
+  <b>Plano:</b> ${plano}<br>
   <b>Login:</b> ${email}<br>
   <b>Senha painel:</b> ${senha}<br>
   <b>Short:</b> ${short}<br>
   <b>Stream:</b> http://173.212.231.94:8000/${short}<br>
   <b>Painel:</b> http://173.212.231.94<br><br>
-  👉 Agora vai no AzuraCast > Estações > Adicionar estação > Nome = ${nome} > Short = ${short}
+  👉 AzuraCast > Estações > Adicionar > Nome = ${nome} > Short = ${short}
   </div>`;
 }
 </script>
