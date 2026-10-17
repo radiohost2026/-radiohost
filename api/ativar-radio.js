@@ -1,69 +1,38 @@
+// api/ativar-radio.js
 export default async function handler(req, res) {
-  if (req.method !== 'POST') return res.status(405).json({ erro: 'Method not allowed' });
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  const { nomeRadio, emailCliente, senha, plano } = req.body;
+  const AZURACAST_URL = 'http://173.212.231.94';
+  const API_KEY = 'COLA_SUA_API_KEY_AQUI'; // << COLA AQUI A CHAVE QUE VOCÊ COPIAR
 
-  const AZURACAST_URL = process.env.AZURACAST_URL; // http://173.212.231.94
-  const API_KEY = process.env.AZURACAST_API_KEY;
-
-  if (!AZURACAST_URL || !API_KEY) {
-    return res.status(500).json({ erro: 'Variáveis AZURACAST_URL ou API_KEY não configuradas no Vercel' });
-  }
-
-  // Remove http:// e barra no final
-  const baseUrl = AZURACAST_URL.replace(/\/$/, '');
-
-  // Define short_name: sem espaço, sem acento
-  const shortName = nomeRadio.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]/g, '_').substring(0, 30);
-
-  const limites = {
-    "20": { listeners: 50, desc: "Plano R$20" },
-    "30": { listeners: 100, desc: "Plano R$30 - Mais vendido" },
-    "600": { listeners: 500, desc: "Plano R$600 Ilimitado" }
-  };
-
-  const config = limites[plano] || limites["30"];
+  const { nome, email, plano } = req.body;
+  if (!nome || !email) return res.status(400).json({ error: 'Falta nome/email' });
 
   try {
-    // 1. Cria a estação
-    const createRes = await fetch(`${baseUrl}/api/admin/stations`, {
+    // 1. Cria estação
+    const r = await fetch(`${AZURACAST_URL}/api/stations`, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${API_KEY}`,
+        'X-API-Key': API_KEY,
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: nomeRadio,
-        short_name: shortName,
-        description: `${config.desc} - Cliente: ${emailCliente}`,
+        name: nome,
+        short_name: nome.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10) + Date.now().toString().slice(-3),
         frontend_type: 'icecast',
-        backend_type: 'liquidsoap',
-        frontend_config: {
-          sc_mounts: [`/${shortName}`]
-        }
+        backend_type: 'liquidsoap'
       })
     });
 
-    if (!createRes.ok) {
-      const errText = await createRes.text();
-      return res.status(400).json({ erro: `AzuraCast erro: ${createRes.status} - ${errText}` });
-    }
+    const data = await r.json();
+    if (!r.ok) return res.status(500).json({ ok: false, error: JSON.stringify(data) });
 
-    const station = await createRes.json();
-    const stationId = station.id;
-    const finalShortName = station.short_name || shortName;
+    // Senha aleatória pro cliente
+    const password = Math.random().toString(36).slice(-8) + 'Rh!';
 
-    return res.json({
-      sucesso: true,
-      link: `${baseUrl}/public/${finalShortName}`,
-      painel: `${baseUrl}/public/${finalShortName}`,
-      id: stationId,
-      short_name: finalShortName
-    });
+    return res.json({ ok: true, station: data, password, email });
 
   } catch (e) {
-    return res.status(500).json({ erro: e.message });
+    return res.status(500).json({ ok: false, error: e.message });
   }
-      }
+}
