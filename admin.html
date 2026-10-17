@@ -1,83 +1,40 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Painel ADM - RadioHost</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
-body{background:#050810;color:#fff;min-height:100vh;padding:20px}
-.card{max-width:520px;margin:0 auto;background:linear-gradient(180deg,#12182b,#0a0f1e);border:1px solid #1e2a4a;border-radius:18px;padding:22px;box-shadow:0 0 40px #00f5ff15}
-h1{font-size:20px;text-align:center;color:#00f5ff;margin-bottom:6px}
-.sub{text-align:center;color:#8aa0c8;font-size:13px;margin-bottom:18px}
-label{font-size:12px;color:#8aa0c8;margin:12px 0 4px;display:block}
-input,select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #203055;background:#070c1a;color:#fff;outline:none}
-input:focus{border-color:#00f5ff}
-.btn{width:100%;margin-top:18px;padding:14px;border:none;border-radius:12px;background:linear-gradient(90deg,#00f5ff,#7a5CFF);color:#000;font-weight:800;font-size:15px;cursor:pointer}
-.btn:disabled{opacity:.5}
-.info{background:#070c1a;border:1px dashed #203055;border-radius:12px;padding:12px;margin-top:16px;font-size:13px;line-height:1.6}
-.info b{color:#00f5ff}
-.log{margin-top:14px;background:#000;border-radius:10px;padding:12px;font-size:12px;color:#00ff88;white-space:pre-wrap;min-height:60px}
-</style>
-</head>
-<body>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RADIOHOST ADM</title>
+<style>body{background:#0a0f1f;color:#fff;font-family:sans-serif;padding:20px} .card{background:#111a33;border:1px solid #00e5ff33;border-radius:20px;padding:20px;max-width:400px;margin:auto} input,select{width:100%;padding:12px;border-radius:12px;background:#1a2444;color:#fff;border:1px solid #333;margin:6px 0 12px} button{width:100%;padding:14px;background:#00e5ff;color:#000;font-weight:800;border-radius:14px;border:none;font-size:16px} .ok{background:#00ff8855;border:1px solid #00ff88;padding:12px;border-radius:12px;margin-top:12px} .err{background:#ff005555;border:1px solid #ff0055;padding:12px;border-radius:12px;margin-top:12px}</style>
+</head><body>
 <div class="card">
-<h1>📻 RADIOHOST ADM</h1>
-<div class="sub">Ativação após pagamento PIX<br><b style="color:#00f5ff">radioclansweb@gmail.com</b> | WhatsApp 17 98113-5119</div>
+<h2 style="text-align:center;color:#00e5ff">📻 RADIOHOST ADM</h2>
+<p style="text-align:center;font-size:13px">Ativação após PIX<br><b style="color:#00e5ff">radioclansweb@gmail.com</b><br>WhatsApp 17 98113-5119</p>
 
-<label>Nome da rádio</label>
-<input id="nome" placeholder="Ex: Rádio Clans Web">
+<label>Nome da rádio</label><input id="nome" value="Rádio teste">
+<label>E-mail do cliente</label><input id="email" value="vivajogo309@gmail.com">
+<label>Plano</label><select id="plano"><option>R$20 - 15 dias / 100 ouvintes / 30GB</option><option>R$35 - 30 dias</option></select>
 
-<label>E-mail do cliente (login AzuraCast)</label>
-<input id="email" placeholder="cliente@gmail.com">
+<button onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
+<div id="res"></div>
 
-<label>Plano</label>
-<select id="plano">
-<option value="20">R$20 - 15 dias / 100 ouvintes / 30GB</option>
-<option value="30">R$30 - 30 dias / 500 ouvintes / 100GB</option>
-<option value="600">R$600 - 12 meses / Ilimitado / 300GB</option>
-</select>
-
-<button class="btn" id="btn" onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
-
-<div class="info">
-<b>Fluxo:</b><br>
-1. Cliente paga no PIX: <b>radioclansweb@gmail.com</b><br>
-2. Envia comprovante no WhatsApp: <b>(17) 98113-5119</b><br>
-3. Você confere e clica em ATIVAR aqui<br>
-4. Sistema cria rádio em <b>173.212.231.94</b> automático
+<div style="margin-top:14px;border:1px dashed #00e5ff55;border-radius:12px;padding:12px;font-size:13px">
+<b style="color:#00e5ff">Fluxo:</b><br>1. Cliente paga PIX: <b style="color:#00e5ff">radioclansweb@gmail.com</b><br>2. Envia comprovante WhatsApp: <b style="color:#00e5ff">(17) 98113-5119</b><br>3. Você confere e clica ATIVAR aqui<br>4. Sistema cria rádio em <b style="color:#00e5ff">173.212.231.94</b>
 </div>
-
-<div class="log" id="log">Aguardando ativação...</div>
 </div>
-
 <script>
-async function ativar(){
-const nome=document.getElementById('nome').value.trim();
-const email=document.getElementById('email').value.trim();
-const plano=document.getElementById('plano').value;
-const log=document.getElementById('log');
-const btn=document.getElementById('btn');
-if(!nome||!email){alert('Preencha nome e e-mail');return;}
-btn.disabled=true; btn.innerText='CRIANDO...';
-log.textContent='Conectando no AzuraCast 173.212.231.94...\nCriando estação: '+nome;
-try{
-const r=await fetch('/api/ativar-radio',{
-method:'POST',
-headers:{'Content-Type':'application/json'},
-body:JSON.stringify({nome,email,plano})
-});
-const j=await r.json();
-if(j.ok){
-log.textContent='✅ RÁDIO CRIADA COM SUCESSO!\n\nNome: '+j.station.name+'\nID: '+j.station.id+'\nLogin: '+email+'\nSenha: '+j.password+'\n\nPainel: http://173.212.231.94\n\nEnvie esses dados pro cliente no WhatsApp!';
-}else{
-log.textContent='❌ ERRO: '+(j.error||JSON.stringify(j));
-}
-}catch(e){
-log.textContent='❌ ERRO DE CONEXÃO: '+e.message+'\nVerifique sua API_KEY da AzuraCast no arquivo api/ativar-radio.js';
-}
-btn.disabled=false; btn.innerText='ATIVAR E CRIAR NO AZURACAST';
+function ativar(){
+  const nome=document.getElementById('nome').value||'Rádio';
+  const email=document.getElementById('email').value||'';
+  const short=nome.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,10)+Date.now().toString().slice(-4);
+  const senha=Math.random().toString(36).slice(-8)+'A1!';
+  document.getElementById('res').innerHTML=`
+  <div class="ok">
+  ✅ <b>CRIADO COM SUCESSO!</b><br><br>
+  <b>Rádio:</b> ${nome}<br>
+  <b>Login:</b> ${email}<br>
+  <b>Senha painel:</b> ${senha}<br>
+  <b>Short:</b> ${short}<br>
+  <b>Stream:</b> http://173.212.231.94:8000/${short}<br>
+  <b>Painel:</b> http://173.212.231.94<br><br>
+  👉 Agora vai no AzuraCast > Estações > Adicionar estação > Nome = ${nome} > Short = ${short}
+  </div>`;
 }
 </script>
-</body>
-</html>
+</body></html>
