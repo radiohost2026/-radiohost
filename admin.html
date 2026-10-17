@@ -2,85 +2,82 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Painel ADM - RadioHost</title>
 <style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;padding:20px}
-.card{background:#1a1a1a;padding:20px;border-radius:12px;max-width:500px;margin:auto;border:1px solid #333}
-input,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;background:#2a2a2a;color:#fff}
-button{width:100%;padding:14px;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer;margin-top:10px}
-button:disabled{background:#555}
-#resultado{margin-top:15px;padding:12px;border-radius:8px;display:none}
-.success{background:#003b1f;color:#00ff88}
-.error{background:#3b0000;color:#ff4444}
-.info{font-size:13px;color:#aaa;margin-top:15px;text-align:center}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,system-ui}
+body{background:#050810;color:#fff;min-height:100vh;padding:20px}
+.card{max-width:520px;margin:0 auto;background:linear-gradient(180deg,#12182b,#0a0f1e);border:1px solid #1e2a4a;border-radius:18px;padding:22px;box-shadow:0 0 40px #00f5ff15}
+h1{font-size:20px;text-align:center;color:#00f5ff;margin-bottom:6px}
+.sub{text-align:center;color:#8aa0c8;font-size:13px;margin-bottom:18px}
+label{font-size:12px;color:#8aa0c8;margin:12px 0 4px;display:block}
+input,select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid #203055;background:#070c1a;color:#fff;outline:none}
+input:focus{border-color:#00f5ff}
+.btn{width:100%;margin-top:18px;padding:14px;border:none;border-radius:12px;background:linear-gradient(90deg,#00f5ff,#7a5CFF);color:#000;font-weight:800;font-size:15px;cursor:pointer}
+.btn:disabled{opacity:.5}
+.info{background:#070c1a;border:1px dashed #203055;border-radius:12px;padding:12px;margin-top:16px;font-size:13px;line-height:1.6}
+.info b{color:#00f5ff}
+.log{margin-top:14px;background:#000;border-radius:10px;padding:12px;font-size:12px;color:#00ff88;white-space:pre-wrap;min-height:60px}
 </style>
 </head>
 <body>
 <div class="card">
-<h2>📻 Painel ADM RadioHost</h2>
-<p style="color:#aaa;font-size:14px">Após cliente pagar PIX <b>radioclansweb@gmail.com</b> e enviar comprovante no WhatsApp <b>17 98113-5119</b>, ative aqui.</p>
+<h1>📻 RADIOHOST ADM</h1>
+<div class="sub">Ativação após pagamento PIX<br><b style="color:#00f5ff">radioclansweb@gmail.com</b> | WhatsApp 17 98113-5119</div>
 
-<label>Nome da Rádio (que cliente escolheu)</label>
-<input id="nome" placeholder="Ex: Rádio Clima ao Vivo">
+<label>Nome da rádio</label>
+<input id="nome" placeholder="Ex: Rádio Clans Web">
 
-<label>Email do cliente</label>
-<input id="email" type="email" placeholder="cliente@email.com">
+<label>E-mail do cliente (login AzuraCast)</label>
+<input id="email" placeholder="cliente@gmail.com">
 
-<label>Senha que cliente escolheu</label>
-<input id="senha" type="text" placeholder="senha123">
-
-<label>Plano que pagou</label>
+<label>Plano</label>
 <select id="plano">
-<option value="30">Plano R$30 - 100 ouvintes / 10GB (Mais vendido)</option>
-<option value="20">Plano R$20 - 50 ouvintes / 5GB</option>
-<option value="600">Plano R$600 - Ilimitado / 30GB</option>
+<option value="20">R$20 - 15 dias / 100 ouvintes / 30GB</option>
+<option value="30">R$30 - 30 dias / 500 ouvintes / 100GB</option>
+<option value="600">R$600 - 12 meses / Ilimitado / 300GB</option>
 </select>
 
-<button id="btn" onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
+<button class="btn" id="btn" onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
 
-<div id="resultado"></div>
+<div class="info">
+<b>Fluxo:</b><br>
+1. Cliente paga no PIX: <b>radioclansweb@gmail.com</b><br>
+2. Envia comprovante no WhatsApp: <b>(17) 98113-5119</b><br>
+3. Você confere e clica em ATIVAR aqui<br>
+4. Sistema cria rádio em <b>173.212.231.94</b> automático
+</div>
 
-<div class="info">Vercel: radiohost-olive.vercel.app<br>Servidor: 173.212.231.94<br>PIX: radioclansweb@gmail.com</div>
+<div class="log" id="log">Aguardando ativação...</div>
 </div>
 
 <script>
 async function ativar(){
-  const btn = document.getElementById('btn');
-  const resDiv = document.getElementById('resultado');
-  const nome = document.getElementById('nome').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const senha = document.getElementById('senha').value.trim();
-  const plano = document.getElementById('plano').value;
-
-  if(!nome || !email || !senha){ alert('Preencha nome, email e senha'); return; }
-
-  btn.disabled = true; btn.innerText = 'CRIANDO...';
-  resDiv.style.display = 'none';
-
-  try{
-    const r = await fetch('/api/ativar-radio', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ nomeRadio: nome, emailCliente: email, senha, plano })
-    });
-    const data = await r.json();
-    
-    if(data.sucesso){
-      resDiv.className = 'success';
-      resDiv.style.display = 'block';
-      resDiv.innerHTML = `✅ Rádio criada!<br><br><b>Link:</b> <a href="${data.link}" target="_blank" style="color:#00ff88">${data.link}</a><br><br><b>Login:</b> ${email}<br><br>Copie e mande no WhatsApp do cliente!`;
-      btn.innerText = 'CRIADA COM SUCESSO';
-    } else {
-      throw new Error(data.erro || 'Erro');
-    }
-  }catch(e){
-    resDiv.className = 'error';
-    resDiv.style.display = 'block';
-    resDiv.innerHTML = '❌ Erro: ' + e.message;
-    btn.disabled = false; btn.innerText = 'ATIVAR E CRIAR NO AZURACAST';
-  }
+const nome=document.getElementById('nome').value.trim();
+const email=document.getElementById('email').value.trim();
+const plano=document.getElementById('plano').value;
+const log=document.getElementById('log');
+const btn=document.getElementById('btn');
+if(!nome||!email){alert('Preencha nome e e-mail');return;}
+btn.disabled=true; btn.innerText='CRIANDO...';
+log.textContent='Conectando no AzuraCast 173.212.231.94...\nCriando estação: '+nome;
+try{
+const r=await fetch('/api/ativar-radio',{
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body:JSON.stringify({nome,email,plano})
+});
+const j=await r.json();
+if(j.ok){
+log.textContent='✅ RÁDIO CRIADA COM SUCESSO!\n\nNome: '+j.station.name+'\nID: '+j.station.id+'\nLogin: '+email+'\nSenha: '+j.password+'\n\nPainel: http://173.212.231.94\n\nEnvie esses dados pro cliente no WhatsApp!';
+}else{
+log.textContent='❌ ERRO: '+(j.error||JSON.stringify(j));
+}
+}catch(e){
+log.textContent='❌ ERRO DE CONEXÃO: '+e.message+'\nVerifique sua API_KEY da AzuraCast no arquivo api/ativar-radio.js';
+}
+btn.disabled=false; btn.innerText='ATIVAR E CRIAR NO AZURACAST';
 }
 </script>
 </body>
-  </html>
+</html>
