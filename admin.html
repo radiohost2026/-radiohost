@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel ADM - RadioHost</title>
+<style>
+body{background:#0a0a0a;color:#fff;font-family:Arial;padding:20px}
+.card{background:#1a1a1a;padding:20px;border-radius:12px;max-width:500px;margin:auto;border:1px solid #333}
+input,select{width:100%;padding:12px;margin:8px 0;border-radius:8px;border:none;background:#2a2a2a;color:#fff}
+button{width:100%;padding:14px;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer;margin-top:10px}
+button:disabled{background:#555}
+#resultado{margin-top:15px;padding:12px;border-radius:8px;display:none}
+.success{background:#003b1f;color:#00ff88}
+.error{background:#3b0000;color:#ff4444}
+.info{font-size:13px;color:#aaa;margin-top:15px;text-align:center}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>📻 Painel ADM RadioHost</h2>
+<p style="color:#aaa;font-size:14px">Após cliente pagar PIX <b>radioclansweb@gmail.com</b> e enviar comprovante no WhatsApp <b>17 98113-5119</b>, ative aqui.</p>
+
+<label>Nome da Rádio (que cliente escolheu)</label>
+<input id="nome" placeholder="Ex: Rádio Clima ao Vivo">
+
+<label>Email do cliente</label>
+<input id="email" type="email" placeholder="cliente@email.com">
+
+<label>Senha que cliente escolheu</label>
+<input id="senha" type="text" placeholder="senha123">
+
+<label>Plano que pagou</label>
+<select id="plano">
+<option value="30">Plano R$30 - 100 ouvintes / 10GB (Mais vendido)</option>
+<option value="20">Plano R$20 - 50 ouvintes / 5GB</option>
+<option value="600">Plano R$600 - Ilimitado / 30GB</option>
+</select>
+
+<button id="btn" onclick="ativar()">ATIVAR E CRIAR NO AZURACAST</button>
+
+<div id="resultado"></div>
+
+<div class="info">Vercel: radiohost-olive.vercel.app<br>Servidor: 173.212.231.94<br>PIX: radioclansweb@gmail.com</div>
+</div>
+
+<script>
+async function ativar(){
+  const btn = document.getElementById('btn');
+  const resDiv = document.getElementById('resultado');
+  const nome = document.getElementById('nome').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const senha = document.getElementById('senha').value.trim();
+  const plano = document.getElementById('plano').value;
+
+  if(!nome || !email || !senha){ alert('Preencha nome, email e senha'); return; }
+
+  btn.disabled = true; btn.innerText = 'CRIANDO...';
+  resDiv.style.display = 'none';
+
+  try{
+    const r = await fetch('/api/ativar-radio', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ nomeRadio: nome, emailCliente: email, senha, plano })
+    });
+    const data = await r.json();
+    
+    if(data.sucesso){
+      resDiv.className = 'success';
+      resDiv.style.display = 'block';
+      resDiv.innerHTML = `✅ Rádio criada!<br><br><b>Link:</b> <a href="${data.link}" target="_blank" style="color:#00ff88">${data.link}</a><br><br><b>Login:</b> ${email}<br><br>Copie e mande no WhatsApp do cliente!`;
+      btn.innerText = 'CRIADA COM SUCESSO';
+    } else {
+      throw new Error(data.erro || 'Erro');
+    }
+  }catch(e){
+    resDiv.className = 'error';
+    resDiv.style.display = 'block';
+    resDiv.innerHTML = '❌ Erro: ' + e.message;
+    btn.disabled = false; btn.innerText = 'ATIVAR E CRIAR NO AZURACAST';
+  }
+}
+</script>
+</body>
+  </html>
