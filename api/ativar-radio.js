@@ -1,44 +1,30 @@
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
-  if (req.method !== 'POST') return res.status(405).json({ error: 'Use POST' });
-
-  // MUDA PARA HTTPS
-  const AZURACAST_URL = 'https://173.212.231.94';
-  const API_KEY = '7c2714e4dda42c7f:5331cd60'; // COLA SUA CHAVE COMPLETA AQUI, COM OS DOIS LADOS DO :
+  if (req.method !== 'POST') return res.status(405).json({ error: 'POST' });
+  
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+  const AZURACAST_URL = 'http://173.212.231.94';
+  const API_KEY = '984cf6ca7fee3cfc:87e95514087b6be0ccbc148f8f2d900e';
 
   const { nome, email } = req.body || {};
-  if (!nome) return res.status(400).json({ error: 'Sem nome' });
-
   const short = nome.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,8) + Date.now().toString().slice(-4);
 
   try {
-    // Tenta endpoint CORRETO para criar estação
-    const endpoints = [`${AZURACAST_URL}/api/admin/stations`, `${AZURACAST_URL}/api/stations`];
-    let lastError = '';
-
-    for (const url of endpoints) {
-      try {
-        const r = await fetch(url, {
-          method: 'POST',
-          headers: { 'X-API-Key': API_KEY, 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify({
-            name: nome,
-            short_name: short,
-            description: `Rádio de ${email}`,
-            frontend_type: 'icecast',
-            backend_type: 'liquidsoap'
-          })
-        });
-        const txt = await r.text();
-        if (txt.includes('<!DOCTYPE')) { lastError = `Endpoint ${url} retornou HTML (405) - tentando próximo`; continue; }
-        const data = JSON.parse(txt);
-        if (r.ok) return res.json({ ok: true, station: data, short_name: short });
-        lastError = JSON.stringify(data);
-      } catch (e) { lastError = e.message; }
+    const r = await fetch(`${AZURACAST_URL}/api/admin/stations`, {
+      method: 'POST',
+      headers: { 'X-API-Key': API_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: nome, short_name: short, frontend_type: 'icecast', backend_type: 'liquidsoap' })
+    });
+    
+    const txt = await r.text();
+    try {
+      const data = JSON.parse(txt);
+      if (!r.ok) return res.status(500).json({ ok:false, error: txt.slice(0,500) });
+      return res.json({ ok:true, data, short_name: short });
+    } catch {
+      return res.status(500).json({ ok:false, error: 'HTML retornado: ' + txt.slice(0,500) });
     }
-    return res.status(500).json({ ok:false, error: 'Nenhum endpoint aceitou. Último erro: ' + lastError });
-
   } catch (e) {
     return res.status(500).json({ ok:false, error: e.message });
   }
-            }
+    }
