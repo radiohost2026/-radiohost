@@ -1,9 +1,7 @@
 {
   "rewrites": [
-    {
-      "source": "/radio/:path*",
-      "destination": "http://173.212.231.94/:path*"
-    }
-  ],
-  "cleanUrls": true
+    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/admin.html", "destination": "/admin.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
