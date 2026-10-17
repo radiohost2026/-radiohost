@@ -3,7 +3,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const AZURACAST_URL = 'http://173.212.231.94';
-  const API_KEY = 'COLA_SUA_API_KEY_AQUI'; // << COLA AQUI A CHAVE QUE VOCÊ COPIAR
+  const API_KEY = '7c2714e4dda42c7f:5331cd60a56a4e5e4e63dd7caf7ea07e'; // << COLA AQUI A CHAVE QUE VOCÊ COPIAR
 
   const { nome, email, plano } = req.body;
   if (!nome || !email) return res.status(400).json({ error: 'Falta nome/email' });
