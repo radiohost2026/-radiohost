@@ -36,9 +36,6 @@ input,select{width:100%;padding:12px;margin:8px 0;border-radius:10px;border:1px 
 .tab.ativo{background:#ff00a8;border-color:#ff00a8}
 .btn{padding:10px 18px;border-radius:30px;font-weight:800;border:none;cursor:pointer}
 .btn-dark{background:#222;color:#fff;border:1px solid #444}
-.status-ativo{color:#00f0ff;font-weight:900}
-.status-pendente{color:#ff3a8d;font-weight:900}
-.status-aguardando{color:#ffcc00;font-weight:900}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{padding:8px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.75em}
 .whats{position:fixed;bottom:18px;right:18px;background:#25D366;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;text-decoration:none;z-index:999}
@@ -108,9 +105,8 @@ th,td{padding:8px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.7
 <button class="btn btn-dark" onclick="show('home')">Voltar</button></div></div>
 <a class="whats" href="https://wa.me/5517981135119" target="_blank">💬</a>
 <script>
-// PLAYER FIXADO E CORRIGIDO
 let isPlaying=false; 
-const STREAM_FIXO="http://173.212.231.94/listen/radioclans/radio.mp3";
+const STREAM_FIXO="/api/stream";
 function toggleRadio(){ 
   let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus'); 
   if(!isPlaying){ 
@@ -118,51 +114,27 @@ function toggleRadio(){
     a.volume=0.9; 
     b.innerText='⏳'; 
     s.innerText='CONECTANDO...'; 
-    a.play().then(()=>{ isPlaying=true; b.innerText='⏸'; s.innerText='🔴 AO VIVO TOCANDO'; }).catch(err=>{ console.error(err); b.innerText='▶'; s.innerText='ERRO - CLIQUE DE NOVO'; alert('Clique em permitir áudio ou tente novamente'); }); 
+    a.play().then(()=>{ isPlaying=true; b.innerText='⏸'; s.innerText='🔴 TOCANDO AO VIVO'; }).catch(err=>{ b.innerText='▶'; s.innerText='ERRO - CLIQUE DE NOVO'; alert('Se não tocar, recarregue a página e permita áudio'); }); 
   } else{ 
-    isPlaying=false; 
-    a.pause(); 
-    b.innerText='▶'; 
-    s.innerText='AO VIVO - PAUSADO'; 
+    isPlaying=false; a.pause(); b.innerText='▶'; s.innerText='AO VIVO - PAUSADO'; 
   } 
 }
-
 let users=JSON.parse(localStorage.getItem('rh_final_users')||'{}');
 let current=localStorage.getItem('rh_final_current')||'';
 let tempPlano={plano:'',valor:0,dias:0,gb:0};
 
-// SISTEMA AUTOMATICO DE VENCIMENTO E EXCLUSAO
 function verificarVencimentos(){
-  let agora=new Date();
-  let mudou=false;
+  let agora=new Date(); let mudou=false;
   for(let email in users){
-    let u=users[email];
-    if(!u.vencimento) continue;
+    let u=users[email]; if(!u.vencimento) continue;
     let venc=new Date(u.vencimento);
-    let diffMs=agora - venc;
-    let diffDias=Math.floor(diffMs / (1000*60*60*24));
-    
-    // Venceu -> fica pendente
-    if(diffDias >= 0 && u.status==='ativo'){
-      u.status='pendente';
-      u.dataVencimentoReal=venc.toISOString();
-      mudou=true;
-      console.log(`Radio ${u.radioNome} venceu, ficou pendente`);
-    }
-    // 10 dias pendente sem pagar -> EXCLUI
-    if(diffDias >= 10 && u.status!=='excluido'){
-      console.log(`Excluindo ${email} após ${diffDias} dias vencido`);
-      delete users[email];
-      mudou=true;
-    }
+    let diffDias=Math.floor((agora - venc)/(1000*60*60*24));
+    if(diffDias >=0 && u.status==='ativo'){ u.status='pendente'; mudou=true; }
+    if(diffDias >=10){ delete users[email]; mudou=true; }
   }
-  if(mudou){
-    localStorage.setItem('rh_final_users',JSON.stringify(users));
-  }
+  if(mudou) localStorage.setItem('rh_final_users',JSON.stringify(users));
 }
-// Roda a cada 1 minuto e ao carregar
-verificarVencimentos();
-setInterval(verificarVencimentos, 60000);
+verificarVencimentos(); setInterval(verificarVencimentos,60000);
 
 function show(id){document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='painel'){verificarVencimentos(); updPainel();} if(id==='adm'){verificarVencimentos(); updAdm();}}
 function abaCliente(q){document.getElementById('aba-radio').classList.toggle('hidden',q!=='radio');document.getElementById('aba-afiliado').classList.toggle('hidden',q!=='afiliado');document.getElementById('tab1').classList.toggle('ativo',q==='radio');document.getElementById('tab2').classList.toggle('ativo',q==='afiliado');}
@@ -182,26 +154,14 @@ function updPainel(){
   let aviso=document.getElementById('avisoVenc');
   if(u.status==='pendente'){
     let diff=Math.floor((new Date() - new Date(u.vencimento))/(1000*60*60*24));
-    let falta=10-diff;
-    if(falta>0){
-      aviso.innerHTML=`⚠️ VENCIDA há ${diff} dias! Pague em ${falta} dias ou será EXCLUÍDA automaticamente!`;
-      aviso.style.color='#ff3a8d';
-    }else{
-      aviso.innerHTML=`❌ Será excluída a qualquer momento!`;
-      aviso.style.color='red';
-    }
-  }else if(u.status==='aguardando'){
-    aviso.innerHTML=`⏳ Aguardando aprovação do ADM após comprovante`;
-    aviso.style.color='#ffcc00';
-  }else{
-    aviso.innerHTML=`✅ Ativa até ${new Date(u.vencimento).toLocaleDateString('pt-BR')}`;
-    aviso.style.color='#00f0ff';
-  }
-  document.getElementById('txtComprovante').innerText=u.comprovante?"✅ Comprovante enviado - aguardando ADM ativar":"❌ Envie comprovante para renovar";
+    let falta=10-diff; aviso.style.color='#ff3a8d';
+    aviso.innerHTML= falta>0 ? `⚠️ VENCIDA há ${diff} dias! Pague em ${falta} dias ou será EXCLUÍDA!` : `❌ Será excluída a qualquer momento!`;
+  } else if(u.status==='aguardando'){ aviso.style.color='#ffcc00'; aviso.innerHTML=`⏳ Aguardando aprovação do ADM após comprovante`; }
+  else { aviso.style.color='#00f0ff'; aviso.innerHTML=`✅ Ativa até ${new Date(u.vencimento).toLocaleDateString('pt-BR')}`; }
+  document.getElementById('txtComprovante').innerText=u.comprovante?"✅ Comprovante enviado - aguardando ADM":"❌ Envie comprovante para renovar";
   let refCode=current.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8);
   let linkAf='https://radiohost-olive.vercel.app/?ref='+refCode;
-  document.getElementById('linkAfiliado').value=linkAf;
-  window.linkAfGlobal=linkAf;
+  document.getElementById('linkAfiliado').value=linkAf; window.linkAfGlobal=linkAf;
   let vendas=Object.values(users).filter(x=>x.afiliado===refCode).length;
   document.getElementById('afCliques').innerText=Math.floor(Math.random()*80+15);
   document.getElementById('afVendas').innerText=vendas;
@@ -210,17 +170,7 @@ function updPainel(){
   document.getElementById('btnAzura').href=u.status==='ativo'?'http://173.212.231.94/public/radioclans':'#';
   document.getElementById('btnAzura').style.opacity=u.status==='ativo'?'1':'0.3';
 }
-function enviarComprovante(){ 
-  let u=users[current]; 
-  u.comprovante=true; 
-  u.status='aguardando';
-  u.dataComprovante=new Date().toISOString(); 
-  localStorage.setItem('rh_final_users',JSON.stringify(users)); 
-  let msg=`🎧 NOVO PAGAMENTO%0A🎙️ ${u.radioNome}%0A📧 ${current}%0A🔒 ${u.senha}%0A💿 ${u.plano}%0A💰 R$${u.valor}%0A👥 Ref: ${u.afiliado}%0AStatus: AGUARDANDO APROVAÇÃO`; 
-  window.open(`https://wa.me/5517981135119?text=${msg}`,'_blank'); 
-  updPainel(); 
-  alert("✅ Comprovante enviado! Sua rádio ficará PENDENTE até o ADM reativar.");
-}
+function enviarComprovante(){ let u=users[current]; u.comprovante=true; u.status='aguardando'; u.dataComprovante=new Date().toISOString(); localStorage.setItem('rh_final_users',JSON.stringify(users)); let msg=`🎧 NOVO PAGAMENTO%0A🎙️ ${u.radioNome}%0A📧 ${current}%0A🔒 ${u.senha}%0A💿 ${u.plano}%0A💰 R$${u.valor}%0A👥 Ref: ${u.afiliado}`; window.open(`https://wa.me/5517981135119?text=${msg}`,'_blank'); updPainel(); alert("✅ Comprovante enviado! Aguarde o ADM reativar."); }
 function copiarLink(){ let l=document.getElementById('linkAfiliado'); l.select(); document.execCommand('copy'); alert("Link copiado: "+l.value); }
 function compartilharZap(){ let m=encodeURIComponent(`🎧 Crie sua rádio sem anúncios na RádioHost! Meu link: ${window.linkAfGlobal}`); window.open(`https://wa.me/?text=${m}`,'_blank'); }
 function sacar(){ window.open(`https://wa.me/5517981135119?text=Saque afiliado ${current} Saldo ${document.getElementById('afSaldo').innerText}`,'_blank'); }
@@ -237,18 +187,12 @@ async function ativar(email){
   let u=users[email];
   try{
     document.body.style.cursor='wait';
-    let res=await fetch('/api/create-radio',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ nome: u.radioNome, email: email })
-    });
-    let data=await res.json().catch(()=>({}));
-    console.log('Azura:', data);
+    let res=await fetch('/api/create-radio',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nome: u.radioNome, email: email }) });
+    let data=await res.json().catch(()=>({})); console.log('Azura:', data);
   }catch(e){ console.error(e); }
   finally{ document.body.style.cursor='default'; }
   users[email].status='ativo'; 
-  let v=new Date(); 
-  v.setDate(v.getDate()+users[email].dias); 
+  let v=new Date(); v.setDate(v.getDate()+users[email].dias); 
   users[email].vencimento=v.toISOString(); 
   users[email].comprovante=false;
   localStorage.setItem('rh_final_users',JSON.stringify(users)); 
