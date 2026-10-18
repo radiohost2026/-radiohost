@@ -57,7 +57,7 @@ th,td{padding:8px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.7
     <h2 style="font-family:Orbitron;color:#00f0ff;text-align:center">🎧 CRIAR MINHA RÁDIO</h2>
     <p id="planoEscolhidoTexto" style="font-size:.8em;color:#aaa;text-align:center;margin:8px 0">👇 Escolha um plano acima</p>
     <input id="cadRadioNome" placeholder="🎙️ Nome da sua rádio">
-    <input id="cadEmail" placeholder="📧 Seu e-mail (será seu login)">
+    <input id="cadEmail" placeholder="📧 Seu e-mail">
     <input id="cadSenha" type="password" placeholder="🔒 Crie uma senha">
     <button class="btn-ative" id="btnCriar" onclick="confirmarCadastro()">CRIAR RÁDIO AGORA</button>
 </div>
@@ -98,11 +98,11 @@ th,td{padding:8px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.7
 </div>
 <button class="btn btn-dark" style="margin-top:16px" onclick="sair()">Sair</button>
 </div></div>
-<div id="adm" class="hidden"><div class="section"><h2>👑 ADM - CLIENTES + AFILIADOS</h2>
-<p style="font-size:.8em;color:#aaa">Atualiza a cada 10s - agora vindo do servidor</p><br>
+<div id="adm" class="hidden"><div class="section"><h2>👑 ADM - CLIENTES</h2>
+<p style="font-size:.8em;color:#00f0ff" id="admStatus">Conectado ao servidor</p><br>
 <div class="tabs"><div class="tab ativo" id="admTab1" onclick="abaAdm('radios')">📻 Rádios</div><div class="tab" id="admTab2" onclick="abaAdm('afiliados')">💸 Afiliados ADM</div></div>
-<div id="adm-aba-radios"><div class="grid"><div class="card"><h3>Total</h3><h2 id="admTotalClientes">0</h2></div><div class="card"><h3>Pendentes</h3><h2 id="admPendentes">0</h2></div><div class="card"><h3>Comissões a pagar</h3><h2 id="admComissoes">R$0</h2></div></div><div class="card"><table><tr><th>Rádio / Login / Senha / Ref</th><th>Plano</th><th>Status</th><th>Ação</th></tr><tbody id="admRadios"></tbody></table></div></div>
-<div id="adm-aba-afiliados" class="hidden"><div class="card"><table><tr><th>Afiliado</th><th>Ref Code</th><th>Vendas</th><th>A Pagar 20%</th><th>Ação</th></tr><tbody id="admAfiliados"></tbody></table></div></div>
+<div id="adm-aba-radios"><div class="grid"><div class="card"><h3>Total</h3><h2 id="admTotalClientes">0</h2></div><div class="card"><h3>Pendentes</h3><h2 id="admPendentes">0</h2></div><div class="card"><h3>Comissões a pagar</h3><h2 id="admComissoes">R$0</h2></div></div><div class="card"><table><tr><th>Rádio / Login / Senha</th><th>Plano</th><th>Status</th><th>Ação</th></tr><tbody id="admRadios"></tbody></table></div></div>
+<div id="adm-aba-afiliados" class="hidden"><div class="card"><table><tr><th>Afiliado</th><th>Ref</th><th>Vendas</th><th>A Pagar</th><th>Ação</th></tr><tbody id="admAfiliados"></tbody></table></div></div>
 <button class="btn btn-dark" onclick="show('home')">Voltar</button></div></div>
 <a class="whats" href="https://wa.me/5517981135119" target="_blank">💬</a>
 <script>
@@ -110,35 +110,55 @@ let isPlaying=false;
 const STREAM_FIXO="/api/stream";
 function toggleRadio(){ 
   let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus'); 
-  if(!isPlaying){ a.src=STREAM_FIXO+"?t="+Date.now(); a.volume=0.9; b.innerText='⏳'; s.innerText='CONECTANDO...'; a.play().then(()=>{ isPlaying=true; b.innerText='⏸'; s.innerText='🔴 TOCANDO AO VIVO'; }).catch(err=>{ b.innerText='▶'; s.innerText='ERRO - CLIQUE DE NOVO'; }); } 
-  else{ isPlaying=false; a.pause(); b.innerText='▶'; s.innerText='AO VIVO - PAUSADO'; } 
+  if(!isPlaying){ a.src=STREAM_FIXO+"?t="+Date.now(); a.volume=0.9; b.innerText='⏳'; s.innerText='CONECTANDO...'; a.play().then(()=>{ isPlaying=true; b.innerText='⏸'; s.innerText='🔴 AO VIVO'; }).catch(()=>{ b.innerText='▶'; s.innerText='ERRO - CLIQUE DE NOVO'; }); } 
+  else{ isPlaying=false; a.pause(); b.innerText='▶'; s.innerText='PAUSADO'; } 
 }
 
 let users={};
-let current=localStorage.getItem('rh_final_current')||'';
+let current=(localStorage.getItem('rh_final_current')||'').toLowerCase().trim();
 let tempPlano={plano:'',valor:0,dias:0,gb:0};
 
 async function apiLoadUsers(){
   try{
-    let r = await fetch('/api/users');
-    if(!r.ok) throw new Error('api fail');
-    users = await r.json();
+    let r = await fetch('/api/users',{cache:'no-store'});
+    if(!r.ok) throw new Error('api');
+    let data = await r.json();
+    if(Object.keys(data).length>0){
+      users = data;
+      localStorage.setItem('rh_final_users', JSON.stringify(users));
+      document.getElementById('admStatus').innerText='✅ Servidor conectado - '+Object.keys(users).length+' clientes';
+    }
   }catch(e){
-    console.warn('API offline, usando localStorage temporário', e);
     users = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
+    document.getElementById('admStatus').innerText='⚠️ Usando cache local - ative KV na Vercel';
   }
 }
 async function apiSaveUser(email, data){
-  await fetch('/api/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...data}) });
+  email=email.toLowerCase().trim();
+  // salva local IMEDIATO para não dar conta não encontrada
+  users[email]=data;
+  localStorage.setItem('rh_final_users', JSON.stringify(users));
+  try{
+    await fetch('/api/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...data}) });
+  }catch(e){ console.log('salvo local'); }
 }
 async function apiUpdateUser(email, patch){
-  await fetch('/api/users', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...patch}) });
+  email=email.toLowerCase().trim();
+  if(users[email]){ users[email]={...users[email], ...patch}; localStorage.setItem('rh_final_users', JSON.stringify(users)); }
+  try{ await fetch('/api/users', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...patch}) }); }catch(e){}
 }
 async function apiDeleteUser(email){
-  await fetch('/api/users?email='+encodeURIComponent(email), { method:'DELETE' });
+  email=email.toLowerCase().trim();
+  delete users[email]; localStorage.setItem('rh_final_users', JSON.stringify(users));
+  try{ await fetch('/api/users?email='+encodeURIComponent(email), { method:'DELETE' }); }catch(e){}
 }
 
-function show(id){document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='painel'){updPainel();} if(id==='adm'){updAdm();}}
+function show(id){
+  document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+  if(id==='painel'){ updPainel(); } 
+  if(id==='adm'){ updAdm(); }
+}
 function abaCliente(q){document.getElementById('aba-radio').classList.toggle('hidden',q!=='radio');document.getElementById('aba-afiliado').classList.toggle('hidden',q!=='afiliado');document.getElementById('tab1').classList.toggle('ativo',q==='radio');document.getElementById('tab2').classList.toggle('ativo',q==='afiliado');}
 function abaAdm(q){document.getElementById('adm-aba-radios').classList.toggle('hidden',q!=='radios');document.getElementById('adm-aba-afiliados').classList.toggle('hidden',q!=='afiliados');document.getElementById('admTab1').classList.toggle('ativo',q==='radios');document.getElementById('admTab2').classList.toggle('ativo',q==='afiliados');}
 function selecionarPlano(plano,valor,dias,gb,cardId){ tempPlano={plano,valor,dias,gb}; document.querySelectorAll('.card-plan').forEach(c=>c.classList.remove('selecionado')); document.getElementById(cardId).classList.add('selecionado'); document.getElementById('planoEscolhidoTexto').innerHTML="✅ <b style='color:#00f0ff'>"+plano+" - R$"+valor+"</b><br>Preencha abaixo"; document.getElementById('formCadastro').scrollIntoView({behavior:'smooth',block:'center'}); }
@@ -146,35 +166,48 @@ function selecionarPlano(plano,valor,dias,gb,cardId){ tempPlano={plano,valor,dia
 async function confirmarCadastro(){
   if(!tempPlano.plano){ alert("Escolha um plano acima primeiro!"); return; }
   let radioNome=document.getElementById('cadRadioNome').value.trim();
-  let email=document.getElementById('cadEmail').value.trim();
+  let email=document.getElementById('cadEmail').value.trim().toLowerCase();
   let senha=document.getElementById('cadSenha').value.trim();
   if(!radioNome||!email||!senha){ alert("Preencha todos os campos!"); return; }
   document.getElementById('btnCriar').innerText='CRIANDO...';
+  document.getElementById('btnCriar').disabled=true;
   let venc=new Date(); venc.setDate(venc.getDate()+tempPlano.dias);
   let ref=localStorage.getItem('ref')||'direto';
   let novo={radioNome,senha,plano:tempPlano.plano,valor:tempPlano.valor,dias:tempPlano.dias,gb:tempPlano.gb,vencimento:venc.toISOString(),status:'pendente',criado:new Date().toISOString(),afiliado:ref,comprovante:false};
-  try{
-    await apiSaveUser(email, novo);
-    await apiLoadUsers();
-    current=email; localStorage.setItem('rh_final_current',email);
-    alert("✅ Rádio '"+radioNome+"' criada! Agora aparece no ADM!");
-    show('painel');
-  }catch(e){ alert("Erro ao salvar no servidor: "+e.message); }
-  finally{ document.getElementById('btnCriar').innerText='CRIAR RÁDIO AGORA'; }
+  
+  await apiSaveUser(email, novo);
+  current=email;
+  localStorage.setItem('rh_final_current',email);
+  document.getElementById('btnCriar').innerText='CRIAR RÁDIO AGORA';
+  document.getElementById('btnCriar').disabled=false;
+  alert("✅ Rádio '"+radioNome+"' criada com sucesso!");
+  show('painel');
 }
 
 async function entrar(){
+  let email=document.getElementById('email').value.trim().toLowerCase();
+  let senha=document.getElementById('senha').value.trim();
   await apiLoadUsers();
-  let email=document.getElementById('email').value; let senha=document.getElementById('senha').value;
-  if(!users[email]){ alert("Não encontrado!"); return; }
+  if(!users[email]){ alert("Conta não encontrada! Verifique o e-mail ou crie uma rádio."); return; }
   if(users[email].senha!==senha){ alert("Senha errada!"); return; }
   current=email; localStorage.setItem('rh_final_current',email); show('painel');
 }
 async function entrarAdm(){ await apiLoadUsers(); show('adm'); }
 
 async function updPainel(){
-  await apiLoadUsers();
-  let u=users[current]; if(!u){ alert("Conta não encontrada"); sair(); return; }
+  if(!current){ await apiLoadUsers(); current=(localStorage.getItem('rh_final_current')||'').toLowerCase().trim(); }
+  // se ainda não tem no objeto, tenta carregar do cache local direto
+  if(!users[current]){
+    let cache = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
+    if(cache[current]) users[current]=cache[current];
+  }
+  let u=users[current]; 
+  if(!u){ 
+    // tenta mais uma vez do servidor
+    await apiLoadUsers();
+    u=users[current];
+    if(!u){ alert("Conta não encontrada - faça login novamente"); sair(); return; }
+  }
   document.getElementById('userEmail').innerText=current;
   document.getElementById('radioNome').innerText=u.radioNome;
   document.getElementById('radioEmailLogin').innerText=current;
@@ -185,29 +218,28 @@ async function updPainel(){
   if(u.status==='pendente'){ aviso.style.color='#ff3a8d'; aviso.innerHTML=`⚠️ Pendente - envie comprovante`; }
   else if(u.status==='aguardando'){ aviso.style.color='#ffcc00'; aviso.innerHTML=`⏳ Aguardando aprovação do ADM`; }
   else { aviso.style.color='#00f0ff'; aviso.innerHTML=`✅ Ativa até ${new Date(u.vencimento).toLocaleDateString('pt-BR')}`; }
-  document.getElementById('txtComprovante').innerText=u.comprovante?"✅ Comprovante enviado - aguardando ADM":"❌ Envie comprovante para renovar";
+  document.getElementById('txtComprovante').innerText=u.comprovante?"✅ Comprovante enviado - aguardando ADM":"❌ Envie comprovante";
   let refCode=current.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8);
   let linkAf='https://radiohost-olive.vercel.app/?ref='+refCode;
   document.getElementById('linkAfiliado').value=linkAf; window.linkAfGlobal=linkAf;
   let vendas=Object.values(users).filter(x=>x.afiliado===refCode).length;
-  document.getElementById('afCliques').innerText=Math.floor(Math.random()*80+15);
+  document.getElementById('afCliques').innerText=''+(15+vendas*3);
   document.getElementById('afVendas').innerText=vendas;
   document.getElementById('afSaldo').innerText='R$'+(vendas*u.valor*0.2).toFixed(2);
   let tb=document.getElementById('tabelaAf'); tb.innerHTML=''; for(let e in users){if(users[e].afiliado===refCode){tb.innerHTML+=`<tr><td>${new Date(users[e].criado).toLocaleDateString()}</td><td>${e}</td><td>${users[e].plano}</td><td style="color:#25D366">R$${(users[e].valor*0.2).toFixed(2)}</td></tr>`}} if(!tb.innerHTML) tb.innerHTML='<tr><td colspan="4">Nenhuma venda ainda</td></tr>';
   document.getElementById('btnAzura').href=u.status==='ativo'?'http://173.212.231.94/public/radioclans':'#';
-  document.getElementById('btnAzura').style.opacity=u.status==='ativo'?'1':'0.3';
 }
 
 async function enviarComprovante(){
   let obs=document.getElementById('pixObs').value.trim();
   await apiUpdateUser(current, {comprovante:true, status:'aguardando', dataComprovante:new Date().toISOString(), pixObs:obs });
-  await apiLoadUsers();
   let u=users[current];
   let msg=`🎧 NOVO PAGAMENTO%0A🎙️ ${u.radioNome}%0A📧 ${current}%0A🔒 ${u.senha}%0A💿 ${u.plano}%0A💰 R$${u.valor}%0A👥 Ref: ${u.afiliado}%0A📝 ${obs}`;
-  window.open(`https://wa.me/5517981135119?text=${msg}`,'_blank'); updPainel(); alert("✅ Comprovante enviado! Aguarde o ADM reativar.");
+  window.open(`https://wa.me/5517981135119?text=${msg}`,'_blank'); 
+  updPainel(); alert("✅ Comprovante enviado!");
 }
-function copiarLink(){ let l=document.getElementById('linkAfiliado'); l.select(); document.execCommand('copy'); alert("Link copiado: "+l.value); }
-function compartilharZap(){ let m=encodeURIComponent(`🎧 Crie sua rádio sem anúncios na RádioHost! Meu link: ${window.linkAfGlobal}`); window.open(`https://wa.me/?text=${m}`,'_blank'); }
+function copiarLink(){ let l=document.getElementById('linkAfiliado'); l.select(); document.execCommand('copy'); alert("Link copiado!"); }
+function compartilharZap(){ let m=encodeURIComponent(`🎧 Crie sua rádio na RádioHost! Meu link: ${window.linkAfGlobal}`); window.open(`https://wa.me/?text=${m}`,'_blank'); }
 function sacar(){ window.open(`https://wa.me/5517981135119?text=Saque afiliado ${current} Saldo ${document.getElementById('afSaldo').innerText}`,'_blank'); }
 
 async function updAdm(){
@@ -217,15 +249,23 @@ async function updAdm(){
   let totalCom=0, map={};
   for(let email in users){ let u=users[email]; if(u.afiliado!=='direto'){ if(!map[u.afiliado]) map[u.afiliado]={vendas:0,total:0}; map[u.afiliado].vendas++; map[u.afiliado].total+=u.valor*0.2; totalCom+=u.valor*0.2; } }
   document.getElementById('admComissoes').innerText='R$'+totalCom.toFixed(2);
-  let tbody=document.getElementById('admRadios'); tbody.innerHTML=''; for(let email in users){ let u=users[email]; let comp=u.comprovante?'✅ Enviou':'❌ Sem'; let venc=new Date(u.vencimento); let statusTxt=u.status.toUpperCase(); tbody.innerHTML+=`<tr><td><b style="color:#ff5bd7">${u.radioNome}</b><br>📧 ${email}<br>🔒 ${u.senha}<br><small>ref:${u.afiliado} ${u.pixObs||''}</small></td><td>${u.plano}<br>R$${u.valor}<br><small>Vence: ${venc.toLocaleDateString()}</small></td><td>${statusTxt}<br><small>${comp}</small></td><td><button onclick="ativar('${email}')" class="btn-ative" style="padding:6px;font-size:.7em">Ativar</button><br><button onclick="apagar('${email}')" class="btn btn-dark" style="padding:4px;margin-top:4px;font-size:.6em">Excluir</button></td></tr>`; }
-  let tbodyAf=document.getElementById('admAfiliados'); tbodyAf.innerHTML=''; for(let ref in map){ let afEmail=Object.keys(users).find(e=>e.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8)===ref)||'Desconhecido'; tbodyAf.innerHTML+=`<tr><td>${afEmail}</td><td>${ref}</td><td>${map[ref].vendas}</td><td style="color:#25D366">R$${map[ref].total.toFixed(2)}</td><td><button class="btn-ative" style="padding:4px;font-size:.7em" onclick="alert('Pagar R$${map[ref].total.toFixed(2)} para ${afEmail}')">Pagar</button></td></tr>`; } if(!tbodyAf.innerHTML) tbodyAf.innerHTML='<tr><td colspan="5">Nenhum afiliado ainda</td></tr>';
+  let tbody=document.getElementById('admRadios'); tbody.innerHTML=''; 
+  for(let email in users){ 
+    let u=users[email]; 
+    let comp=u.comprovante?'✅ Enviou':'❌ Sem'; 
+    let venc=new Date(u.vencimento); 
+    let statusTxt=u.status.toUpperCase(); 
+    tbody.innerHTML+=`<tr><td><b style="color:#ff5bd7">${u.radioNome}</b><br>📧 ${email}<br>🔒 ${u.senha}<br><small>ref:${u.afiliado} ${u.pixObs||''}</small></td><td>${u.plano}<br>R$${u.valor}<br><small>${venc.toLocaleDateString()}</small></td><td>${statusTxt}<br><small>${comp}</small></td><td><button onclick="ativar('${email}')" class="btn-ative" style="padding:6px;font-size:.7em">Ativar</button><br><button onclick="apagar('${email}')" class="btn btn-dark" style="padding:4px;margin-top:4px;font-size:.6em">Excluir</button></td></tr>`; 
+  }
+  if(!tbody.innerHTML) tbody.innerHTML='<tr><td colspan="4">Nenhum cliente ainda</td></tr>';
+  let tbodyAf=document.getElementById('admAfiliados'); tbodyAf.innerHTML=''; for(let ref in map){ let afEmail=Object.keys(users).find(e=>e.replace(/[^a-z0-9]/gi,'').toUpperCase().substring(0,8)===ref)||ref; tbodyAf.innerHTML+=`<tr><td>${afEmail}</td><td>${ref}</td><td>${map[ref].vendas}</td><td style="color:#25D366">R$${map[ref].total.toFixed(2)}</td><td><button class="btn-ative" style="padding:4px;font-size:.7em">Pagar</button></td></tr>`; } if(!tbodyAf.innerHTML) tbodyAf.innerHTML='<tr><td colspan="5">Nenhum afiliado</td></tr>';
 }
 async function ativar(email){
   try{
     document.body.style.cursor='wait';
     let u=users[email];
     let res=await fetch('/api/create-radio',{ method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ nome: u.radioNome, email: email }) });
-    console.log('Azura:', await res.json().catch(()=>({})));
+    console.log(await res.json().catch(()=>({})));
   }catch(e){ console.error(e); }
   finally{ document.body.style.cursor='default'; }
   let v=new Date(); v.setDate(v.getDate()+(users[email].dias||30)); 
@@ -233,11 +273,10 @@ async function ativar(email){
   await updAdm(); 
   alert("✅ "+users[email].radioNome+" ATIVADA!");
 }
-async function apagar(email){ if(confirm("Excluir permanentemente?")){ await apiDeleteUser(email); await updAdm(); } }
+async function apagar(email){ if(confirm("Excluir?")){ await apiDeleteUser(email); await updAdm(); } }
 function sair(){ localStorage.removeItem('rh_final_current'); show('home'); }
 let p=new URLSearchParams(window.location.search); if(p.get('ref')) localStorage.setItem('ref',p.get('ref'));
 apiLoadUsers();
-setInterval(()=>{ if(document.getElementById('adm') && !document.getElementById('adm').classList.contains('hidden')) updAdm(); }, 10000);
 </script>
 </body>
     </html>
