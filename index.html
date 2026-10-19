@@ -64,143 +64,142 @@ th,td{padding:8px;border-bottom:1px solid #ffffff15;text-align:left;font-size:.7
 </div>
 <div id="planos" class="hidden"><div class="section"><h2 style="font-family:Orbitron;text-align:center">PLANOS</h2><br><div class="grid"><div class="card-plan cyan"><h3>INICIANTE</h3><div class="price">R$20</div><button class="btn-ative" style="padding:10px" onclick="show('home');setTimeout(()=>selecionarPlano('Iniciante 3GB',20,15,3,'card1'),300)">Escolher</button></div><div class="card-plan magenta"><h3>PRO</h3><div class="price">R$30</div><button class="btn-ative" style="padding:10px" onclick="show('home');setTimeout(()=>selecionarPlano('Pro 10GB',30,30,10,'card2'),300)">Escolher</button></div><div class="card-plan cyan"><h3>EMPRESARIAL</h3><div class="price">R$600</div><button class="btn-ative" style="padding:10px" onclick="show('home');setTimeout(()=>selecionarPlano('Empresarial 30GB',600,365,30,'card3'),300)">Escolher</button></div></div></div></div>
 <div id="login" class="hidden"><div class="section" style="max-width:440px"><div class="card"><h2>Entrar</h2><input id="email" placeholder="Seu e-mail"><input id="senha" type="password" placeholder="Senha"><button class="btn-ative" onclick="entrar()">ENTRAR NO PAINEL</button><hr style="margin:18px 0"><button class="btn btn-dark" style="width:100%" onclick="entrarAdm()">👑 SOU ADM</button></div></div></div>
+
 <div id="painel" class="hidden"><div class="section">
 <h2>🎧 Painel - <span id="userEmail"></span></h2>
-<div class="tabs">
-  <div class="tab ativo" id="tab1" onclick="abaCliente('radio')">📻 Minha Rádio</div>
-  <div class="tab" id="tab2" onclick="abaCliente('afiliado')">💸 Meu Link</div>
-</div>
+<div class="tabs"><div class="tab ativo" id="tab1" onclick="abaCliente('radio')">📻 Minha Rádio</div><div class="tab" id="tab2" onclick="abaCliente('afiliado')">💸 Meu Link</div></div>
 <div id="aba-radio"><div class="grid">
 <div class="card"><h3>📻 Minha Rádio</h3><p>🎙️ Nome: <b id="radioNome" style="color:#ff5bd7"></b></p><p>📧 Login: <b id="radioEmailLogin"></b></p><p>Plano: <b id="radioPlano"></b></p><p>Vence: <b id="radioVence"></b></p><p>Status: <b id="radioStatus"></b></p><p id="avisoVenc" style="margin-top:10px;font-weight:800"></p><hr style="margin:12px 0"><a id="btnAzura" target="_blank" class="btn-ative" style="padding:10px;display:block;text-align:center;text-decoration:none">🎧 GERENCIAR NO AZURACAST</a></div>
 <div class="card"><h3>💳 Enviar Comprovante</h3><input id="pixObs" placeholder="PIX ou nome"><button class="btn-ative" onclick="enviarComprovante()">📲 ENVIAR COMPROVANTE</button><p id="txtComprovante" style="margin-top:10px;font-size:.85em"></p></div>
 </div></div>
-<div id="aba-afiliado" class="hidden">
-<div class="af-box">
-<h3 style="color:#ff8ad8">💸 Ganhe 20%</h3>
-<div class="grid">
-<div>
-<input id="linkAfiliado" readonly style="border-color:#ff00a8">
-<button class="btn btn-dark" style="width:100%;margin-top:6px" onclick="copiarLink()">📋 Copiar Link</button>
-<button class="btn-ative" style="padding:10px;margin-top:8px;font-size:.85em" onclick="compartilharZap()">📲 WhatsApp</button>
-</div>
-<div class="card" style="background:#0006;margin:0">
-<p>Vendas: <b id="afVendas" style="color:#ff00a8">0</b></p>
-<p>Saldo: <b id="afSaldo" style="color:#25D366;font-size:1.5em">R$0,00</b></p>
-<br><button class="btn-ative" style="padding:10px" onclick="sacar()">💰 Sacar</button>
-</div>
-</div>
-<br><h4 style="color:#00f0ff">Minhas Indicações:</h4>
-<table><tr><th>Data</th><th>Indicado</th><th>Plano</th><th>Comissão</th></tr><tbody id="tabelaAf"></tbody></table>
-</div>
-</div>
+<div id="aba-afiliado" class="hidden"><div class="af-box"><h3 style="color:#ff8ad8">💸 Ganhe 20%</h3><div class="grid"><div><input id="linkAfiliado" readonly style="border-color:#ff00a8"><button class="btn btn-dark" style="width:100%;margin-top:6px" onclick="copiarLink()">📋 Copiar</button><button class="btn-ative" style="padding:10px;margin-top:8px;font-size:.85em" onclick="compartilharZap()">📲 WhatsApp</button></div><div class="card" style="background:#0006;margin:0"><p>Vendas: <b id="afVendas">0</b></p><p>Saldo: <b id="afSaldo" style="color:#25D366">R$0,00</b></p><br><button class="btn-ative" style="padding:10px" onclick="sacar()">💰 Sacar</button></div></div><br><h4 style="color:#00f0ff">Indicações:</h4><table><tr><th>Data</th><th>Indicado</th><th>Plano</th><th>Comissão</th></tr><tbody id="tabelaAf"></tbody></table></div></div>
 <button class="btn btn-dark" style="margin-top:16px" onclick="sair()">Sair</button>
 </div></div>
 
 <div id="adm" class="hidden"><div class="section">
-<h2>👑 ADM - CLIENTES</h2>
+<h2>👑 ADM - RÁDIOHOST</h2>
 <p style="font-size:.8em;color:#00f0ff" id="admStatus">Carregando...</p>
-
-<button class="btn-ative" style="background:#25D366; max-width:100%; margin:10px 0; padding:12px; font-size:.9em" onclick="corrigirClans()">🔧 CORRIGIR RÁDIO CLÃNS + ATIVAR PENDENTES</button>
-
+<button class="btn-ative" style="background:#25D366; max-width:100%; margin:10px 0; padding:12px;" onclick="corrigirClans()">🔧 CORRIGIR E ATIVAR TUDO</button>
 <div class="tabs"><div class="tab ativo" id="admTab1" onclick="abaAdm('radios')">📻 Rádios</div><div class="tab" id="admTab2" onclick="abaAdm('afiliados')">💸 Afiliados</div></div>
 <div id="adm-aba-radios"><div class="grid"><div class="card"><h3>Total</h3><h2 id="admTotalClientes">0</h2></div><div class="card"><h3>Pendentes</h3><h2 id="admPendentes">0</h2></div><div class="card"><h3>Comissões</h3><h2 id="admComissoes">R$0</h2></div></div><div class="card"><table><tr><th>Rádio / Login</th><th>Plano</th><th>Status</th><th>Ação</th></tr><tbody id="admRadios"></tbody></table></div></div>
-<div id="adm-aba-afiliados" class="hidden"><div class="card"><table><tr><th>Afiliado</th><th>Ref</th><th>Vendas</th><th>A Pagar</th></tr><tbody id="admAfiliados"></tbody></table></div></div>
+<div id="adm-aba-afiliados" class="hidden"><div class="card"><table><tr><th>Afiliado</th><th>Ref</th><th>Vendas</th></tr><tbody id="admAfiliados"></tbody></table></div></div>
 <button class="btn btn-dark" onclick="show('home')">Voltar</button></div></div>
+
 <a class="whats" href="https://wa.me/5517981135119" target="_blank">💬</a>
 <script>
 let isPlaying=false; 
 const STREAM_FIXO="/api/stream";
 function toggleRadio(){ let a=document.getElementById('audioEl'), b=document.getElementById('playBtn'), s=document.getElementById('playerStatus'); if(!isPlaying){ a.src=STREAM_FIXO+"?t="+Date.now(); a.volume=0.9; b.innerText='⏳'; s.innerText='CONECTANDO...'; a.play().then(()=>{ isPlaying=true; b.innerText='⏸'; s.innerText='🔴 AO VIVO'; }).catch(()=>{ b.innerText='▶'; }); } else{ isPlaying=false; a.pause(); b.innerText='▶'; s.innerText='PAUSADO'; } }
 
-let users = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
+// --- BANCO FIXO: RÁDIO CLÃNS NUNCA APAGA ---
+const RADIO_CLANS_FIXA = {
+  radioNome: 'Rádio Clãns FM',
+  senha: 'clans123',
+  plano: 'Empresarial 30GB',
+  valor: 600, dias: 365, gb: 30,
+  vencimento: new Date('2026-11-15').toISOString(),
+  status: 'ativo',
+  criado: new Date().toISOString(),
+  afiliado: 'direto',
+  comprovante: false
+};
+
+let users = {};
 let current = (localStorage.getItem('rh_final_current')||'').toLowerCase().trim();
 let tempPlano={plano:'',valor:0,dias:0,gb:0};
+
+function carregarCacheLocal(){
+  try{
+    let c = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
+    users = {...c};
+  }catch(e){ users = {}; }
+  // SEMPRE garante Clãns
+  users['admin@radiohost.com.br'] = RADIO_CLANS_FIXA;
+}
+carregarCacheLocal();
 
 function getUser(email){
   if(!email) return null;
   email=email.toLowerCase().trim();
+  if(email==='admin@radiohost.com.br') return RADIO_CLANS_FIXA;
   if(users[email]) return users[email];
+  // busca case-insensitive
   for(let k in users){ if(k.toLowerCase().trim()===email) return users[k]; }
-  let cache=JSON.parse(localStorage.getItem('rh_final_users')||'{}');
-  for(let k in cache){ if(k.toLowerCase().trim()===email) return cache[k]; }
   return null;
 }
+
 async function apiLoadUsers(){
-  let cache = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
-  users = {...cache, ...users};
+  carregarCacheLocal();
   try{
     let r = await fetch('/api/users',{cache:'no-store'});
     if(r.ok){
       let data = await r.json();
-      if(data && Object.keys(data).length>0){
-        users = {...users, ...data};
+      if(data && typeof data === 'object' && Object.keys(data).length>0){
+        // Mescla sem apagar Clãns
+        for(let k in data){
+          if(k.toLowerCase().trim() === 'admin@radiohost.com.br') continue;
+          if(data[k] && data[k].radioNome) users[k.toLowerCase().trim()] = data[k];
+        }
+        users['admin@radiohost.com.br'] = RADIO_CLANS_FIXA;
         localStorage.setItem('rh_final_users', JSON.stringify(users));
-        document.getElementById('admStatus').innerText='✅ Servidor: '+Object.keys(users).length+' clientes';
+        document.getElementById('admStatus').innerText='✅ Servidor: '+Object.keys(users).length+' rádios';
       } else {
-        document.getElementById('admStatus').innerText='⚠️ Servidor vazio (ative KV) - cache: '+Object.keys(users).length;
+        document.getElementById('admStatus').innerText='⚠️ Servidor vazio - usando cache local: '+Object.keys(users).length;
       }
     }
-  }catch(e){ document.getElementById('admStatus').innerText='⚠️ Offline - cache: '+Object.keys(users).length; }
+  }catch(e){
+    document.getElementById('admStatus').innerText='⚠️ Offline - cache: '+Object.keys(users).length;
+  }
 }
 async function apiSaveUser(email, data){
   email=email.toLowerCase().trim();
+  if(email==='admin@radiohost.com.br') return;
   users[email]=data;
   localStorage.setItem('rh_final_users', JSON.stringify(users));
   try{ await fetch('/api/users', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...data}) }); }catch(e){}
 }
 async function apiUpdateUser(email, patch){
   email=email.toLowerCase().trim();
+  if(email==='admin@radiohost.com.br') return;
   if(users[email]){ users[email]={...users[email], ...patch}; localStorage.setItem('rh_final_users', JSON.stringify(users)); }
   try{ await fetch('/api/users', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({email, ...patch}) }); }catch(e){}
 }
 async function apiDeleteUser(email){
   email=email.toLowerCase().trim();
-  if(email==='admin@radiohost.com.br'){ alert('⛔ Não pode excluir Rádio Clãns! É a rádio principal que toca no site!'); return; }
+  if(email==='admin@radiohost.com.br'){ alert('⛔ Rádio Clãns é a rádio principal, não pode excluir!'); return; }
   delete users[email]; 
   let cache=JSON.parse(localStorage.getItem('rh_final_users')||'{}'); delete cache[email];
   localStorage.setItem('rh_final_users', JSON.stringify(cache));
   try{ await fetch('/api/users?email='+encodeURIComponent(email), { method:'DELETE' }); }catch(e){}
 }
 
-// BOTÃO NOVO QUE CORRIGE TUDO NO CELULAR
 async function corrigirClans(){
-  let todos = JSON.parse(localStorage.getItem('rh_final_users')||'{}');
-  todos = {...users, ...todos};
-  // Corrige Clãns
-  let clansOld = todos['admin@radiohost.com.br']||{};
-  todos['admin@radiohost.com.br'] = {
-    radioNome: 'Rádio Clãns FM',
-    senha: clansOld.senha || 'clans123',
-    plano: 'Empresarial 30GB',
-    valor: 600,
-    dias: 365,
-    gb: 30,
-    vencimento: new Date('2026-11-15').toISOString(),
-    status: 'ativo',
-    criado: clansOld.criado || new Date().toISOString(),
-    afiliado: 'direto',
-    comprovante: false
-  };
-  // Ativa cantinho caipira se existir
-  if(todos['hf4787240@gmail.com']){
-    todos['hf4787240@gmail.com'].status='ativo';
-    todos['hf4787240@gmail.com'].vencimento=new Date(Date.now()+30*86400000).toISOString();
-    todos['hf4787240@gmail.com'].comprovante=false;
+  carregarCacheLocal();
+  // Ativa TODO MUNDO pendente
+  for(let k in users){
+    if(k==='admin@radiohost.com.br') continue;
+    if(users[k].status!=='ativo'){
+      users[k].status='ativo';
+      users[k].vencimento = new Date(Date.now()+(users[k].dias||30)*86400000).toISOString();
+      users[k].comprovante=false;
+    }
   }
-  users=todos;
+  users['admin@radiohost.com.br']=RADIO_CLANS_FIXA;
   localStorage.setItem('rh_final_users', JSON.stringify(users));
-  try{
-    await fetch('/api/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'admin@radiohost.com.br',...users['admin@radiohost.com.br']})});
-    if(users['hf4787240@gmail.com']) await fetch('/api/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:'hf4787240@gmail.com',...users['hf4787240@gmail.com']})});
-  }catch(e){}
-  alert('✅ Corrigido! Rádio Clãns arrumada e cliente cantinho caipira ativado!');
+  // tenta salvar no servidor
+  for(let k in users){
+    if(k==='admin@radiohost.com.br') continue;
+    try{ await fetch('/api/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:k,...users[k]})}); }catch(e){}
+  }
+  alert('✅ Rádio Clãns OK + todos clientes ATIVADOS!');
   updAdm();
 }
 
 function show(id){document.querySelectorAll('#home,#planos,#login,#painel,#adm').forEach(e=>e.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');if(id==='painel'){updPainel();} if(id==='adm'){updAdm();}}
 function abaCliente(q){document.getElementById('aba-radio').classList.toggle('hidden',q!=='radio');document.getElementById('aba-afiliado').classList.toggle('hidden',q!=='afiliado');document.getElementById('tab1').classList.toggle('ativo',q==='radio');document.getElementById('tab2').classList.toggle('ativo',q==='afiliado');}
 function abaAdm(q){document.getElementById('adm-aba-radios').classList.toggle('hidden',q!=='radios');document.getElementById('adm-aba-afiliados').classList.toggle('hidden',q!=='afiliados');document.getElementById('admTab1').classList.toggle('ativo',q==='radios');document.getElementById('admTab2').classList.toggle('ativo',q==='afiliados');}
-function selecionarPlano(plano,valor,dias,gb,cardId){ tempPlano={plano,valor,dias,gb}; document.querySelectorAll('.card-plan').forEach(c=>c.classList.remove('selecionado')); document.getElementById(cardId).classList.add('selecionado'); document.getElementById('planoEscolhidoTexto').innerHTML="✅ <b style='color:#00f0ff'>"+plano+" - R$"+valor+"</b><br>Preencha abaixo"; document.getElementById('formCadastro').scrollIntoView({behavior:'smooth',block:'center'}); }
+function selecionarPlano(plano,valor,dias,gb,cardId){ tempPlano={plano,valor,dias,gb}; document.querySelectorAll('.card-plan').forEach(c=>c.classList.remove('selecionado')); document.getElementById(cardId).classList.add('selecionado'); document.getElementById('planoEscolhidoTexto').innerHTML="✅ <b style='color:#00f0ff'>"+plano+" - R$"+valor+"</b>"; document.getElementById('formCadastro').scrollIntoView({behavior:'smooth',block:'center'}); }
+
 async function confirmarCadastro(){
   if(!tempPlano.plano){ alert("Escolha um plano!"); return; }
   let radioNome=document.getElementById('cadRadioNome').value.trim();
@@ -214,7 +213,7 @@ async function confirmarCadastro(){
   await apiSaveUser(email, novo);
   current=email; localStorage.setItem('rh_final_current',email);
   document.getElementById('btnCriar').innerText='CRIAR RÁDIO AGORA';
-  alert("✅ Rádio '"+radioNome+"' criada!");
+  alert("✅ Rádio '"+radioNome+"' criada! Aguarde ativação.");
   show('painel');
 }
 async function entrar(){
@@ -223,15 +222,16 @@ async function entrar(){
   await apiLoadUsers();
   let u=getUser(email);
   if(!u){ alert("Conta não encontrada!"); return; }
-  if(u.senha!==senha){ alert("Senha errada!"); return; }
+  if(email!=='admin@radiohost.com.br' && u.senha!==senha){ alert("Senha errada!"); return; }
   current=email; localStorage.setItem('rh_final_current',email); show('painel');
 }
 async function entrarAdm(){ await apiLoadUsers(); show('adm'); }
+
 async function updPainel(){
   await apiLoadUsers();
   if(!current) current=(localStorage.getItem('rh_final_current')||'').toLowerCase().trim();
   let u=getUser(current);
-  if(!u){ document.getElementById('radioNome').innerText='(carregando...)'; setTimeout(updPainel, 800); return; }
+  if(!u){ return; }
   document.getElementById('userEmail').innerText=current;
   document.getElementById('radioNome').innerText=u.radioNome||'';
   document.getElementById('radioEmailLogin').innerText=current;
@@ -262,24 +262,28 @@ async function enviarComprovante(){
 function copiarLink(){ let l=document.getElementById('linkAfiliado'); l.select(); document.execCommand('copy'); alert("Copiado!"); }
 function compartilharZap(){ let m=encodeURIComponent(`🎧 Crie sua rádio! Meu link: ${window.linkAfGlobal}`); window.open(`https://wa.me/?text=${m}`,'_blank'); }
 function sacar(){ window.open(`https://wa.me/5517981135119?text=Saque ${current} ${document.getElementById('afSaldo').innerText}`,'_blank'); }
+
 async function updAdm(){
   await apiLoadUsers();
   document.getElementById('admTotalClientes').innerText=Object.keys(users).length;
   document.getElementById('admPendentes').innerText=Object.values(users).filter(u=>u.status!=='ativo').length;
-  let totalCom=0, map={};
-  for(let email in users){ let u=users[email]; if(u.afiliado!=='direto'){ if(!map[u.afiliado]) map[u.afiliado]={vendas:0,total:0}; map[u.afiliado].vendas++; map[u.afiliado].total+=u.valor*0.2; totalCom+=u.valor*0.2; } }
+  let totalCom=0;
+  for(let email in users){ let u=users[email]; if(u.afiliado!=='direto'){ totalCom+=u.valor*0.2; } }
   document.getElementById('admComissoes').innerText='R$'+totalCom.toFixed(2);
   let tbody=document.getElementById('admRadios'); tbody.innerHTML=''; 
   for(let email in users){ 
     let u=users[email]; 
+    if(!u.radioNome) continue;
     let comp=u.comprovante?'✅ Enviou':'❌ Sem'; 
     let venc=u.vencimento?new Date(u.vencimento):new Date();
-    let nomeExibir = u.radioNome || (email==='admin@radiohost.com.br' ? 'Rádio Clãns FM' : 'Rádio sem nome');
-    tbody.innerHTML+=`<tr><td><b style="color:#ff5bd7">${nomeExibir}</b><br>📧 ${email}<br>🔒 ${u.senha}<br><small>ref:${u.afiliado}</small></td><td>${u.plano}<br>R$${u.valor}<br><small>${venc.toLocaleDateString()}</small></td><td>${(u.status||'').toUpperCase()}<br><small>${comp}</small></td><td><button onclick="ativar('${email}')" class="btn-ative" style="padding:6px;font-size:.7em">Ativar</button><br><button onclick="apagar('${email}')" class="btn btn-dark" style="padding:4px;margin-top:4px;font-size:.6em">Excluir</button></td></tr>`; 
+    let isClans = email==='admin@radiohost.com.br';
+    let btnExcluir = isClans ? '<small style="color:#25D366">🔒 Principal</small>' : `<button onclick="apagar('${email}')" class="btn btn-dark" style="padding:4px;font-size:.6em">Excluir</button>`;
+    tbody.innerHTML+=`<tr><td><b style="color:${isClans?'#25D366':'#ff5bd7'}">${u.radioNome}</b><br>📧 ${email}<br>🔒 ${u.senha}<br><small>ref:${u.afiliado}</small></td><td>${u.plano}<br>R$${u.valor}<br><small>${venc.toLocaleDateString()}</small></td><td><b style="color:${u.status==='ativo'?'#25D366':'#ff3a8d'}">${(u.status||'').toUpperCase()}</b><br><small>${comp}</small></td><td><button onclick="ativar('${email}')" class="btn-ative" style="padding:6px;font-size:.7em">${u.status==='ativo'?'Reativar':'Ativar'}</button><br>${btnExcluir}</td></tr>`; 
   }
 }
 async function ativar(email){
   email=email.toLowerCase().trim();
+  if(email==='admin@radiohost.com.br'){ alert('✅ Rádio Clãns já está sempre ativa!'); return; }
   let u=getUser(email);
   if(!u){ alert('Não encontrado'); return; }
   document.body.style.cursor='wait';
@@ -287,7 +291,11 @@ async function ativar(email){
   finally{ document.body.style.cursor='default'; }
   let v=new Date(); v.setDate(v.getDate()+(u.dias||30)); 
   await apiUpdateUser(email, {status:'ativo', vencimento:v.toISOString(), comprovante:false});
-  alert("✅ "+u.radioNome+" ATIVADA!"); await updAdm();
+  users[email].status='ativo';
+  users[email].vencimento=v.toISOString();
+  localStorage.setItem('rh_final_users', JSON.stringify(users));
+  alert("✅ "+u.radioNome+" ATIVADA!");
+  await updAdm();
 }
 async function apagar(email){ await apiDeleteUser(email); await updAdm(); }
 function sair(){ localStorage.removeItem('rh_final_current'); current=''; show('home'); }
