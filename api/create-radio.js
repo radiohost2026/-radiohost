@@ -1,34 +1,30 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Use POST' });
-  }
-
+export default async function handler(req,res){
+  res.setHeader('Cache-Control','no-store');
+  if(req.method!=='POST') return res.status(405).end();
+  
   const { nome, email } = req.body;
+  const AZURA_URL = 'http://173.212.231.94';
+  const AZURA_KEY = 'SUA_API_KEY_AQUI'; // <--- coloca sua key
 
-  try {
-    const response = await fetch(`${process.env.AZURACAST_URL}/api/stations`, {
-      method: 'POST',
-      headers: {
-        'X-API-Key': process.env.AZURACAST_API_KEY,
-        'Content-Type': 'application/json'
+  try{
+    // Cria estação no AzuraCast
+    let r = await fetch(`${AZURA_URL}/api/admin/stations`,{
+      method:'POST',
+      headers:{
+        'X-API-Key': AZURA_KEY,
+        'Content-Type':'application/json'
       },
       body: JSON.stringify({
         name: nome,
-        shortcode: email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,20) + Date.now().toString().slice(-3),
-        description: `Radio de ${email}`,
+        short_name: email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,''),
         frontend_type: 'icecast',
-        backend_type: 'liquidsoap'
+        backend_type: 'liquidsoap',
+        description: `Rádio ${nome} - ${email}`
       })
     });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return res.status(400).json({ error: 'AzuraCast erro', details: data });
-    }
-
-    return res.status(200).json({ sucesso: true, radio: data });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    let data = await r.json();
+    return res.status(200).json({ok:true, station:data});
+  }catch(e){
+    return res.status(500).json({error:e.message});
   }
 }
