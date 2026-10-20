@@ -1,46 +1,53 @@
 import { Redis } from '@upstash/redis';
-const redis = Redis.fromEnv();
 
-export default async function handler(req, res){
-  res.setHeader('Access-Control-Allow-Origin','*');
-  res.setHeader('Access-Control-Allow-Methods','GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers','Content-Type');
-  if(req.method==='OPTIONS') return res.status(200).end();
+export default async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+
+  const redis = Redis.fromEnv();
+  const KEY = 'radiohost:users';
 
   try {
-    let users = await redis.get('rh_users_v2');
-    if(!users) users = {};
-    if(typeof users === 'string'){
-      try{ users = JSON.parse(users); } catch(e){ users = {}; }
+    // Pega sempre como OBJETO
+    let users = await redis.get(KEY);
+    if (!users) users = {};
+    // Se ainda for array antigo, converte pra objeto
+    if (Array.isArray(users)) {
+      let obj = {};
+      users.forEach(u => { if(u.email) obj[u.email.toLowerCase()] = u; });
+      users = obj;
+      await redis.set(KEY, users);
     }
 
-    if(req.method==='GET'){
+    if (req.method === 'GET') {
       return res.status(200).json(users);
     }
-    if(req.method==='POST'){
-      let {email, ...data} = req.body;
-      email = email.toLowerCase().trim();
-      users[email] = data;
-      await redis.set('rh_users_v2', JSON.stringify(users));
-      return res.status(200).json({ok:true});
+
+    if (req.method === 'POST' || req.method === 'PUT') {
+      const body = req.body;
+      if (!body.email) return res.status(400).json({error:'sem email'});
+      const email = body.email.toLowerCase().trim();
+      if (email === 'admin@radiohost.com.br') return res.status(200).json({ok:true});
+      
+      // Junta com o que já existe
+      users[email] = { ...(users[email] || {}), ...body, email: email };
+      await redis.set(KEY, users);
+      return res.status(200).json({ sucesso: true, total: Object.keys(users).length });
     }
-    if(req.method==='PUT'){
-      let {email, ...patch} = req.body;
-      email = email.toLowerCase().trim();
-      if(users[email]){
-        users[email] = {...users[email], ...patch};
-        await redis.set('rh_users_v2', JSON.stringify(users));
+
+    if (req.method === 'DELETE') {
+      const { email } = req.query;
+      const e = (email||'').toLowerCase().trim();
+      if (e && e !== 'admin@radiohost.com.br') {
+        delete users[e];
+        await redis.set(KEY, users);
       }
-      return res.status(200).json({ok:true});
+      return res.status(200).json({ sucesso: true });
     }
-    if(req.method==='DELETE'){
-      let email = (req.query.email||'').toLowerCase().trim();
-      if(email === 'admin@radiohost.com.br') return res.status(403).json({error:'Clans nao apaga'});
-      delete users[email];
-      await redis.set('rh_users_v2', JSON.stringify(users));
-      return res.status(200).json({ok:true});
-    }
-  } catch(e){
-    return res.status(500).json({error: e.message});
+
+    return res.status(405).json({error:'metodo'});
+  } catch (err) {
+    return res.status(500).json({error: err.message});
   }
-}
+                                 }
